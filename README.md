@@ -11,8 +11,8 @@ it keeps asking from `slightly_knows`, and so on.
 
 TODO:
 
-- [ ] initialization of data type from source file
-- [ ] basic matching every term
+- [x] initialization of data type from source file
+- [x] basic matching every term
 - [ ] spaced repetition
 - [ ] starring words that need learning
 - [ ] colored output
