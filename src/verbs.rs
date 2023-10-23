@@ -1,4 +1,3 @@
-use crate::flashcards::user_input;
 use crate::Path;
 use colored::Colorize;
 use std::fs;
@@ -34,44 +33,30 @@ impl Verbs {
     }
 }
 
-pub fn init(path: &Path) -> Vec<Verbs> {
+pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     let mut tmp_vec: Vec<Verbs> = Vec::new();
-    println!("Trying to open {:?}", path);
-    let delim;
-    // let lang;
-    // let creator;
-
     // getting contents of file
     let contents = fs::read_to_string(path).expect("what is wronk?");
     // storing lines of contents
     let mut limes = contents.lines();
-    // checking wether first line includes [learnit] to know if it is made for learnit
-    if limes.next().unwrap() == "[learnit]" {
-        delim = limes.next().unwrap_or(";").chars().nth(1).unwrap_or(';');
-        // lang = limes.next().unwrap_or("unknown");
-        // creator = limes.next().unwrap_or("anonymus");
-    } else {
-        // lang = "unknown";
-        // creator = "anonymus";
-        // resetting lines to start from beginning
-        limes = contents.lines();
-        // asking for user input as delimiter is unknown
-        delim = user_input("What character is the delimiter?")
-            .chars()
-            .next()
-            .unwrap_or(';');
+    // ignoring properties and header
+    for _ in 0..n + 1 {
+        limes.next();
     }
     for line in limes {
         let mut words = line.split(delim);
 
         // lecke
-        let _no_need = words.next().unwrap_or("NNNNNN").trim();
+        let no_need = words.next().unwrap_or("NNNNNN").trim();
+        if no_need.is_empty() || no_need.chars().next().unwrap() == '#' {
+            continue;
+        };
 
-        let inf = words.next().unwrap_or("NANANA").trim();
-        let dri = words.next().unwrap_or("NANANA").trim();
-        let pra = words.next().unwrap_or("NANANA").trim();
-        let per = words.next().unwrap_or("NANANA").trim();
-        let def = words.next().unwrap_or("NANANA").trim();
+        let inf = words.next().unwrap_or("NO_INFINITIVE").trim();
+        let dri = words.next().unwrap_or("NO_THIRD_PERSON").trim();
+        let pra = words.next().unwrap_or("NO_PRATERITUM").trim();
+        let per = words.next().unwrap_or("NO_PERFEKT").trim();
+        let def = words.next().unwrap_or("NO_DEFINITION").trim();
         // other
         let _no_need = words.next().unwrap_or("NNNNNN").trim();
 
@@ -100,7 +85,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         trm,
     } in &v
     {
-        println!("\n\n\n\nsay the stuff for: {}", trm.blue());
+        println!("\n\n\n\nVerbs for: {}", trm.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let mut guess = String::new();
         std::io::stdin()
@@ -109,6 +94,50 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         let guess = guess.trim();
         if guess == format!("{}, {}, {}, {}", inf, dri, pra, per) {
             println!("{}", "That's about it!".green());
+        } else if guess == "typo" {
+            println!("Removed: {:?}", r.last());
+            r.pop();
+            if !question(vec![Verbs {
+                inf: inf.to_string(),
+                dri: dri.to_string(),
+                pra: pra.to_string(),
+                per: per.to_string(),
+                trm: trm.to_string(),
+            }])
+            .is_empty()
+            {
+                r.push(Verbs {
+                    inf: inf.to_owned(),
+                    dri: dri.to_owned(),
+                    pra: pra.to_owned(),
+                    per: per.to_owned(),
+                    trm: trm.to_owned(),
+                })
+            }
+        } else if guess == "hint" {
+            let mut prt = inf.chars();
+            print!("Looks like: \"");
+            for _ in 0..4 {
+                print!("{}", prt.next().unwrap());
+            }
+            println!("{ch:_>widht$}\"", ch = '_', widht = inf.len() - 4);
+            if !question(vec![Verbs {
+                inf: inf.to_string(),
+                dri: dri.to_string(),
+                pra: pra.to_string(),
+                per: per.to_string(),
+                trm: trm.to_string(),
+            }])
+            .is_empty()
+            {
+                r.push(Verbs {
+                    inf: inf.to_owned(),
+                    dri: dri.to_owned(),
+                    pra: pra.to_owned(),
+                    per: per.to_owned(),
+                    trm: trm.to_owned(),
+                })
+            }
         } else if guess == "q" || guess == "quit" || guess == "exit" {
             println!("{}", "exiting...".magenta());
             break;
