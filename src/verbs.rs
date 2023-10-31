@@ -1,6 +1,7 @@
 use crate::Path;
 use colored::Colorize;
 use std::fs;
+use std::process::exit;
 
 #[derive(Debug)]
 pub struct Verbs {
@@ -52,11 +53,11 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
             continue;
         };
 
-        let inf = words.next().unwrap_or("NO_INFINITIVE").trim();
-        let dri = words.next().unwrap_or("NO_THIRD_PERSON").trim();
-        let pra = words.next().unwrap_or("NO_PRATERITUM").trim();
-        let per = words.next().unwrap_or("NO_PERFEKT").trim();
-        let def = words.next().unwrap_or("NO_DEFINITION").trim();
+        let inf = words.next().unwrap_or("").trim();
+        let dri = words.next().unwrap_or("").trim();
+        let pra = words.next().unwrap_or("").trim();
+        let per = words.next().unwrap_or("").trim();
+        let def = words.next().unwrap_or("").trim();
         // other
         let _no_need = words.next().unwrap_or("NNNNNN").trim();
 
@@ -76,6 +77,10 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
 
 pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
     // let mut printer = String::new();
+    if v.len() != 1 {
+        println!("\n\nYou have {} verbs to learn, let's start!", v.len());
+    }
+    // results
     let mut r = Vec::new();
     for Verbs {
         inf,
@@ -85,6 +90,10 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         trm,
     } in &v
     {
+        if inf.is_empty() {
+            println!("Oh, no! Missing verbform found!");
+            continue;
+        }
         println!("\n\n\n\nVerbs for: {}", trm.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let mut guess = String::new();
@@ -94,6 +103,21 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         let guess = guess.trim();
         if guess == format!("{}, {}, {}, {}", inf, dri, pra, per) {
             println!("{}", "That's about it!".green());
+        } else if guess == "skip" {
+            println!(
+                "skipping: {:?}",
+                Verbs {
+                    inf: inf.to_string(),
+                    dri: dri.to_string(),
+                    pra: pra.to_string(),
+                    per: per.to_string(),
+                    trm: trm.to_string(),
+                }
+            );
+            continue;
+        } else if guess == "revise" {
+            println!("Going to the ones not guessed correctly...");
+            break;
         } else if guess == "typo" {
             println!("Removed: {:?}", r.last());
             r.pop();
@@ -117,10 +141,15 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         } else if guess == "hint" {
             let mut prt = inf.chars();
             print!("Looks like: \"");
-            for _ in 0..4 {
-                print!("{}", prt.next().unwrap());
+            let n = inf.len() / 2;
+            for _ in 0..n {
+                print!(
+                    "{}",
+                    prt.next().expect("Hint couldn't find next character!")
+                );
             }
-            println!("{ch:_>widht$}\"", ch = '_', widht = inf.len() - 4);
+            // println!("\"");
+            println!("{ch:_>widht$}\"", ch = '_', widht = inf.len() - n);
             if !question(vec![Verbs {
                 inf: inf.to_string(),
                 dri: dri.to_string(),
@@ -140,7 +169,8 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             }
         } else if guess == "q" || guess == "quit" || guess == "exit" {
             println!("{}", "exiting...".magenta());
-            break;
+            // break; <- doesn't work, as the outer while keeps repeating
+            exit(0);
         } else {
             let tmp = Verbs {
                 inf: inf.to_owned(),
@@ -155,7 +185,9 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             println!("Pushed, will be questioned later on.");
         }
     }
-    println!("\n\nRemaining cards are {:#?}", r);
+    if !r.is_empty() {
+        println!("\n\n{} remaining cards are {:#?}", r.len(), r);
+    }
 
     r
 }

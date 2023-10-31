@@ -1,6 +1,6 @@
 use crate::Path;
 use colored::Colorize;
-use std::fs;
+use std::{fs, process::exit};
 
 #[derive(Debug)]
 pub struct Cards {
@@ -59,13 +59,20 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
 
 pub fn question(v: Vec<Cards>) -> Vec<Cards> {
     // let mut printer = String::new();
-    let mut r = Vec::new();
+    if v.len() != 1 {
+        println!("\n\nYou have {} words to learn, let's start!", v.len());
+    }
+    let mut r: Vec<Cards> = Vec::new();
 
     for Cards {
         trm: term,
         def: defi,
     } in &v
     {
+        if defi.is_empty() || defi == "NO_DEFINITION" || term.is_empty() || term == "NO_TERM" {
+            println!("Oh, no! Missing word found!");
+            continue;
+        }
         println!("\nWord for: {}", term.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let mut guess = String::new();
@@ -78,6 +85,26 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
         if guess == defi {
             // printer = format!("{printer}{}\n", "that's about it!".green());
             println!("{}\n", "That's about it!".green());
+        } else if guess == "skip" {
+            println!(
+                "skipping: {:?}",
+                Cards {
+                    trm: term.to_owned(),
+                    def: defi.to_owned()
+                }
+            );
+            continue;
+        // } else if guess == "repeat" || guess == "rep" {
+        //     let prev = r.last().unwrap_or(&Cards {
+        //         trm: term.to_string(),
+        //         def: defi.to_string(),
+        //     });
+        //     if !question(vec![r.last().unwrap()]).is_empty() {
+        //         r.push(r.last().expect("Should have at least one element"));
+        //     }
+        } else if guess == "revise" {
+            println!("Going to the ones not guessed correctly...");
+            break;
         } else if guess == "typo" {
             // printer = format!("{printer}\n{}{:?}", "Corrected!".magenta(), r.last());
             println!("{}{:?}", "Corrected: ".magenta(), r.last());
@@ -95,15 +122,17 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             }
         } else if guess == "q" || guess == "quit" || guess == "exit" {
             println!("{}", "exiting...".magenta());
-            break;
+            // break;
+            exit(0);
         } else if guess == "hint" {
             let mut prt = defi.chars();
             print!("Looks like: \"");
-            for _ in 0..4 {
-                // printer = format!("{printer}{}", prt.next().unwrap());
-                print!("{}", prt.next().unwrap());
+            let n = defi.len() / 2;
+            for _ in 0..n {
+                print!("{}", prt.next().unwrap_or('×'));
             }
-            println!("{ch:_>widht$}\"", ch = '_', widht = defi.len() - 4);
+            println!("{ch:_>widht$}\"", ch = '_', widht = defi.len() - n);
+
             if !question(vec![Cards {
                 trm: term.to_string(),
                 def: defi.to_string(),
@@ -144,6 +173,8 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
         //     }
         // }
     }
-    println!("\n\nRemaining cards are {:#?}", r);
+    if !r.is_empty() {
+        println!("\n\n{} remaining cards are {:#?}", r.len(), r);
+    }
     r
 }

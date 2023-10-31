@@ -1,0 +1,11 @@
+./verben.csv
+
+[error: wrong verbform:perfekt]
+|
+|       kész v-re:	inf: bereit sein:	dri: ist bereit	prä: war bereit	perf: war bereit
+|                                                                             ^^^^^^^^^^ may be: ist bereit gewesen
+
+[error: wrong verbform:perfekt]
+|
+|       felújít:	inf: renovieren:	dri: renoviert	prä: renovierte	perf: hat gerenoviert
+|                                                                             ^^^^^^^^^^^^^^^ should be: hat renoviert

@@ -1,6 +1,5 @@
 ./target
 ./version_history/
+./files/
 ./Cargo.lock
-./worter.txt
-./verben.txt
 ./release.sh

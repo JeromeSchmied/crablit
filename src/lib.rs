@@ -1,11 +1,13 @@
+use colored::Colorize;
 use rand::{seq::SliceRandom, thread_rng};
 use std::path::Path;
+use std::process::exit;
 use std::{env, fs};
 
 pub mod cards;
 pub mod verbs;
 
-pub enum Game {
+pub enum Type {
     Card,
     Verb,
     Help,
@@ -23,6 +25,8 @@ pub fn start() {
     //         m
     //     }
     // };
+    // if args.iter().find(|&x| x == "help").unwrap_or(&"-h") == "--help" {show_help()}
+
     let file_path = match args.get(1) {
         Some(f) => f.trim().to_owned(),
         None => {
@@ -30,22 +34,9 @@ pub fn start() {
             fp
         }
     };
-
     if file_path == "-h" || file_path == "--help" {
-        // println!("Docs coming soon...");
-        println!(
-            r#"
-         A program to learn words in the terminal.
-
-         Usage:
-           flashcards [options] [file]        Learn file
-
-         Options:
-            -h || --help: show this message"#
-        );
-        return;
+        show_help();
     }
-
     // let p = Path::new(&file_path);
     let p = &file_path.to_owned();
     // let mut p = String::from(&file_path);
@@ -53,22 +44,24 @@ pub fn start() {
 
     let p = Path::new(&path);
     match mode {
-        Game::Card => {
+        Type::Card => {
             let mut v = cards::init(p, delim, n);
             while !v.is_empty() {
                 v.shuffle(&mut thread_rng());
                 v = cards::question(v);
             }
+            println!("Gone through everything you wanted, great job!");
         }
-        Game::Verb => {
+        Type::Verb => {
             let mut v = verbs::init(p, delim, n);
             while !v.is_empty() {
                 v.shuffle(&mut thread_rng());
                 v = verbs::question(v);
             }
+            println!("Gone through everything you wanted, great job!");
         }
-        Game::Bad => println!("Something unexpected happened, exiting..."),
-        Game::Help => println!("Docs coming soon..."),
+        Type::Bad => println!("Something unexpected happened, exiting..."),
+        Type::Help => println!("Docs coming soon..."),
     }
 
     // if mode == "verb" || mode == "verben" || mode == "verbs" {
@@ -100,7 +93,7 @@ pub fn user_input(qst: &str) -> String {
     babineni
 }
 
-pub fn determine_properties(path: &String) -> (Game, char, u8, String) {
+pub fn determine_properties(path: &String) -> (Type, char, u8, String) {
     println!("Trying to open {:?}", path);
     let mut contents = fs::read_to_string(&path).unwrap_or("redo".to_string());
     let mut path_fixed = path.to_owned();
@@ -155,11 +148,32 @@ pub fn determine_properties(path: &String) -> (Game, char, u8, String) {
         "Mode: \"{}\", delimiter: \"{}\", number of lines skipping: \"{}\"",
         mode, delim, num
     );
-    if mode == "[mode: verbs]" || mode == "verbs" {
-        (Game::Verb, delim, num, path_fixed)
-    } else if mode == "[mode: cards]" || mode == "cards" {
-        (Game::Card, delim, num, path_fixed)
+    if mode == "[mode: verbs]" || mode == "verbs" || mode == "[verbs]" {
+        (Type::Verb, delim, num, path_fixed)
+    } else if mode == "[mode: cards]" || mode == "cards" || mode == "[cards]" {
+        (Type::Card, delim, num, path_fixed)
     } else {
-        (Game::Bad, delim, num, path_fixed)
+        (Type::Bad, delim, num, path_fixed)
     }
+}
+
+fn show_help() {
+    // println!("Docs coming soon...");
+    println!("A program to learn words in the terminal.");
+    println!();
+    println!("{}", "Usage:".underline().bold());
+    println!("  learnit [options] file      Learn file");
+    println!("{}", "Options:".underline().bold());
+    println!("  -h, --help: show this message.");
+    //         println!(
+    //             r#"
+    // A program to learn words in the terminal.
+    //
+    // Usage:
+    //   flashcards [options] [file]        Learn file
+    //
+    // Options:
+    //   -h || --help: show this message"#
+    //         );
+    exit(0);
 }
