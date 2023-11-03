@@ -40,7 +40,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
         let mut words = line.split(delim);
 
         let trm = words.next().unwrap_or("NO_TERM").trim();
-        if trm.is_empty() || trm.chars().next().unwrap() == '#' {
+        if trm.is_empty() || trm.starts_with('#') {
             continue;
         };
 
@@ -163,7 +163,7 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
                 guess.red()
             );
         }
-        println!("{:#>width$}\n\n", "#".magenta(), width = guess.len() + 12);
+        // println!("{:#>width$}\n\n", "#".magenta(), width = guess.len() + 12);
         // clearscreen::clear().expect("failed to clear screen");
         // println!("{printer}\n\n\n\n");
         // if printer.len() > 2 * 90 {

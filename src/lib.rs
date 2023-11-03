@@ -9,6 +9,7 @@ pub mod verbs;
 
 pub enum Type {
     Card,
+    VerbConv,
     Verb,
     Help,
     Bad,
@@ -26,13 +27,11 @@ pub fn start() {
     //     }
     // };
     // if args.iter().find(|&x| x == "help").unwrap_or(&"-h") == "--help" {show_help()}
+    // if args.iter().find(|&x| x == "conv").is_some() {}
 
-    let file_path = match args.get(1) {
+    let file_path = match args.last() {
         Some(f) => f.trim().to_owned(),
-        None => {
-            let fp = user_input("File path: ");
-            fp
-        }
+        None => user_input("File path: "),
     };
     if file_path == "-h" || file_path == "--help" {
         show_help();
@@ -54,11 +53,22 @@ pub fn start() {
         }
         Type::Verb => {
             let mut v = verbs::init(p, delim, n);
+            println!(
+                "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>\n\n\n"
+            );
             while !v.is_empty() {
                 v.shuffle(&mut thread_rng());
                 v = verbs::question(v);
             }
             println!("Gone through everything you wanted, great job!");
+        }
+        Type::VerbConv => {
+            let v = verbs::init(p, delim, n);
+            println!(
+                "\n\n\nConverting verbs to cards, from file: {:?} to file: {}",
+                p, "verbs_as_cards.csv"
+            );
+            verbs::conv(&v, "verbs_as_cards.csv", ';');
         }
         Type::Bad => println!("Something unexpected happened, exiting..."),
         Type::Help => println!("Docs coming soon..."),
@@ -95,11 +105,11 @@ pub fn user_input(qst: &str) -> String {
 
 pub fn determine_properties(path: &String) -> (Type, char, u8, String) {
     println!("Trying to open {:?}", path);
-    let mut contents = fs::read_to_string(&path).unwrap_or("redo".to_string());
+    let mut contents = fs::read_to_string(path).unwrap_or("redo".to_string());
     let mut path_fixed = path.to_owned();
     loop {
         if contents == "redo" {
-            println!("No luck...");
+            println!("No luck opening the file...");
             path_fixed = user_input("Sorry, what is the correct path?");
             contents = fs::read_to_string(&path_fixed).unwrap_or("redo".to_string());
         } else {
@@ -152,6 +162,8 @@ pub fn determine_properties(path: &String) -> (Type, char, u8, String) {
         (Type::Verb, delim, num, path_fixed)
     } else if mode == "[mode: cards]" || mode == "cards" || mode == "[cards]" {
         (Type::Card, delim, num, path_fixed)
+    } else if mode == "[mode: conv]" || mode == "conv" || mode == "verb_conv" {
+        (Type::VerbConv, delim, num, path_fixed)
     } else {
         (Type::Bad, delim, num, path_fixed)
     }

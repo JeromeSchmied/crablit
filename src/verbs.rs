@@ -1,7 +1,6 @@
-use crate::Path;
+use crate::{fs::File, Path};
 use colored::Colorize;
-use std::fs;
-use std::process::exit;
+use std::{fs, io::Write, process::exit};
 
 #[derive(Debug)]
 pub struct Verbs {
@@ -35,12 +34,12 @@ impl Verbs {
 }
 
 pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
-    let mut tmp_vec: Vec<Verbs> = Vec::new();
+    let mut r: Vec<Verbs> = Vec::new();
     // getting contents of file
     let contents = fs::read_to_string(path).expect("what is wronk?");
     // storing lines of contents
     let mut limes = contents.lines();
-    // ignoring properties and header
+    // ignoring properties and newline
     for _ in 0..n + 1 {
         limes.next();
     }
@@ -49,7 +48,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
 
         // lecke
         let no_need = words.next().unwrap_or("NNNNNN").trim();
-        if no_need.is_empty() || no_need.chars().next().unwrap() == '#' {
+        if no_need.is_empty() || no_need.starts_with('#') {
             continue;
         };
 
@@ -63,16 +62,18 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
 
         // making a Verbs of the values
         let tmp = Verbs::new(inf, dri, pra, per, def);
-        tmp_vec.push(tmp);
+        r.push(tmp);
     }
+    // deleting header
+    r.remove(0);
 
     println!("{:?} file succesfully readed.", path);
     println!("Basic file looks somehow like this:\n{}", contents);
-    for card in &tmp_vec {
+    for card in &r {
         card.print_all();
     }
 
-    tmp_vec
+    r
 }
 
 pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
@@ -190,4 +191,21 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
     }
 
     r
+}
+
+pub fn conv(v: &[Verbs], o: &str, delim: char) {
+    let mut output = File::create(o).expect("couldn't create file!");
+    writeln!(output, "[learnit]").expect("Not succesful.");
+    writeln!(output, "[mode: cards]").expect("Not succesful.");
+    writeln!(output, "[delim: {delim}]").expect("Not succesful.");
+    writeln!(output).expect("Couldn't write to file.");
+
+    let has_header = true;
+    if has_header {
+    }
+
+    for line in v {
+        writeln!(output, "{}{delim}{}", line.trm, line.inf).expect("couldn't write to file!");
+    }
+    println!("Converting verbs to cards written to {o}");
 }
