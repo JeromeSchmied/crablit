@@ -68,10 +68,10 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     r.remove(0);
 
     println!("{:?} file succesfully readed.", path);
-    println!("Basic file looks somehow like this:\n{}", contents);
-    for card in &r {
-        card.print_all();
-    }
+    // println!("Basic file looks somehow like this:\n{}", contents);
+    // for card in &r {
+    //     card.print_all();
+    // }
 
     r
 }
@@ -117,7 +117,13 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             );
             continue;
         } else if guess == "revise" {
-            println!("Going to the ones not guessed correctly...");
+            if r.len() == 1 {
+                println!("Type revise again!");
+            } else if r.is_empty() {
+                println!("Nothing to revise, you might to type it again to make it work...");
+            } else {
+                println!("Going to the ones not guessed correctly...");
+            }
             break;
         } else if guess == "typo" {
             println!("Removed: {:?}", r.last());
@@ -201,8 +207,7 @@ pub fn conv(v: &[Verbs], o: &str, delim: char) {
     writeln!(output).expect("Couldn't write to file.");
 
     let has_header = true;
-    if has_header {
-    }
+    if has_header {}
 
     for line in v {
         writeln!(output, "{}{delim}{}", line.trm, line.inf).expect("couldn't write to file!");

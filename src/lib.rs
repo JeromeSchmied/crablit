@@ -158,7 +158,7 @@ pub fn determine_properties(path: &String) -> (Type, char, u8, String) {
         "Mode: \"{}\", delimiter: \"{}\", number of lines skipping: \"{}\"",
         mode, delim, num
     );
-    if mode == "[mode: verbs]" || mode == "verbs" || mode == "[verbs]" {
+    if mode == "[mode: verbs]" || mode == "verbs" || mode == "[verbs]" || mode == "[mode: verb]" {
         (Type::Verb, delim, num, path_fixed)
     } else if mode == "[mode: cards]" || mode == "cards" || mode == "[cards]" {
         (Type::Card, delim, num, path_fixed)

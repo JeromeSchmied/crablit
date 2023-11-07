@@ -50,10 +50,10 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
         tmp_vec.push(tmp);
     }
     println!("{:?} file succesfully readed.", path);
-    println!("Basic file looks somehow like this:\n{}", contents);
-    for card in &tmp_vec {
-        println!("\"{}\":\t\t\t\"{}\"", card.trm.yellow(), card.def.magenta());
-    }
+    // println!("Basic file looks somehow like this:\n{}", contents);
+    // for card in &tmp_vec {
+    //     println!("\"{}\":\t\t\t\"{}\"", card.trm.yellow(), card.def.magenta());
+    // }
     tmp_vec
 }
 
