@@ -16,7 +16,7 @@ wanderlust                        ;    s Fernweh
 desire                            ;    e Sehnsucht, -ü-e
 longing                           ;    sich sehnen nach +D
 solve                             ;    erledigen
-miss                              ;    vermissen +A
+to miss                           ;    vermissen +A
 homesickness                      ;    s Heimweh
 to feel                           ;    empfinden
 # old woman's summer                ;    r Altweibersommer, -
@@ -31,7 +31,7 @@ decorated                         ;    geschmückt
 striking                          ;    auffallend
 art product                       ;    s Kunstprodukt, -e
 garden gnome                      ;    r Gartenzwerg, -e
-has a good thing                  ;    Er hat es gut.
+# He's happy.                       ;    Er hat es gut.
 pass away                         ;    vergehen
 past                              ;    e Vergangenheit, -en
 ephemeral                         ;    vergänglich
@@ -51,12 +51,12 @@ The museum is open.               ;    Das Museum ist/hat geöffnet.
 time expression                   ;    e Zeitangabe, -n
 in summer                         ;    im Sommer
 from October                      ;    ab Oktober
-daily(2)                        ;    täglich/pro Tag
+daily(2)                          ;    täglich/pro Tag
 yesterday                         ;    gestern
 today                             ;    heute
 tomorrow                          ;    morgen
 on holidays                       ;    an Feiertagen
-reggel 8 óra után                 ;    nach 8 Uhr morgens
+after 8 am.                       ;    nach 8 Uhr morgens
 from Monday to Wednesday          ;    von Montag bis Mittwoch
 in the morning                    ;    am Morgen
 in the mornings                   ;    morgens
@@ -92,7 +92,7 @@ in two days                       ;    in zwei Tagen
 happy                             ;    fröhlich
 minimum/at least(2)               ;    mindestens/wenigstens
 famous                            ;    berühmt
-known                             ;    bekannt
+well-known                        ;    bekannt
 house with roof                   ;    Haus mit Dach
 letter                            ;    r Buchstabe, -n
 business traveller                ;    r Geschäftsreisende, -n
