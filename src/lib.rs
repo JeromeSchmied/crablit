@@ -66,7 +66,7 @@ pub fn start() {
             let v = verbs::init(p, delim, n);
             println!(
                 "\n\n\nConverting verbs to cards, from file: {:?} to file: {}",
-                p, "verbs_as_cards.csv"
+                p, "verbs_as_cards.tsv"
             );
             verbs::conv(&v, "verbs_as_cards.tsv", '\t');
         }

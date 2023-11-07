@@ -1,9 +1,9 @@
 # [learnit](https://github.com/JeromeSchmied/learnit) -> some better name needed
 
-## [anki](ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, just right in the terminal
+## [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, just right in the terminal
 
 ## how it works
-- it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/learnit/)
+- it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/learnit/examples)
 - stores it in a vector
 - asks them until you know it well
 
@@ -19,8 +19,8 @@
                                                                      ^^^: coming
 
 alternatives: 
-- [speki](crates.io/crates/speki): only flashcards, rust
-- [vocage](crates.io/crates/vocage): only flashcards, rust
+- [speki](https://crates.io/crates/speki): only flashcards, rust
+- [vocage](https://crates.io/crates/vocage): only flashcards, rust
 - hascard: haskell
 - fla.sh: only flashcards, bash
 - exhaust: rust

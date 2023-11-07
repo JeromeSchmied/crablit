@@ -6,7 +6,7 @@
 - [x] spaced repetition <- iterating over vector, pushing back not guessed ones, they get questioned later, shuffled
 - [x] end-user dealing with typos <- typo
 - [x] hints <- hint
-- [x] colored output <- [colored](crates.io/crates/colored) from cargo
+- [x] colored output <- [colored](https://crates.io/crates/colored) from cargo
 
 ## further development
 - [x] make exit work just like that <- done using `exit()`
@@ -24,10 +24,10 @@
 
 ## nice-to-haves
 - [ ] have organized, formatted output
-- [ ] [tui](crates.io/crates/ratatui) 
+- [ ] [tui](https://crates.io/crates/ratatui) 
 - [ ] have option to ask for term or definition
 - [ ] filtering what to learn
-- [ ] taking cli arguments: `clap` 
+- [ ] taking cli arguments: [clap](https://crates.io/crate/clap) 
     + [x] file name
     + [ ] delimiter
     + [ ] mode
@@ -41,12 +41,12 @@
     + anki decks
     + quizlet decks
     + knowt decks
-    + [chatgpt](chat.openai.com) because everyone is crazy about it
-    + [Dudenswissensnetz](duden.de) 
-    + [verbformen](verbformen.de)
-    + [cambrigde online dictionary](dictionary.cambrigde.org)
+    + [chatgpt](https://chat.openai.com) because everyone is crazy about it
+    + [Dudenswissensnetz](https://duden.de) 
+    + [verbformen](https://verbformen.de)
+    + [cambrigde online dictionary](https://dictionary.cambrigde.org)
     + lots of other stuff
-    + using [deepl](deepl.com)
+    + using [deepl](https://deepl.com)
 
 - [ ] write good manual
 - [ ] being able to determine every property itself
@@ -67,7 +67,7 @@
     * [ ] all kinds of crazy stuff  
 
 + [x] [github](https://github.com/JeromeSchmied/learnit) repo, or some github alternative 
-+ [ ] [crates](crates.io)
++ [ ] [crates](https://crates.io)
 + [ ] being able to share decks
 + [ ] being able to create flashcard decks in app
 + [ ] clean API
