@@ -27,7 +27,7 @@
 - [ ] [tui](https://crates.io/crates/ratatui) 
 - [ ] have option to ask for term or definition
 - [ ] filtering what to learn
-- [ ] taking cli arguments: [clap](https://crates.io/crate/clap) 
+- [ ] taking cli arguments: [clap](https://crates.io/crates/clap) 
     + [x] file name
     + [ ] delimiter
     + [ ] mode
