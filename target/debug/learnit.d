@@ -1,1 +1,0 @@
-/home/jeromos/Development/rust/tries/learnit/target/debug/learnit: /home/jeromos/Development/rust/tries/learnit/src/cards.rs /home/jeromos/Development/rust/tries/learnit/src/lib.rs /home/jeromos/Development/rust/tries/learnit/src/main.rs /home/jeromos/Development/rust/tries/learnit/src/verbs.rs
