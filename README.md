@@ -1,6 +1,6 @@
 # [Learnit](https://github.com/JeromeSchmied/learnit)
 
-## [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, just right in the terminal
+## [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, but in the terminal
 
 ## how it works
 - it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/learnit/tree/main/examples)
