@@ -30,7 +30,7 @@ git clone --depth=1 https://github.com/JeromeSchmied/learnit.git
 # go to it's directory, where it's been cloned
 cd learnit
 # compile, and run it with examples/verbs.tsv
-cargo run -- verbs.tsv
+cargo run -- examples/verbs.tsv
 ```
 
 ## to help, see [todos](TODO.md)
