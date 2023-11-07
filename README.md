@@ -1,4 +1,4 @@
-# [learnit](https://github.com/JeromeSchmied/learnit) (some better name needed!)
+# [Learnit](https://github.com/JeromeSchmied/learnit)
 
 ## [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, just right in the terminal
 
