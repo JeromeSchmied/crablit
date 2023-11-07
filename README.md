@@ -27,7 +27,7 @@ to pour - gießen
 ```
 - written questions: people tend to remember words better this way than flashcards
 - mode for Verbs-learning: if you need to learn lots of verbforms, like:
-```
+```text
 [learnit]
 [mode: verbs]
 [delim: 	]
@@ -52,15 +52,15 @@ Lecke	Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 - stores it in a vector
 - asks them until you know all well (currently only till you guess them right once)
 
-## Why is it better than the others?
-
-|                 | quizlet     | knowt      | learnit                    |
-|---------------- | ----------- | ---------- | -------------------------- |
-| open-source     | no          | no         | of course!                 |
-| ad-free         | nope        | nope       | 100%                       |
-| totally free    | not really  | not really | Yes, and it always will be |
-| speed out of 10 | 4           | 2          | 10                         |
-| offline version | paid        | no         | cross-platform, fast, TUI: coming soon  |
+<!-- ## Why is it better than the others? -->
+<!---->
+<!-- |                 | quizlet     | knowt      | learnit                    | -->
+<!-- |---------------- | ----------- | ---------- | -------------------------- | -->
+<!-- | open-source     | no          | no         | of course!                 | -->
+<!-- | ad-free         | nope        | nope       | 100%                       | -->
+<!-- | totally free    | not really  | not really | Yes, and it always will be | -->
+<!-- | speed out of 10 | 4           | 2          | 10                         | -->
+<!-- | offline version | paid        | no         | cross-platform, fast, TUI: coming soon  | -->
 
 ## Installing:
 
