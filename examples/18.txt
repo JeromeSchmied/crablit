@@ -1,1 +1,99 @@
-/home/jeromos/Sync/Documents/forSchool/Deutsch/DaF_leicht_2/18/own.txt
+[learnit]
+[mode: cards]
+[delimiter: ;]
+
+# nagyrészt könyvből
+
+kijelentés                         ;    e Aussage, -n
+gondolat                           ;    r Gedanke, -n
+negyed                             ;    s Viertel, -s
+fagyizó                            ;    e Eisdiele, -n
+büszke                             ;    stolz
+hozzászokott                       ;    gewöhnt
+harang                             ;    e Glocke, -n
+utazásvágy                         ;    s Fernweh
+vágy                               ;    e Sehnsucht, -ü-e
+vágyik                             ;    sich sehnen nach +D
+megold                             ;    erledigen
+hiányol                            ;    vermissen +A
+honvágy                            ;    s Heimweh
+érezni                             ;    empfinden
+vénasszonyok nyara                 ;    r Altweibersommer, -
+asszony                            ;    s Weib, -er
+hivatal                            ;    s Amt, Ä-er
+hulladékot összeseper              ;    kitschen
+seper                              ;    kehren
+aranyos                            ;    niedlich
+szükségtelen                       ;    unnötig
+díszített                          ;    verziert
+díszített                          ;    geschmückt
+feltűnő                            ;    auffallend
+művészeti termék                   ;    s Kunstprodukt, -e
+kertitörpe                         ;    r Gartenzwerg, -e
+jó dolga van                       ;    Er hat es gut.
+elmúlik                            ;    vergehen
+múlt                               ;    e Vergangenheit, -en
+mulandó                            ;    vergänglich
+műhely                             ;    e Werkstatt, -ä-e
+forgat                             ;    drehen
+filmet forgat                      ;    Film drehen
+forgatási helyszín                 ;    r Drehort, -e
+vezetés                            ;    e Führung, -en
+kiállítás                          ;    e Ausstellung, -en
+kiállít                            ;    ausstellen
+esemény                            ;    e Veranstaltung, -en
+szervez                            ;    veranstalten
+A múzeum nyitva van.               ;    Das Museum ist/hat geöffnet.
+
+# time expressions/Zeitangaben
+
+idő kifejezés                      ;    e Zeitangabe, -n
+nyáron                             ;    im Sommer
+októbertől                         ;    ab Oktober
+naponta(2)                         ;    täglich/pro Tag
+tegnap                             ;    gestern
+ma                                 ;    heute
+holnap                             ;    morgen
+ünnepnapokon                       ;    an Feiertagen
+reggel 8 óra után                  ;    nach 8 Uhr morgens
+hétfőtől szerdáig                  ;    von Montag bis Mittwoch
+reggel                             ;    am Morgen
+reggelente                         ;    morgens
+50 év óta                          ;    seit 50 Jahren
+egy hónappal ezelőtt               ;    vor einem Monat
+pénteken                           ;    am Freitag
+14 órakor                          ;    um 14 Uhr
+karácsonykor                       ;    zu/an Weihnachten
+május 13-tól június 11-ig          ;    von 13. Mai bis 11. Juni
+18 óráig                           ;    bis 18 Uhr
+szilveszter estén                  ;    am Silvester Abend
+karácsony és szilveszter között    ;    zwischen Weihnachten und Neujahr
+vasárnaponként(2)                  ;    am Sonntagen/sonntags
+két nap óta                        ;    seit zwei Tagen
+1929-ben(2)                        ;    1929/im Jahre 1929
+a 15. századból                    ;    aus dem 15. Jahrhundert
+a hatvanas években                 ;    im 60er Jahren
+a tanítás után                     ;    nach dem Unterricht
+szeptemberben                      ;    im September
+három hónap után                   ;    nach drei Monaten
+a 20-as évekből                    ;    aus den 20er Jahren
+két óra hosszan                    ;    zwei Stunden lang
+ezen a héten(2)                    ;    in dieser Woche/diese Woche
+múlt évben/tavaly(2)               ;    im letzten Jahr/letztes Jahr
+hétfő délelőtt                     ;    am Montag Vormittag
+ma este                            ;    heute Abend
+ezen a pénteken(2)                 ;    an diesem Freitag/diesen Freitag
+holnapután                         ;    übermorgen
+két nap múlva                      ;    in zwei Tagen
+
+# dolgok, melyek a dogához izgik lehetnek
+
+boldog                             ;    fröhlich
+minimum/legalább(2)                ;    mindestens/wenigstens
+híres                              ;    berühmt
+ismert                             ;    bekannt
+ház tetővel                        ;    Haus mit Dach
+betű                               ;    r Buchstabe, -n
+üzleti úton lévő személy           ;    r Geschäftsreisende, -n
+kinél                              ;    bei wem
+miről                              ;    worüber

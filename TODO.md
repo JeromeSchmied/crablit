@@ -6,7 +6,7 @@
 - [x] spaced repetition <- iterating over vector, pushing back not guessed ones, they get questioned later, shuffled
 - [x] end-user dealing with typos <- typo
 - [x] hints <- hint
-- [x] colored output <- `colored` from cargo
+- [x] colored output <- [colored](crates.io/crates/colored) from cargo
 
 ## further development
 - [x] make exit work just like that <- done using `exit()`
@@ -17,16 +17,17 @@
 - [ ] make hint smarter: output right amount of '_'-s even for special (more byte) characers more hint
 - [ ] `rustyline` for editable input
 - [ ] find duplicates and deal with 'em
-- [ ] have organized, formatted output
 - [ ] starring words that need learning
-- [ ] have option to ask for term or definition
 - [ ] don't write almost the same functions twice
 - [ ] save progress
 - [ ] docs
 
 ## nice-to-haves
+- [ ] have organized, formatted output
+- [ ] [tui](crates.io/crates/ratatui) 
+- [ ] have option to ask for term or definition
 - [ ] filtering what to learn
-- [ ] taking cli arguments
+- [ ] taking cli arguments: `clap` 
     + [x] file name
     + [ ] delimiter
     + [ ] mode
@@ -37,6 +38,10 @@
     + [ ] help
     + [ ] other great stuff
 - [ ] fetching definitions from 
+    + anki decks
+    + quizlet decks
+    + knowt decks
+    + [chatgpt](chat.openai.com) because everyone is crazy about it
     + [Dudenswissensnetz](duden.de) 
     + [verbformen](verbformen.de)
     + [cambrigde online dictionary](dictionary.cambrigde.org)
@@ -61,9 +66,10 @@
     * [ ] `enum`s 
     * [ ] all kinds of crazy stuff  
 
-+ [ ] [github](https://github.com/JeromeSchmied) repo, or some github alternative 
-+ [ ] being able to share stuff
-+ [ ] being able to create flashcard sets in app
++ [x] [github](https://github.com/JeromeSchmied/learnit) repo, or some github alternative 
++ [ ] [crates](crates.io)
++ [ ] being able to share decks
++ [ ] being able to create flashcard decks in app
 + [ ] clean API
 + [ ] template files for creating great flashcards with
     * [x] delimiter

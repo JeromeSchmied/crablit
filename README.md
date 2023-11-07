@@ -1,13 +1,11 @@
-# learnit --> some better name needed
+# [learnit](https://github.com/JeromeSchmied/learnit) -> some better name needed
 
-## [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired kind of thing just the right way (in the terminal)
+## [anki](ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, just right in the terminal
 
-we need a source: text file: \<`term`\>\<`delimiter`\>\<`definition`\>\n
-we need a struct: `Bela`  to put terms and definitions: `terms: String, defs: String`
-than we need a vector like: `let v: Vec<Bela>`
-and we show `term`, take input, if it's the same as `definition`, goes to slightly_knows
-else it goes to `doesnt_know`. It loops and after there is nothing in `doesnt_know`,
-it keeps asking from `slightly_knows`, and so on.
+## how it works
+- it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/learnit/)
+- stores it in a vector
+- asks them until you know it well
 
 ## why it's better than the others?
 
@@ -21,21 +19,8 @@ it keeps asking from `slightly_knows`, and so on.
                                                                      ^^^: coming
 
 alternatives: 
+- [speki](crates.io/crates/speki): only flashcards, rust
+- [vocage](crates.io/crates/vocage): only flashcards, rust
 - hascard: haskell
-- vocage: rust
-- fla.sh: bash
+- fla.sh: only flashcards, bash
 - exhaust: rust
-
-
-```rust
-struct Bela {
-    term: String,
-    def: String,
-    // how well u know it
-    level: u8,
-}
-
-fn main(){
-    println!("flashcards in the terminal");
-}
-```
