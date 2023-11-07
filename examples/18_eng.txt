@@ -1,0 +1,100 @@
+[learnit]
+[mode: cards]
+[delimiter: ;]
+
+# Translated by Deepl.org, not me!
+# mostly from book
+
+statement                         ;    e Aussage, -n
+thought                           ;    r Gedanke, -n
+quarter                           ;    s Viertel, -s
+ice cream parlour                 ;    e Eisdiele, -n
+proud                             ;    stolz
+accustomed                        ;    gewöhnt
+bell                              ;    e Glocke, -n
+wanderlust                        ;    s Fernweh
+desire                            ;    e Sehnsucht, -ü-e
+longing                           ;    sich sehnen nach +D
+solve                             ;    erledigen
+miss                              ;    vermissen +A
+homesickness                      ;    s Heimweh
+to feel                           ;    empfinden
+old woman's summer                ;    r Altweibersommer, -
+woman                             ;    s Weib, -er
+office                            ;    s Amt, Ä-er
+all waste                         ;    kitschen
+sweep                             ;    kehren
+cute                              ;    niedlich
+unnecessary                       ;    unnötig
+decorated                         ;    verziert
+decorated                         ;    geschmückt
+striking                          ;    auffallend
+art product                       ;    s Kunstprodukt, -e
+garden gnome                      ;    r Gartenzwerg, -e
+has a good thing                  ;    Er hat es gut.
+pass away                         ;    vergehen
+past                              ;    e Vergangenheit, -en
+ephemeral                         ;    vergänglich
+workshop                          ;    e Werkstatt, -ä-e
+to turn                           ;    drehen
+to make a film                    ;    Film drehen
+location                          ;    r Drehort, -e
+leadership                        ;    e Führung, -en
+exhibition                        ;    e Ausstellung, -en
+exhibit                           ;    ausstellen
+event                             ;    e Veranstaltung, -en
+organize                          ;    veranstalten
+The museum is open.               ;    Das Museum ist/hat geöffnet.
+
+# time expressions
+
+time expression                   ;    e Zeitangabe, -n
+in summer                         ;    im Sommer
+from October                      ;    ab Oktober
+naponta(2)                        ;    täglich/pro Tag
+yesterday                         ;    gestern
+today                             ;    heute
+tomorrow                          ;    morgen
+on holidays                       ;    an Feiertagen
+reggel 8 óra után                 ;    nach 8 Uhr morgens
+from Monday to Wednesday          ;    von Montag bis Mittwoch
+in the morning                    ;    am Morgen
+in the morning                    ;    morgens
+since 50 years                    ;    seit 50 Jahren
+a month ago                       ;    vor einem Monat
+Friday                            ;    am Freitag
+at 14 o'clock                     ;    um 14 Uhr
+at Christmas                      ;    zu/an Weihnachten
+from 13 May to 11 June            ;    von 13. Mai bis 11. Juni
+18 o'clock                        ;    bis 18 Uhr
+on New Year's Eve                 ;    am Silvester Abend
+between Christmas and New Year    ;    zwischen Weihnachten und Neujahr
+on Sundays(2)                     ;    am Sonntagen/sonntags
+since two days                    ;    seit zwei Tagen
+in 1929(2)                        ;    1929/im Jahre 1929
+from the 15th century             ;    aus dem 15. Jahrhundert
+in the 1960s                      ;    im 60er Jahren
+after school                      ;    nach dem Unterricht
+in September                      ;    im September
+after three months                ;    nach drei Monaten
+from the 1920s                    ;    aus den 20er Jahren
+two hours long                    ;    zwei Stunden lang
+ezen a héten(2)                   ;    in dieser Woche/diese Woche
+múlt évben/tavaly(2)              ;    im letzten Jahr/letztes Jahr
+hétfő délelőtt                    ;    am Montag Vormittag
+tonight                           ;    heute Abend
+ezen a pénteken(2)                ;    an diesem Freitag/diesen Freitag
+tomorrow                          ;    übermorgen
+in two days                       ;    in zwei Tagen
+
+# things that might be exciting for the dog
+
+happy                             ;    fröhlich
+minimum/at least(2)               ;    mindestens/wenigstens
+famous                            ;    berühmt
+known                             ;    bekannt
+house with roof                   ;    Haus mit Dach
+letter                            ;    r Buchstabe, -n
+business traveller                ;    r Geschäftsreisende, -n
+at who                            ;    bei wem
+about what                        ;    worüber
