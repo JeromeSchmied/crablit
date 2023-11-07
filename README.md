@@ -25,4 +25,18 @@
 - fla.sh: only flashcards, bash
 - exhaust: rust
 
+## installing:
+
+install Rust, if you don't have it:
+`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` 
+
+```bash
+# clone the repo to have it locally
+git clone --depth=1 https://JeromeSchmied/learnit.git
+# go to it's directory, where it's been cloned
+cd learnit
+# compile, and run it
+cargo run
+```
+
 ## to help, see [todos](TODO.md)
