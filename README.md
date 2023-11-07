@@ -3,7 +3,7 @@
 ## [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, just right in the terminal
 
 ## how it works
-- it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/learnit/examples)
+- it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/learnit/examples)
 - stores it in a vector
 - asks them until you know it well
 
