@@ -26,7 +26,7 @@ install Rust, if you don't have it:
 
 ```bash
 # clone the repo to have it locally
-git clone --depth=1 https://JeromeSchmied/learnit.git
+git clone --depth=1 https://github.com/JeromeSchmied/learnit.git
 # go to it's directory, where it's been cloned
 cd learnit
 # compile, and run it with examples/verbs.tsv
