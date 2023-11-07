@@ -19,10 +19,10 @@ solve                             ;    erledigen
 miss                              ;    vermissen +A
 homesickness                      ;    s Heimweh
 to feel                           ;    empfinden
-old woman's summer                ;    r Altweibersommer, -
+# old woman's summer                ;    r Altweibersommer, -
 woman                             ;    s Weib, -er
 office                            ;    s Amt, Ä-er
-all waste                         ;    kitschen
+# all waste                         ;    kitschen
 sweep                             ;    kehren
 cute                              ;    niedlich
 unnecessary                       ;    unnötig
@@ -38,7 +38,7 @@ ephemeral                         ;    vergänglich
 workshop                          ;    e Werkstatt, -ä-e
 to turn                           ;    drehen
 to make a film                    ;    Film drehen
-location                          ;    r Drehort, -e
+filming location                  ;    r Drehort, -e
 leadership                        ;    e Führung, -en
 exhibition                        ;    e Ausstellung, -en
 exhibit                           ;    ausstellen
@@ -51,7 +51,7 @@ The museum is open.               ;    Das Museum ist/hat geöffnet.
 time expression                   ;    e Zeitangabe, -n
 in summer                         ;    im Sommer
 from October                      ;    ab Oktober
-naponta(2)                        ;    täglich/pro Tag
+daily(2)                        ;    täglich/pro Tag
 yesterday                         ;    gestern
 today                             ;    heute
 tomorrow                          ;    morgen
@@ -59,7 +59,7 @@ on holidays                       ;    an Feiertagen
 reggel 8 óra után                 ;    nach 8 Uhr morgens
 from Monday to Wednesday          ;    von Montag bis Mittwoch
 in the morning                    ;    am Morgen
-in the morning                    ;    morgens
+in the mornings                   ;    morgens
 since 50 years                    ;    seit 50 Jahren
 a month ago                       ;    vor einem Monat
 Friday                            ;    am Freitag
@@ -79,12 +79,12 @@ in September                      ;    im September
 after three months                ;    nach drei Monaten
 from the 1920s                    ;    aus den 20er Jahren
 two hours long                    ;    zwei Stunden lang
-ezen a héten(2)                   ;    in dieser Woche/diese Woche
-múlt évben/tavaly(2)              ;    im letzten Jahr/letztes Jahr
-hétfő délelőtt                    ;    am Montag Vormittag
+this week(2)                      ;    in dieser Woche/diese Woche
+last year(2)                      ;    im letzten Jahr/letztes Jahr
+monday morning                    ;    am Montag Vormittag
 tonight                           ;    heute Abend
-ezen a pénteken(2)                ;    an diesem Freitag/diesen Freitag
-tomorrow                          ;    übermorgen
+this week on friday(2)            ;    an diesem Freitag/diesen Freitag
+the day after tomorrow            ;    übermorgen
 in two days                       ;    in zwei Tagen
 
 # things that might be exciting for the dog
