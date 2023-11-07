@@ -18,6 +18,13 @@ it keeps asking from `slightly_knows`, and so on.
 | totally free    | not really  | not really | Yes, and it always will be |
 | speed out of 10 | 4           | 2          | 10                         |
 | offline version | paid        | no         | cross-platform, fast, TUI  |
+                                                                     ^^^: coming
+
+alternatives: 
+- hascard: haskell
+- vocage: rust
+- fla.sh: bash
+- exhaust: rust
 
 
 ```rust

@@ -1,5 +1,9 @@
-./target
-./version_history/
-./files/
-./Cargo.lock
-./release.sh
+# rust compiled stuff
+target/
+# containing old versions
+version_history/
+# files/
+# projects with similar goals
+alt/
+Cargo.lock
+release.sh

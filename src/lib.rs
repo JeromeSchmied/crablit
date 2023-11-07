@@ -68,7 +68,7 @@ pub fn start() {
                 "\n\n\nConverting verbs to cards, from file: {:?} to file: {}",
                 p, "verbs_as_cards.csv"
             );
-            verbs::conv(&v, "verbs_as_cards.csv", ';');
+            verbs::conv(&v, "verbs_as_cards.tsv", '\t');
         }
         Type::Bad => println!("Something unexpected happened, exiting..."),
         Type::Help => println!("Docs coming soon..."),
