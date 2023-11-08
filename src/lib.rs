@@ -119,7 +119,7 @@ pub fn determine_properties(path: &String) -> (Type, char, u8, String) {
     }
     let delim: char;
     let mode: String;
-    // plus one for [learnit], one for an extra newline at the end
+    // plus one for [crablit], one for an extra newline at the end
     let mut num = 2;
     // let lang;
     // let creator;
@@ -128,8 +128,8 @@ pub fn determine_properties(path: &String) -> (Type, char, u8, String) {
     // storing lines of contents
 
     let mut limes = contents.lines();
-    // checking wether first line includes [learnit] to know if it is made for learnit
-    if limes.next().unwrap() == "[learnit]" {
+    // checking wether first line includes [crablit] to know if it is made for crablit
+    if limes.next().unwrap() == "[crablit]" {
         mode = limes.next().unwrap_or("cards").to_string();
         num += 1;
         delim = limes
@@ -174,7 +174,7 @@ fn show_help() {
     println!("A program to learn words in the terminal.");
     println!();
     println!("{}", "Usage:".underline().bold());
-    println!("  learnit [options] file      Learn file");
+    println!("  crablit [options] file      Learn file");
     println!("{}", "Options:".underline().bold());
     println!("  -h, --help: show this message.");
     //         println!(

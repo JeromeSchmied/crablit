@@ -44,7 +44,7 @@
     + [chatgpt](https://chat.openai.com) because everyone is crazy about it
     + [Dudenswissensnetz](https://duden.de) 
     + [verbformen](https://verbformen.de)
-    + [cambrigde online dictionary](https://dictionary.cambrigde.org)
+    + [oxford english dictionary](https://oed.com/dictionary)
     + lots of other stuff
     + using [deepl](https://deepl.com)
 
@@ -66,7 +66,7 @@
     * [ ] `enum`s 
     * [ ] all kinds of crazy stuff  
 
-+ [x] [github](https://github.com/JeromeSchmied/learnit) repo, or some github alternative 
++ [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative 
 + [ ] [crates](https://crates.io)
 + [ ] being able to share decks
 + [ ] being able to create flashcard decks in app

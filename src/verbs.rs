@@ -199,7 +199,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
 
 pub fn conv(v: &[Verbs], o: &str, delim: char) {
     let mut output = File::create(o).expect("couldn't create file!");
-    writeln!(output, "[learnit]").expect("Not succesful.");
+    writeln!(output, "[crablit]").expect("Not succesful.");
     writeln!(output, "[mode: cards]").expect("Not succesful.");
     writeln!(output, "[delim: {delim}]").expect("Not succesful.");
     writeln!(output).expect("Couldn't write to file.");

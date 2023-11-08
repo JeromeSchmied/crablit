@@ -1,4 +1,4 @@
-[learnit]
+[crablit]
 [mode: cards]
 [delimiter: ;]
 
