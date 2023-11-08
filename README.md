@@ -1,6 +1,6 @@
-# [Learnit](https://github.com/JeromeSchmied/learnit), Better name expected soon!
+# [Learnit](https://github.com/JeromeSchmied/learnit), better name expected!
 
-## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, but in the terminal
+## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal
 
 ## Features
 - cross-platform: compiles wherever Rust does.
@@ -69,17 +69,20 @@ go to the official [install instructions](https://www.rust-lang.org/tools/instal
 - run the following to get the source:
 ```shell
 curl -L  "https://github.com/JeromeSchmied/learnit/archive/main.tar.gz" | tar -xzf -
+cd learnit-main
 ```
 - or you may install git: [git downloads](https://git-scm.com/downloads)
-
-```bash
+```shell
 # if you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/learnit.git
 # go to it's directory, where it's been cloned
 cd learnit
-# compile, and run it with examples/verbs.tsv
+```
+- compile, and run it with examples/verbs.tsv
+```shell
 cargo run -- examples/18_eng.txt
 ```
+
 
 ## To help, see [todos](TODO.md)
 
