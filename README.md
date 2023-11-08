@@ -1,13 +1,15 @@
-# [Learnit](https://github.com/JeromeSchmied/learnit)
+# [Learnit](https://github.com/JeromeSchmied/learnit), Better name expected soon!
 
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired app, but in the terminal
 
 ## Features
 - cross-platform: compiles wherever Rust does.
 - card: \<term>\<delimiter>\<definition>. eg: "to learn;lernen"
+- written questions: people tend to remember words better this way than flashcards
+- Fast: initialization of txt file of 1.3GB size with 24379399 lines of cards took 37s with a maximum of 3.6GB ram usage.
 - easy deck making:
     +  file of cards with the same delimiter everywhere, good delimiters are: ` ";", "    "(tab), "-", ":"`, but could be anything.
-    +  lines starting with '#' are comments
+    +  lines starting with `#` are comments
     +  some headers are accepted if the first one is learnit: mode, delimiter. They shall be in brackets. But they are not necessery!
     +  extra newlines cause no problem
     +  for instance: 
@@ -25,7 +27,6 @@ proud - stolz
 to pour - gießen
 # I don't know what to write next. - Ich weiß nicht was...
 ```
-- written questions: people tend to remember words better this way than flashcards
 - mode for Verbs-learning: if you need to learn lots of verbforms, like:
 ```text
 [learnit]
@@ -45,7 +46,6 @@ Lecke	Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 8	baden	badet	badete	hat gebadet	fürdik
 ...
 ```
-- Fast: initialization of txt file of 1.3GB size with 24379399 lines of cards took 37s with a maximum of 3.6GB ram usage. To be improved further.
 
 ## How it works
 - it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/learnit/tree/main/examples)
@@ -64,13 +64,16 @@ Lecke	Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 
 ## Installing:
 
-install Rust, if you don't have it:
-- on *nix systems(linux, unix, macos): `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` 
-- on windows: download installer: [rustup-init.exe](https://static.rust-lang.org/rustup/dist/i686-pc-windows-gnu/rustup-init.exe)
-- when in doubt: [Install instructions](https://www.rust-lang.org/tools/install)
+- install Rust, if you don't have it:
+go to the official [install instructions](https://www.rust-lang.org/tools/install)
+- run the following to get the source:
+```shell
+curl -L  "https://github.com/JeromeSchmied/learnit/archive/main.tar.gz" | tar -xzf -
+```
+- or you may install git: [git downloads](https://git-scm.com/downloads)
 
 ```bash
-# clone the repo to have it locally
+# if you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/learnit.git
 # go to it's directory, where it's been cloned
 cd learnit
