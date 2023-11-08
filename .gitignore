@@ -7,3 +7,4 @@ version_history/
 alt/
 Cargo.lock
 release.sh
+examples/wronk_verben.txt

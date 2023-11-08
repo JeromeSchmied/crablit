@@ -46,13 +46,11 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     for line in limes {
         let mut words = line.split(delim);
 
-        // lecke
-        let no_need = words.next().unwrap_or("NNNNNN").trim();
-        if no_need.is_empty() || no_need.starts_with('#') {
+        let inf = words.next().unwrap_or("").trim();
+        if inf.is_empty() || inf.starts_with('#') {
             continue;
         };
 
-        let inf = words.next().unwrap_or("").trim();
         let dri = words.next().unwrap_or("").trim();
         let pra = words.next().unwrap_or("").trim();
         let per = words.next().unwrap_or("").trim();
@@ -67,7 +65,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     // deleting header
     r.remove(0);
 
-    println!("{:?} file succesfully readed.", path);
+    println!("{:?} file succesfully read.", path);
     // println!("Basic file looks somehow like this:\n{}", contents);
     // for card in &r {
     //     card.print_all();

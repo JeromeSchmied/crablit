@@ -49,7 +49,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
         let tmp = Cards::new(trm, def);
         tmp_vec.push(tmp);
     }
-    println!("{:?} file succesfully readed.", path);
+    println!("{:?} file succesfully read.", path);
     // println!("Basic file looks somehow like this:\n{}", contents);
     // for card in &tmp_vec {
     //     println!("\"{}\":\t\t\t\"{}\"", card.trm.yellow(), card.def.magenta());
