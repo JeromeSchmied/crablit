@@ -1,4 +1,4 @@
-# [crablit](https://github.com/JeromeSchmied/crablit), better name expected!
+# [crablit](https://github.com/JeromeSchmied/crablit)
 
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal
 
