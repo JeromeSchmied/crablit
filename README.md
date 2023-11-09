@@ -54,12 +54,12 @@ Lecke	Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 
 <!-- ## Why is it better than the others? -->
 <!---->
-<!-- |                 | quizlet     | knowt      | crablit                    | -->
-<!-- |---------------- | ----------- | ---------- | -------------------------- | -->
-<!-- | open-source     | no          | no         | of course!                 | -->
-<!-- | ad-free         | nope        | nope       | 100%                       | -->
-<!-- | totally free    | not really  | not really | Yes, and it always will be | -->
-<!-- | speed out of 10 | 4           | 2          | 10                         | -->
+<!-- |                 | quizlet     | knowt      | crablit                                 | -->
+<!-- |---------------- | ----------- | ---------- | --------------------------              | -->
+<!-- | open-source     | no          | no         | of course!                              | -->
+<!-- | ad-free         | nope        | nope       | 100%                                    | -->
+<!-- | totally free    | not really  | not really | Yes, and it always will be              | -->
+<!-- | speed out of 10 | 4           | 2          | 10                                      | -->
 <!-- | offline version | paid        | no         | cross-platform, fast, TUI: coming soon  | -->
 
 ## Installing:
