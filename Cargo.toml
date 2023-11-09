@@ -19,4 +19,4 @@ categories = ["cli"]
 # for colored output
 colored = "2.0"
 # for shuffling questions
-rand = "*"
+rand = "0.8.5"
