@@ -3,16 +3,16 @@
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal
 
 ## Features
-- cross-platform: compiles wherever Rust does.
-- card: \<term>\<delimiter>\<definition>. eg: "to learn;lernen"
-- written questions: people tend to remember words better this way than flashcards
-- Fast: initialization of txt file of 1.3GB size with 24379399 lines of cards took 37s with a maximum of 3.6GB ram usage.
-- easy deck making:
-    +  file of cards with the same delimiter everywhere, good delimiters are: ` ";", "    "(tab), "-", ":"`, but could be anything.
-    +  lines starting with `#` are comments
-    +  some headers are accepted if the first one is crablit: mode, delimiter. They shall be in brackets. But they are not necessery!
-    +  extra newlines cause no problem
-    +  for instance: 
+- Cross-platform: compiles where Rust does.
+- Written answers: people tend to remember words better this way than flashcards
+- Fast: initialization of txt with 1.3GB data (24379399 lines) took 37s with a maximum of 3.6GB ram usage.
+- Card: \<term>\<delimiter>\<definition>. eg: `"to learn;lernen"`
+- Easy deck making:
+    +  File of Cards with the same delimiter in every line once, good ones are: ` ";", "    "(tab), "-", ":"`.
+    +  Lines starting with `#` are comments
+    +  If the first line is [crablit]: mode, delimiter may be set
+    +  Extra newlines cause no problem
+    +  For instance:
 ```text
 [crablit]
 [mode: cards]
@@ -27,30 +27,26 @@ proud - stolz
 to pour - gießen
 # I don't know what to write next. - Ich weiß nicht was...
 ```
-- mode for Verbs-learning: if you need to learn lots of verbforms, like:
+- Mode for Verbs-learning: if you need to learn lots of verbforms, like:
 ```text
 [crablit]
 [mode: verbs]
 [delim: 	]
 
-# Verben tabelle von DaF leicht 1,2
+# Verben Tabelle von DaF leicht 1,2
 # it's hungarian but that really doesn't matter
 
-Lecke	Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
-11	akzeptieren	akzeptiert	akzeptierte	hat akzeptiert	elfogad	
-13	ändern	ändert	änderte	hat geändert	változtat v-t, v-n	
-17	sich ändern	ändert sich	änderte sich	hat sich geändert	változik	
-10	antworten	antwortet	antwortete	hat geantwortet	felel/válaszol	
-14	sich ärgern	ärgert sich	ärgerte sich	hat sich geärgert	bosszankodik	(über+A)
-15	atmen	atmet	atmete	hat geatmet	lélegzik	
-8	baden	badet	badete	hat gebadet	fürdik
+Infini	Dritte	Präter	Perfekt 	Jelentés	Komment
+atmen	atmet	atmete	h. geatmet	lélegzik	Er hat ruhig geatmet.
+baden	badet	badete	h. gebadet	fürdik	
+bauen	baut	baute	h. gebaut	épít	Haus bauen
 ...
 ```
 
 ## How it works
-- it takes a source file: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples)
-- stores it in a vector
-- asks them until you know all well (currently only till you guess them right once)
+- It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples)
+- Stores them in a vector
+- Asks them until you know all well (currently only till you guess them right once)
 
 <!-- ## Why is it better than the others? -->
 <!---->
@@ -64,27 +60,34 @@ Lecke	Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 
 ## Installing:
 
-- install Rust, if you don't have it:
+- Install Rust, if you don't have it:
 go to the official [install instructions](https://www.rust-lang.org/tools/install)
-- run the following to get the source:
+- And do one of the following install methods:
+1. From crates.io: easiest, recommended
+```shell
+# get binary
+cargo install crablit
+# run it with desired file containing deck of cards
+crablit my_vocab_file.tsv
+```
+2. Install source from github:
 ```shell
 curl -L  "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
 cd crablit-main
+# running goes like this, with example file:
+cargo run -- examples/18_eng.txt
 ```
-- or you may install git: [downloads](https://git-scm.com/downloads)
+3. Or you may install git: [downloads](https://git-scm.com/downloads), and clone the source with it:
 ```shell
 # if you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/crablit.git
 # go to it's directory, where it's been cloned
 cd crablit
-```
-- compile, and run it with examples/verbs.tsv
-```shell
+# running goes like this, with example file:
 cargo run -- examples/18_eng.txt
 ```
 
-
-## To help, see [todos](TODO.md)
+## To help with development, see [Todos!](TODO.md)
 
 ## Alternatives: 
 - [speki](https://crates.io/crates/speki): only flashcards, rust

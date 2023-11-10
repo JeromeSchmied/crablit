@@ -67,7 +67,7 @@
     * [ ] all kinds of crazy stuff  
 
 + [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative 
-+ [ ] [crates](https://crates.io)
++ [x] [crates](https://crates.io)
 + [ ] being able to share decks
 + [ ] being able to create flashcard decks in app
 + [ ] clean API
