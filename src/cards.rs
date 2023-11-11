@@ -1,5 +1,6 @@
 use crate::Path;
 use colored::Colorize;
+use rustyline::DefaultEditor;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::process::exit;
@@ -79,12 +80,14 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             dbg!(&term);
             continue;
         }
-        println!("\nWord for: {}", term.blue());
+        println!("\n? {}", term.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
-        let mut guess = String::new();
-        std::io::stdin()
-            .read_line(&mut guess)
-            .expect("hajajajajaja");
+        let guess;
+        let mut rl = DefaultEditor::new().expect("Something is wronk...");
+        guess = rl.readline("> ").expect("Well");
+        // std::io::stdin()
+        //     .read_line(&mut guess)
+        //     .expect("hajajajajaja");
 
         // printer = format!("{printer}{}", guess);
         let guess = guess.trim();

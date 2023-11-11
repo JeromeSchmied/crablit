@@ -1,5 +1,6 @@
 use colored::Colorize;
 use rand::{seq::SliceRandom, thread_rng};
+use rustyline::DefaultEditor;
 use std::{
     env,
     fs::File,
@@ -85,10 +86,13 @@ fn start(args: &[String]) {
 
 pub fn user_input(qst: &str) -> String {
     println!("{qst}");
-    let mut babineni = String::new();
-    std::io::stdin()
-        .read_line(&mut babineni)
-        .expect("what is goink on?");
+    let mut babineni;
+
+    let mut rl = DefaultEditor::new().expect("couldnt read");
+    babineni = rl.readline("").expect("Couldnt read");
+    // std::io::stdin()
+    //     .read_line(&mut babineni)
+    //     .expect("what is goink on?");
     if babineni.ends_with('\n') {
         babineni.pop();
     }

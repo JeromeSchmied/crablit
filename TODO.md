@@ -12,14 +12,14 @@
 - [x] make exit work just like that <- done using `exit()`
 - [x] print how much to go out of how many <- kinda implemented using `v.len()`
 - [ ] levelled knowledge
-- [ ] flashcards
 - [ ] add keywords skip and repeat <- done: skip: `continue;`, repeat is hard because of &-s and borrowing
 - [ ] make hint smarter: output right amount of '_'-s even for special (more byte) characers more hint
-- [ ] `rustyline` for editable input
+- [x] `rustyline` for editable input
 - [ ] find duplicates and deal with 'em
 - [ ] starring words that need learning
 - [ ] don't write almost the same functions twice
 - [ ] save progress
+- [ ] flashcards
 - [ ] docs
 
 ## nice-to-haves

@@ -2,7 +2,7 @@
 name = "crablit"
 description = "A cli learning app using spaced repetition, inspired by anki, quizlet, knowt."
 authors = ["Jeromos Kovács <iitsnotme214@protonmail.com>"]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 homepage = "https://github.com/JeromeSchmied/crablit"
 repository = "https://github.com/JeromeSchmied/crablit"
@@ -27,3 +27,4 @@ categories = ["command-line-interface"]
 colored = "2.0"
 # for shuffling questions
 rand = "0.8.5"
+rustyline = "12.0.0"

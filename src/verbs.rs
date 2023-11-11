@@ -1,6 +1,7 @@
 use crate::BufReader;
 use crate::File;
 use colored::Colorize;
+use rustyline::DefaultEditor;
 use std::io::BufRead;
 use std::path::Path;
 use std::{io::Write, process::exit};
@@ -98,12 +99,15 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             println!("Oh, no! Missing verbform found!");
             continue;
         }
-        println!("\n\n\n\nVerbs for: {}", trm.blue());
+
+        println!("\n\n\n\n? {}", trm.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
-        let mut guess = String::new();
-        std::io::stdin()
-            .read_line(&mut guess)
-            .expect("hajajajajaja");
+        let guess;
+        let mut rl = DefaultEditor::new().expect("Something is wronk...");
+        guess = rl.readline("> ").expect("Well");
+        // std::io::stdin()
+        //     .read_line(&mut guess)
+        //     .expect("hajajajajaja");
         let guess = guess.trim();
         if guess == format!("{}, {}, {}, {}", inf, dri, pra, per) {
             println!("{}", "That's about it!".green());
