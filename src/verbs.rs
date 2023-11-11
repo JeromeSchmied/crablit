@@ -111,9 +111,8 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
 
         println!("\n\n\n? {}", trm.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
-        let guess;
         let mut rl = DefaultEditor::new().expect("Something is wronk...");
-        guess = rl.readline("> ").expect("Well");
+        let guess = rl.readline("> ").expect("Well");
         // std::io::stdin()
         //     .read_line(&mut guess)
         //     .expect("hajajajajaja");

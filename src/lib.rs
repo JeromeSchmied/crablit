@@ -3,7 +3,7 @@ use rand::{seq::SliceRandom, thread_rng};
 use rustyline::DefaultEditor;
 use std::{
     fs::File,
-    io::{BufRead, BufReader},
+    io::{BufReader, Read},
     path::Path,
     process::exit,
 };
@@ -11,11 +11,10 @@ use std::{
 pub mod cards;
 pub mod verbs;
 
-pub enum Type {
+enum Type {
     Card,
     VerbConv,
     Verb,
-    Help,
     Bad,
 }
 
@@ -68,7 +67,6 @@ pub fn start(args: &[String]) {
             verbs::conv(&v, "verbs_as_cards.tsv", '\t');
         }
         Type::Bad => println!("Something unexpected happened, exiting..."),
-        Type::Help => println!("Docs coming soon..."),
     }
 }
 
@@ -87,7 +85,7 @@ pub fn user_input(qst: &str) -> String {
     babineni
 }
 
-pub fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
+fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
     if args.len() > 1 {
         if args.iter().any(|x| x == "-h" || x == "--help") {
             show_help()
@@ -108,7 +106,9 @@ pub fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
     println!("Trying to open {:?}", &path);
     // let mut content = String::new();
     let f = File::open(&path).expect("couldn't open file");
-    let br = BufReader::new(f);
+    let mut br = BufReader::new(f);
+    let mut limes = String::new();
+    br.read_to_string(&mut limes).expect("couldnt Read");
     // br.read_to_string(&mut content)
     //     .expect("unable to read from file");
 
@@ -132,14 +132,15 @@ pub fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
     // getting contents of file
     // storing lines of contents
 
-    let mut limes = br.lines().flatten();
+    // let mut limes = br.lines().flatten();
+    let mut limes = limes.lines();
     // checking wether first line includes [crablit] to know if it is made for crablit
     if limes.next().unwrap() == "[crablit]" {
-        mode = limes.next().unwrap_or("cards".to_owned()).to_string();
+        mode = limes.next().unwrap_or("cards").to_string();
         num += 1;
         delim = limes
             .next()
-            .unwrap_or(";".to_owned())
+            .unwrap_or(";")
             .chars()
             .nth_back(1)
             .unwrap_or(';');
@@ -153,10 +154,11 @@ pub fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
         // asking for user input as delimiter is unknown
         // if limes.next().unwrap_or("".to_owned()).find() {}
         // if get_delim(limes.last()) {
+        let last = limes.clone().last().unwrap_or("");
         loop {
-            let line = &limes.next().unwrap_or("".to_owned());
-            if !(line.is_empty() || line.starts_with('#')) {
-                delim = get_delim(&line);
+            let line = &limes.next().unwrap_or("");
+            if !(line.is_empty() || line.starts_with('#')) && get_delim(line) == get_delim(last) {
+                delim = get_delim(line);
                 break;
             }
         }
@@ -209,7 +211,7 @@ fn show_help() {
 }
 
 fn get_delim(line: &str) -> char {
-    const DELIMS: [char; 6] = [';', '\t', ':', ',', '-', '|'];
+    const DELIMS: [char; 6] = [';', '|', '\t', ':', ',', '-'];
     // let line = line.unwrap_or("".to_owned());
     for delim in DELIMS {
         if !(line.is_empty() || line.starts_with('#')) && line.chars().any(|x| x == delim) {
