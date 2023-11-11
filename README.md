@@ -81,6 +81,7 @@ cargo run -- examples/18_eng.txt
 - Type the definition of the questioned word/phrase.
 - If you mistyped it, but know it, type: `typo`.
 - To see hint: `hint`.
+- To skip: `skip`.
 - To quit: `quit` or `exit`.
 
 ## How it works
