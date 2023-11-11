@@ -80,7 +80,7 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             dbg!(&term);
             continue;
         }
-        println!("\n{} {}", "?".yellow(), term.blue());
+        println!("\n{} {}", "?".bright_yellow().bold(), term.bright_blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let mut rl = DefaultEditor::new().expect("Something is wronk...");
         let guess = rl.readline("> ").expect("Well");
@@ -91,12 +91,16 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
         // printer = format!("{printer}{}", guess);
         let guess = guess.trim();
         if guess == defi {
-            // printer = format!("{printer}{}\n", "that's about it!".green());
-            println!("{}\n", "% That's about it!".green());
+            // printer = format!("{printer}{}\n", "that's about it!".bright_green());
+            println!(
+                "{} {}\n",
+                "%".bright_green().bold(),
+                "That's about it!".bright_green()
+            );
         } else if guess == "skip" {
             println!(
                 "{} {:?}",
-                "skipping:".magenta(),
+                "skipping:".bright_magenta(),
                 Cards {
                     trm: term.to_owned(),
                     def: defi.to_owned()
@@ -112,7 +116,10 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
         //         r.push(r.last().expect("Should have at least one element"));
         //     }
         } else if guess == "revise" {
-            println!("Going to the ones not guessed correctly...");
+            println!(
+                "{}",
+                "Going to the ones not guessed correctly...".bright_magenta()
+            );
             break;
         } else if guess == "typo" {
             // printer = format!("{printer}\n{}{:?}", "Corrected!".magenta(), r.last());
@@ -130,12 +137,12 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
                 });
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", "exiting...".magenta());
+            println!("{}", "exiting...".bright_magenta());
             // break;
             exit(0);
         } else if guess == "hint" {
             let mut prt = defi.chars();
-            print!("{} \"", "#".cyan());
+            print!("{} \"", "#".cyan().bold());
             let n = defi.len() / 2;
             for _ in 0..n {
                 print!("{}", prt.next().unwrap_or('×'));
@@ -167,9 +174,9 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             // );
             println!(
                 "{} {} <- {}\n",
-                "~".bright_red(),
+                "~".bright_red().bold(),
                 defi.yellow(),
-                "was the right answer.".red()
+                "was the right answer.".bright_red()
             );
         }
         // println!("{:#>width$}\n\n", "#".magenta(), width = guess.len() + 12);

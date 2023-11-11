@@ -8,8 +8,8 @@ use std::{
     process::exit,
 };
 
-pub mod cards;
-pub mod verbs;
+mod cards;
+mod verbs;
 
 enum Type {
     Card,
@@ -70,7 +70,7 @@ pub fn start(args: &[String]) {
     }
 }
 
-pub fn user_input(qst: &str) -> String {
+fn user_input(qst: &str) -> String {
     println!("{qst}");
     let mut babineni;
 

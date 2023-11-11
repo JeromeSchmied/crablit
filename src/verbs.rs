@@ -41,7 +41,7 @@ impl Verbs {
             self.inf.yellow(),
             self.dri.blue(),
             self.pra.cyan(),
-            self.per.magenta()
+            self.per.bright_magenta()
         );
     }
 }
@@ -109,7 +109,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             continue;
         }
 
-        println!("\n\n\n? {}", trm.blue());
+        println!("\n\n\n{} {}", "?".bright_yellow().bold(), trm.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let mut rl = DefaultEditor::new().expect("Something is wronk...");
         let guess = rl.readline("> ").expect("Well");
@@ -118,10 +118,15 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         //     .expect("hajajajajaja");
         let guess = guess.trim();
         if guess == format!("{}, {}, {}, {}", inf, dri, pra, per) {
-            println!("{}\n", "% That's about it!".green());
+            println!(
+                "{} {}\n",
+                "%".bright_green().bold(),
+                "That's about it!".bright_green()
+            );
         } else if guess == "skip" {
             println!(
-                "skipping: {:?}",
+                "{} {:?}",
+                "skipping:".bright_magenta(),
                 Verbs {
                     inf: inf.to_string(),
                     dri: dri.to_string(),
@@ -137,11 +142,14 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             } else if r.is_empty() {
                 println!("Nothing to revise, you might to type it again to make it work...");
             } else {
-                println!("Going to the ones not guessed correctly...");
+                println!(
+                    "{}",
+                    "Going to the ones not guessed correctly...".bright_magenta()
+                );
             }
             break;
         } else if guess == "typo" {
-            println!("{} {:?}", "Removed:".magenta(), r.last());
+            println!("{} {:?}", "Removed:".bright_magenta(), r.last());
             r.pop();
             if !question(vec![Verbs {
                 inf: inf.to_string(),
@@ -162,7 +170,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             }
         } else if guess == "hint" {
             let mut prt = inf.chars();
-            print!("{} \"", "#".cyan());
+            print!("{} \"", "#".cyan().bold());
             let n = inf.len() / 2;
             for _ in 0..n {
                 print!(
@@ -190,7 +198,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
                 })
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", "exiting...".magenta());
+            println!("{}", "exiting...".bright_magenta());
             // break; <- doesn't work, as the outer while keeps repeating
             exit(0);
         } else {
@@ -205,7 +213,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             // tmp.print_all();
             print!("{} ", "~".bright_red());
             tmp.print_em();
-            println!(" <- {}", "was the right answer.".red());
+            println!(" <- {}", "was the right answer.".bright_red());
             r.push(tmp);
             // println!("{}", "Pushed, will be questioned later on.".magenta());
         }
