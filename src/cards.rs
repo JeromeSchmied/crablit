@@ -80,7 +80,7 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             dbg!(&term);
             continue;
         }
-        println!("\n? {}", term.blue());
+        println!("\n{} {}", "?".yellow(), term.blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let guess;
         let mut rl = DefaultEditor::new().expect("Something is wronk...");
@@ -93,10 +93,11 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
         let guess = guess.trim();
         if guess == defi {
             // printer = format!("{printer}{}\n", "that's about it!".green());
-            println!("{}\n", "That's about it!".green());
+            println!("{}\n", "% That's about it!".green());
         } else if guess == "skip" {
             println!(
-                "skipping: {:?}",
+                "{} {:?}",
+                "skipping:".magenta(),
                 Cards {
                     trm: term.to_owned(),
                     def: defi.to_owned()
@@ -129,13 +130,13 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
                     def: defi.to_string(),
                 });
             }
-        } else if guess == "q" || guess == "quit" || guess == "exit" {
+        } else if guess == ":q" || guess == "quit" || guess == "exit" {
             println!("{}", "exiting...".magenta());
             // break;
             exit(0);
         } else if guess == "hint" {
             let mut prt = defi.chars();
-            print!("Looks like: \"");
+            print!("{} \"", "#".cyan());
             let n = defi.len() / 2;
             for _ in 0..n {
                 print!("{}", prt.next().unwrap_or('×'));
@@ -166,10 +167,10 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             //     guess.red()
             // );
             println!(
-                "Unfortunately no: {}: {}\nwhile your guess was: \"{}\"\n",
-                term.yellow(),
-                defi.blue(),
-                guess.red()
+                "{} {} <- {}\n",
+                "~".bright_red(),
+                defi.yellow(),
+                "was the right answer.".red()
             );
         }
         // println!("{:#>width$}\n\n", "#".magenta(), width = guess.len() + 12);
@@ -182,7 +183,7 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
         //     }
         // }
     }
-    if !r.is_empty() {
+    if r.len() > 1 {
         println!("\n\n{} remaining cards are {:#?}", r.len(), r);
     }
     r
