@@ -36,7 +36,7 @@ profi/hivatásos	professionell
 rendben van	etwas stimmt
 parányi	winzig
 (ott)tartózkodás	r Aufenthalt -e
-tiszta sauber
+tiszta	sauber
 éjszakázás	e Übernachtung -en
 azonnal/rögtön	sofort
 kár	scheide
@@ -46,5 +46,5 @@ tisztelt	geehrt
 szívesen látott	willkommen
 kutyaszőr	e Hundehaare
 pillanat	Moment
-már csak    nur noch
+már csak	nur noch
 összefoglalni	zusammen fassen

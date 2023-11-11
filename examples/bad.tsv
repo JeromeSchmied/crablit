@@ -1,0 +1,6 @@
+# has two ,-s which is used as delimiter
+art product,s Kunstprodukt, -e
+# has two ,-s which is used as delimiter
+garden gnome,r Gartenzwerg, -e
+# He's happy.,Er hat es gut.
+pass away,vergehen

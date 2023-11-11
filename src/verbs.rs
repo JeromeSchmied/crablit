@@ -1,6 +1,9 @@
-use crate::{fs::File, Path};
+use crate::BufReader;
+use crate::File;
 use colored::Colorize;
-use std::{fs, io::Write, process::exit};
+use std::io::BufRead;
+use std::path::Path;
+use std::{io::Write, process::exit};
 
 #[derive(Debug)]
 pub struct Verbs {
@@ -36,14 +39,16 @@ impl Verbs {
 pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     let mut r: Vec<Verbs> = Vec::new();
     // getting contents of file
-    let contents = fs::read_to_string(path).expect("what is wronk?");
+
+    let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
     // storing lines of contents
-    let mut limes = contents.lines();
+    let mut lines = br.lines();
     // ignoring properties and newline
     for _ in 0..n + 1 {
-        limes.next();
+        lines.next();
     }
-    for line in limes {
+    for line in lines {
+        let line = line.expect("Something wrong with bufread line");
         let mut words = line.split(delim);
 
         let inf = words.next().unwrap_or("").trim();
@@ -204,8 +209,8 @@ pub fn conv(v: &[Verbs], o: &str, delim: char) {
     writeln!(output, "[delim: {delim}]").expect("Not succesful.");
     writeln!(output).expect("Couldn't write to file.");
 
-    let has_header = true;
-    if has_header {}
+    // let has_header = true;
+    // if has_header {}
 
     for line in v {
         writeln!(output, "{}{delim}{}", line.trm, line.inf).expect("couldn't write to file!");

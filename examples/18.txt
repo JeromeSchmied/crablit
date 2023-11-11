@@ -1,7 +1,3 @@
-[crablit]
-[mode: cards]
-[delimiter: ;]
-
 # nagyrészt könyvből
 
 kijelentés                         ;    e Aussage, -n

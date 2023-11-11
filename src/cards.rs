@@ -1,6 +1,8 @@
 use crate::Path;
 use colored::Colorize;
-use std::{fs, process::exit};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::process::exit;
 
 #[derive(Debug)]
 pub struct Cards {
@@ -26,17 +28,19 @@ impl Cards {
     // }
 }
 
-#[allow(unused)]
 pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
     let mut tmp_vec: Vec<Cards> = Vec::new();
-    let contents = fs::read_to_string(path).expect("what is wronk?");
+    let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
+    // let contents = fs::read_to_string(path).expect("what is wronk?");
     // storing lines of contents
-    let mut limes = contents.lines();
+    // let mut limes = contents.lines();
+    let mut lines = br.lines();
     for _ in 0..n {
-        limes.next();
+        lines.next();
     }
     // iterating over the lines of file to store them in a vector
-    for line in limes {
+    for line in lines {
+        let line = line.expect("Something wrong with bufread line");
         let mut words = line.split(delim);
 
         let trm = words.next().unwrap_or("NO_TERM").trim();
@@ -70,7 +74,9 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
     } in &v
     {
         if defi.is_empty() || defi == "NO_DEFINITION" || term.is_empty() || term == "NO_TERM" {
-            println!("Oh, no! Missing word found!");
+            println!("{}", "Oh, no! Missing word found!".bright_red());
+            dbg!(&defi);
+            dbg!(&term);
             continue;
         }
         println!("\nWord for: {}", term.blue());

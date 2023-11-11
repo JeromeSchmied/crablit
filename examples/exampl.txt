@@ -1,7 +1,3 @@
-[crablit]
-[mode: cards]
-[delimiter: -]
-
 # example file that can be parsed by crablit
 
 soup - Suppe

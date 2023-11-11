@@ -1,23 +1,19 @@
 # [Crablit](https://github.com/JeromeSchmied/crablit)
 
-## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal
+## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal.
 
 ## Features
 - Cross-platform: compiles where Rust does.
-- Written answers: people tend to remember words better this way than flashcards
-- Fast: initialization of txt with 1.3GB data (24379399 lines) took 37s with a maximum of 3.6GB ram usage.
-- Card: \<term>\<delimiter>\<definition>. eg: `"to learn;lernen"`
+- Written answers: people tend to remember words better this way than flashcards.
+- Fast: initialization of 20000000 cards (1.1GB) took 34s with a maximum of 1.98GB ram usage.
 - Easy deck making:
-    +  File of Cards with the same delimiter in every line once, good ones are: ` ";", "    "(tab), "-", ":"`.
-    +  Lines starting with `#` are comments
-    +  If the first line is [crablit]: mode, delimiter may be set
-    +  Extra newlines cause no problem
+    + Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
+    +  File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "-", ":"`.
+    +  Lines starting with `#` are comments.
+    <!--+  If the first line is [crablit]: mode, delimiter may be set-->
+    +  Extra newlines cause no problem.
     +  For instance:
 ```text
-[crablit]
-[mode: cards]
-[delimiter: -]
-
 # example file that can be parsed by crablit
 
 soup - Suppe
@@ -27,7 +23,7 @@ proud - stolz
 to pour - gießen
 # I don't know what to write next. - Ich weiß nicht was...
 ```
-- Mode for Verbs-learning: if you need to learn lots of verbforms, like:
+- Mode for Verb-learning: if you need to learn lots of verbforms, like:
 ```text
 [crablit]
 [mode: verbs]
@@ -42,12 +38,6 @@ baden	badet	badete	h. gebadet	fürdik
 bauen	baut	baute	h. gebaut	épít	Haus bauen
 ...
 ```
-
-## How it works
-- It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples)
-- Stores them in a vector
-- Asks them until you know all well (currently only till you guess them right once)
-
 <!-- ## Why is it better than the others? -->
 <!---->
 <!-- |                 | quizlet     | knowt      | crablit                                 | -->
@@ -63,7 +53,7 @@ bauen	baut	baute	h. gebaut	épít	Haus bauen
 - Install Rust, if you don't have it:
 go to the official [install instructions](https://www.rust-lang.org/tools/install)
 - And do one of the following install methods:
-1. From crates.io: easiest, recommended
+1. From crates.io: easiest, recommended.
 ```shell
 # get binary
 cargo install crablit
@@ -87,7 +77,22 @@ cd crablit
 cargo run -- examples/18_eng.txt
 ```
 
-## To help with development, see [Todos!](TODO.md)
+## Usage
+- Type the definition of the questioned word/phrase.
+- If you mistyped it, but know it, type: `typo`.
+- To see hint: `hint`.
+- To quit: `quit` or `exit`.
+
+## How it works
+- It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
+- Stores them in a vector.
+- Asks them until you know all well (currently only till you guess them right once).
+
+## Notes
+- I'm only learning Rust at the moment, so code quality might not be outstanding.
+- TUI, flashcards are coming, but it takes time.
+- Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit), or [email](mailto:iITsnot.me214@proton.me).
+- To help with development, see [todos.](TODO.md)
 
 ## Alternatives: 
 - [speki](https://crates.io/crates/speki): only flashcards, rust

@@ -1,7 +1,3 @@
-[crablit]
-[mode: cards]
-[delimiter: ;]
-
 # Translated by Deepl.org, not me!
 # mostly from book
 
