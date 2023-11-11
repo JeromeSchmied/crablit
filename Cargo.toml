@@ -2,7 +2,7 @@
 name = "crablit"
 description = "A cli learning app using spaced repetition, inspired by anki, quizlet, knowt."
 authors = ["Jeromos Kovács <iitsnotme214@protonmail.com>"]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 homepage = "https://github.com/JeromeSchmied/crablit"
 repository = "https://github.com/JeromeSchmied/crablit"
