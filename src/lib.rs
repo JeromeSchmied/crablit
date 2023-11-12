@@ -1,5 +1,5 @@
 use colored::Colorize;
-use rand::{seq::SliceRandom, thread_rng};
+use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
 use std::{
     fs::File,
@@ -8,6 +8,7 @@ use std::{
     process::exit,
 };
 
+// mod args;
 mod cards;
 mod verbs;
 
@@ -41,7 +42,10 @@ pub fn start(args: &[String]) {
         Type::Card => {
             let mut v = cards::init(p, delim, n);
             while !v.is_empty() {
-                v.shuffle(&mut thread_rng());
+                // fastrand::shuffle(&mut v);
+                // v.shuffle(&mut thread_rng());
+                let mut rng = WyRand::new();
+                rng.shuffle(&mut v);
                 v = cards::question(v);
             }
             println!("Gone through everything you wanted, great job!");
@@ -52,7 +56,10 @@ pub fn start(args: &[String]) {
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>\n\n\n"
             );
             while !v.is_empty() {
-                v.shuffle(&mut thread_rng());
+                // v.shuffle(&mut thread_rng());
+                // fastrand::shuffle(&mut v);
+                let mut rng = WyRand::new();
+                rng.shuffle(&mut v);
                 v = verbs::question(v);
             }
             println!("Gone through everything you wanted, great job!");
@@ -100,17 +107,13 @@ fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
         Some(f) => f.trim().to_owned(),
         None => user_input("File path: "),
     };
-    // let p = Path::new(&file_path);
     // let path = &file_path.to_owned();
 
     println!("Trying to open {:?}", &path);
-    // let mut content = String::new();
     let f = File::open(&path).expect("couldn't open file");
     let mut br = BufReader::new(f);
     let mut limes = String::new();
     br.read_to_string(&mut limes).expect("couldnt Read");
-    // br.read_to_string(&mut content)
-    //     .expect("unable to read from file");
 
     // let mut contents = fs::read_to_string(&path).unwrap_or("redo".to_string());
     // let mut path_fixed = path.to_owned();
@@ -194,7 +197,7 @@ fn show_help() {
     println!("A vocabulary learning program for the terminal.");
     println!();
     println!("{}", "Usage:".underline().bold());
-    println!("  crablit [options] file      Learn file");
+    println!("  crablit [options] file        Learn file");
     println!("{}", "Options:".underline().bold());
     println!("  -h, --help: show this message.");
     //         println!(

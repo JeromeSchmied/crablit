@@ -5,7 +5,7 @@
 ## Features
 - Cross-platform: compiles where Rust does.
 - Written answers: people tend to remember words better this way than flashcards.
-- Fast: initialization of 20000000 cards (1.1GB) took 34s with a maximum of 1.98GB ram usage.
+- Fast: initialization of 20000000 cards (1.1GB) took 32s with a maximum of 1.94GB ram usage.
 - Easy deck making:
     + Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     +  File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "-", ":"`.

@@ -9,3 +9,4 @@ Cargo.lock
 release.sh
 examples/wronk_verben.txt
 install.*
+*big*

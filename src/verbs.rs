@@ -39,7 +39,7 @@ impl Verbs {
         print!(
             "{}, {}, {}, {}",
             self.inf.yellow(),
-            self.dri.blue(),
+            self.dri.bright_blue(),
             self.pra.cyan(),
             self.per.bright_magenta()
         );
@@ -109,7 +109,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             continue;
         }
 
-        println!("\n\n\n{} {}", "?".bright_yellow().bold(), trm.blue());
+        println!("\n\n\n{} {}", "?".bright_yellow().bold(), trm.bright_blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
         let mut rl = DefaultEditor::new().expect("Something is wronk...");
         let guess = rl.readline("> ").expect("Well");
