@@ -1,4 +1,7 @@
 # example file that can be parsed by crablit
+# - (dash) is okay as a delimiter, as long as no word contains it
+# for example, the following line would ruin everything
+# well-known - berühmt
 
 soup - Suppe
 fast - schnell

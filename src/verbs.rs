@@ -170,7 +170,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             }
         } else if guess == "hint" {
             let mut prt = inf.chars();
-            print!("{} \"", "#".cyan().bold());
+            print!("{} ", "#".cyan().bold());
             let n = inf.len() / 2;
             for _ in 0..n {
                 print!(
@@ -179,7 +179,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
                 );
             }
             // println!("\"");
-            println!("{ch:_>widht$}\"", ch = '_', widht = inf.len() - n);
+            println!("{ch:_>widht$}", ch = '_', widht = inf.len() - n);
             if !question(vec![Verbs {
                 inf: inf.to_string(),
                 dri: dri.to_string(),
@@ -213,7 +213,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             // tmp.print_all();
             print!("{} ", "~".bright_red());
             tmp.print_em();
-            println!(" <- {}", "was the right answer.".bright_red());
+            println!(" <- {}", "is the right answer.".bright_red());
             r.push(tmp);
             // println!("{}", "Pushed, will be questioned later on.".magenta());
         }

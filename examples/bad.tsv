@@ -1,6 +1,13 @@
+# this is an example, that can't be parsed by crablit
+
 # has two ,-s which is used as delimiter
 art product,s Kunstprodukt, -e
+
 # has two ,-s which is used as delimiter
 garden gnome,r Gartenzwerg, -e
+
+# not the same delimiter as the others, occurs more than once in a line
+foot-ball - Fußball
+
 # He's happy.,Er hat es gut.
 pass away,vergehen

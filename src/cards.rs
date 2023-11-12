@@ -142,12 +142,12 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             exit(0);
         } else if guess == "hint" {
             let mut prt = defi.chars();
-            print!("{} \"", "#".cyan().bold());
+            print!("{} ", "#".cyan().bold());
             let n = defi.len() / 2;
             for _ in 0..n {
                 print!("{}", prt.next().unwrap_or('×'));
             }
-            println!("{ch:_>widht$}\"", ch = '_', widht = defi.len() - n);
+            println!("{ch:_>widht$}", ch = '_', widht = defi.len() - n);
 
             if !question(vec![Cards {
                 trm: term.to_string(),
@@ -176,7 +176,7 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
                 "{} {} <- {}\n",
                 "~".bright_red().bold(),
                 defi.yellow(),
-                "was the right answer.".bright_red()
+                "is the right answer.".bright_red()
             );
         }
         // println!("{:#>width$}\n\n", "#".magenta(), width = guess.len() + 12);

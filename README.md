@@ -3,27 +3,28 @@
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal.
 
 ## Features
-- Cross-platform: compiles where Rust does.
-- Written answers: people tend to remember words better this way than flashcards.
-- Fast: initialization of 20000000 cards (1.1GB) took 32s with a maximum of 1.94GB ram usage.
-- Easy deck making:
+- *Cross-platform*: compiles where Rust does.
+- Written answers: people tend to remember words *better* this way than flashcards.
+- *Fast*: initialization of **20000000** cards (1.1GB) took 32s with a maximum of 1.94GB ram usage.
+- *Easy* deck making:
     + Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
-    +  File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "-", ":"`.
-    +  Lines starting with `#` are comments.
+    + File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "|", ":"`.
+    + Lines starting with `#` are considered comments.
     <!--+  If the first line is [crablit]: mode, delimiter may be set-->
-    +  Extra newlines cause no problem.
-    +  For instance:
+    + Extra newlines cause no problem.
+    + For instance:
 ```text
 # example file that can be parsed by crablit
 
-soup - Suppe
-fast - schnell
-alpaca - das Alpaka
-proud - stolz
-to pour - gießen
-# I don't know what to write next. - Ich weiß nicht was...
+soup | Suppe
+
+fast | schnell
+alpaca | das Alpaka
+proud | stolz
+to pour | gießen
+# I don't know what to write next. | Ich weiß nicht was...
 ```
-- Mode for Verb-learning: if you need to learn lots of verbforms, like:
+- Mode for *Verb*-learning: if you need to learn lots of verbforms, like:
 ```text
 [crablit]
 [mode: verbs]
@@ -50,10 +51,9 @@ bauen	baut	baute	h. gebaut	épít	Haus bauen
 
 ## Installing:
 
-- Install Rust, if you don't have it:
-go to the official [install instructions](https://www.rust-lang.org/tools/install)
-- And do one of the following install methods:
-1. From crates.io: easiest, recommended.
+- Install Rust, if you don't have it: go to the official [install instructions](https://www.rust-lang.org/tools/install)
+- Open a *terminal* and do one of the following install methods:
+1. From [crates.io](crates.io): *easiest, recommended*
 ```shell
 # get binary
 cargo install crablit
@@ -82,7 +82,7 @@ cargo run -- examples/18_eng.txt
 - If you mistyped it, but know it, type: `typo`.
 - To see hint: `hint`.
 - To skip: `skip`.
-- To quit: `quit` or `exit`.
+- To quit: `quit` or `exit` or `:q`.
 
 ## How it works
 - It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).

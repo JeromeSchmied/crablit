@@ -16,9 +16,9 @@ megváltoztatni	ändern
 magától értetődő	selbstverständlich
 sajnálom	es tut mir Leid
 erkély	Balkon
-egyágyas szoba	s Einzelzimer
+egyágyas szoba	s Einzelzimmer
 értékelés	r Wert -e
-szeretne vmit	jemand hätte gern etwas
+szeretne vmit	jemand hätte etwas gern
 október 19-én	am 19. Oktober
 elindulni	abfahren
 kilátással vmire	mit Blick auf etwas
@@ -31,7 +31,7 @@ a földszinten	im Erdgeschoss
 elégedett	zufrieden
 elégedetlen	unzufrieden
 egyetlen	einzige
-fogadtatás	r Empfang ⸚e
+fogadtatás	r Empfang -ä-e
 profi/hivatásos	professionell
 rendben van	etwas stimmt
 parányi	winzig
@@ -39,7 +39,7 @@ parányi	winzig
 tiszta	sauber
 éjszakázás	e Übernachtung -en
 azonnal/rögtön	sofort
-kár	scheide
+kár	schade
 semmittenni	nichts machen
 heverő	s Sofa
 tisztelt	geehrt

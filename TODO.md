@@ -6,56 +6,54 @@
 - [x] spaced repetition <- iterating over vector, pushing back not guessed ones, they get questioned later, shuffled
 - [x] end-user dealing with typos <- typo
 - [x] hints <- hint
-- [x] colored output <- [colored](https://crates.io/crates/colored) from cargo
+- [x] colored output <- [colored](https://crates.io/crates/colored) from crates.io
 
 ## further development
 - [x] make exit work just like that <- done using `exit()`
 - [x] print how much to go out of how many <- kinda implemented using `v.len()`
-- [ ] levelled knowledge
-- [ ] add keywords skip and repeat <- done: skip: `continue;`, repeat is hard because of &-s and borrowing
-- [ ] make hint smarter: output right amount of '_'-s even for special (more byte) characers more hint
+- [x] add keyword skip <- done: `continue;`
 - [x] `rustyline` for editable input
+- [x] clap
+- [ ] save progress
+- [ ] levelled knowledge
 - [ ] find duplicates and deal with 'em
 - [ ] starring words that need learning
-- [ ] don't write almost the same functions twice
-- [ ] save progress
+- [ ] don't write almost the same functions twice, use generics and all
 - [ ] flashcards
-- [ ] docs
 
 ## nice-to-haves
+- [ ] make hint smarter: output right amount of '_'-s even for special (more byte) characers more hint
 - [ ] have organized, formatted output
 - [ ] [tui](https://crates.io/crates/ratatui) 
-- [ ] have option to ask for term or definition
 - [ ] filtering what to learn
 - [ ] taking cli arguments: [clap](https://crates.io/crates/clap) 
     + [x] file name
     + [ ] delimiter
     + [ ] mode
     + [ ] title
+    + [ ] swapping term and definition fully or partially
     + [ ] author
     + [ ] languages
     + [ ] verbosity
-    + [ ] help
+    + [x] help
     + [ ] other great stuff
 - [ ] fetching definitions from 
-    + anki decks
-    + quizlet decks
-    + knowt decks
-    + [chatgpt](https://chat.openai.com) because everyone is crazy about it
-    + [Dudenswissensnetz](https://duden.de) 
-    + [verbformen](https://verbformen.de)
-    + [oxford english dictionary](https://oed.com/dictionary)
-    + lots of other stuff
-    + using [deepl](https://deepl.com)
+    + [ ] anki decks
+    + [ ] quizlet decks
+    + [ ] knowt decks
+    + [ ] [chatgpt](https://chat.openai.com) because everyone is crazy about it
+    + [ ] [Dudenswissensnetz](https://duden.de) 
+    + [ ] [verbformen](https://verbformen.de)
+    + [ ] [oxford english dictionary](https://oed.com/dictionary)
+    + [ ] lots of other stuff
+    + [ ] using [deepl](https://deepl.com)
 
 - [ ] write good manual
 - [ ] being able to determine every property itself
 - [ ] everything knowt or quizlet has
 - [x] being able to learn verbs with their forms from tables
-- [ ] boxed layout
 - [ ] fuzzy matching words
 - [ ] tests: like in school
-- [ ] remembering session
 - [ ] very nice statistics
 
 ## development

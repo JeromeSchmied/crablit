@@ -5,14 +5,13 @@ use std::{
     fs::File,
     io::{BufReader, Read},
     path::Path,
-    process::exit,
 };
 
 // mod args;
 mod cards;
 mod verbs;
 
-enum Type {
+pub enum Type {
     Card,
     VerbConv,
     Verb,
@@ -31,11 +30,11 @@ enum Type {
 //     Wendungen(String),
 // }
 
-pub fn start(args: &[String]) {
+pub fn start(mode: Type, delim: char, n: u8, path: String) {
     // dbg!(&args);
     // if args.iter().find(|&x| x == "conv").is_some() {}
     // let mut p = String::from(&file_path);
-    let (mode, delim, n, path) = determine_properties(args);
+    // let (mode, delim, n, path) = determine_properties(args);
 
     let p = Path::new(&path);
     match mode {
@@ -92,23 +91,7 @@ fn user_input(qst: &str) -> String {
     babineni
 }
 
-fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
-    if args.len() > 1 {
-        if args.iter().any(|x| x == "-h" || x == "--help") {
-            show_help()
-        }
-    // if nothing was specified, quit
-    } else {
-        println!("{}", "File was not specified:".red());
-        show_help();
-    }
-
-    let path = match args.last() {
-        Some(f) => f.trim().to_owned(),
-        None => user_input("File path: "),
-    };
-    // let path = &file_path.to_owned();
-
+pub fn determine_properties(path: &str) -> (Type, char, u8) {
     println!("Trying to open {:?}", &path);
     let f = File::open(&path).expect("couldn't open file");
     let mut br = BufReader::new(f);
@@ -183,34 +166,14 @@ fn determine_properties(args: &[String]) -> (Type, char, u8, String) {
         mode, delim, num
     );
     if mode == "[mode: verbs]" || mode == "verbs" || mode == "[verbs]" || mode == "[mode: verb]" {
-        (Type::Verb, delim, num, path)
+        (Type::Verb, delim, num)
     } else if mode == "[mode: cards]" || mode == "cards" || mode == "[cards]" {
-        (Type::Card, delim, num, path)
+        (Type::Card, delim, num)
     } else if mode == "[mode: conv]" || mode == "conv" || mode == "verb_conv" {
-        (Type::VerbConv, delim, num, path)
+        (Type::VerbConv, delim, num)
     } else {
-        (Type::Bad, delim, num, path)
+        (Type::Bad, delim, num)
     }
-}
-
-fn show_help() {
-    println!("A vocabulary learning program for the terminal.");
-    println!();
-    println!("{}", "Usage:".underline().bold());
-    println!("  crablit [options] file        Learn file");
-    println!("{}", "Options:".underline().bold());
-    println!("  -h, --help: show this message.");
-    //         println!(
-    //             r#"
-    // A program to learn words in the terminal.
-    //
-    // Usage:
-    //   flashcards [options] [file]        Learn file
-    //
-    // Options:
-    //   -h || --help: show this message"#
-    //         );
-    exit(0);
 }
 
 fn get_delim(line: &str) -> char {
