@@ -2,7 +2,7 @@
 target/
 # containing old versions
 version_history/
-# files/
+files/
 # projects with similar goals
 alt/
 Cargo.lock

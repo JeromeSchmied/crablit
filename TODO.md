@@ -10,22 +10,23 @@
 
 ## further development
 - [x] make exit work just like that <- done using `exit()`
-- [x] print how much to go out of how many <- kinda implemented using `v.len()`
+- [x] print number of cards to learn <- kinda implemented using `v.len()`
 - [x] add keyword skip <- done: `continue;`
-- [x] `rustyline` for editable input
-- [x] clap
+- [x] `rustyline` for editable input <- done, followed docs
+- [x] `clap` <- done, usage seen from tplay, flcard
+- [x] output the right amount of '_'-s even for special (more byte) characers <- done: s.chars().count()
+- [x] have organized, formatted output <- done: using nice charecters, colors
+- [ ] flashcards
+- [ ] use a printer String, always delete old questions
 - [ ] save progress
 - [ ] levelled knowledge
 - [ ] find duplicates and deal with 'em
-- [ ] starring words that need learning
-- [ ] don't write almost the same functions twice, use generics and all
-- [ ] flashcards
+- [ ] starring words that need learning, high level
 
 ## nice-to-haves
-- [ ] make hint smarter: output right amount of '_'-s even for special (more byte) characers more hint
-- [ ] have organized, formatted output
+- [ ] if hint typed more than once, show more help
 - [ ] [tui](https://crates.io/crates/ratatui) 
-- [ ] filtering what to learn
+- [ ] filtering what to learn, like unusual verbforms
 - [ ] taking cli arguments: [clap](https://crates.io/crates/clap) 
     + [x] file name
     + [ ] delimiter
@@ -48,7 +49,7 @@
     + [ ] lots of other stuff
     + [ ] using [deepl](https://deepl.com)
 
-- [ ] write good manual
+- [ ] write docs
 - [ ] being able to determine every property itself
 - [ ] everything knowt or quizlet has
 - [x] being able to learn verbs with their forms from tables
@@ -57,27 +58,29 @@
 - [ ] very nice statistics
 
 ## development
-+ [ ] tests: being cross-platform
-+ [ ] being stupid-proof == no bugs
-+ [ ] non-spagethi code with 
-    * [x] `mod`s 
-    * [ ] `enum`s 
-    * [ ] all kinds of crazy stuff  
+- [ ] don't write almost the same functions twice, use generics and all
+- [ ] tests: being cross-platform
+- [ ] being stupid-proof == no bugs
+- [ ] non-spagethi code with 
+    + [x] `mod`s 
+    + [x] `enum`s 
+    + [ ] all kinds of crazy stuff  
 
-+ [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative 
-+ [x] [crates](https://crates.io)
-+ [ ] being able to share decks
-+ [ ] being able to create flashcard decks in app
-+ [ ] clean API
-+ [ ] template files for creating great flashcards with
-    * [x] delimiter
-    * [x] mode
-    * [ ] title
-    * [ ] author
-    * [ ] languages
-    * [ ] other great stuff
-+ [ ] community
-+ [ ] gui interface
-    * [ ] desktop apps
-    * [ ] website for learning
-    * [ ] mobile
+- [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative 
+- [x] [crates](https://crates.io)
+- [ ] website
+- [ ] being able to share decks
+- [ ] being able to create flashcard decks in app
+- [ ] clean API
+- [ ] template files for creating great flashcards with
+    + [x] delimiter
+    + [x] mode
+    + [ ] title
+    + [ ] author
+    + [ ] languages
+    + [ ] other great stuff
+- [ ] community
+- [ ] gui interface
+    + [ ] desktop apps
+    + [ ] website for learning
+    + [ ] mobile

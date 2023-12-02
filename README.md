@@ -5,8 +5,8 @@
 ## Features
 - *Cross-platform*: compiles where Rust does.
 - Written answers: people tend to remember words *better* this way than flashcards.
-- *Fast*: initialization of **20000000** cards (1.1GB) took 32s with a maximum of 1.94GB ram usage.
-- *Easy* deck making:
+- *Fast*: initialization of **20000000** cards (574MB) takes about 5s with a maximum of 2.12GB ram usage.
+- *Easy deck making*:
     + Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     + File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "|", ":"`.
     + Lines starting with `#` are considered comments.
@@ -24,7 +24,7 @@ proud | stolz
 to pour | gießen
 # I don't know what to write next. | Ich weiß nicht was...
 ```
-- Mode for *Verb*-learning: if you need to learn lots of verbforms, like:
+- Mode for *Verb-learning*: if you need to learn lots of verbforms, like:
 ```text
 [crablit]
 [mode: verbs]
@@ -53,7 +53,7 @@ bauen	baut	baute	h. gebaut	épít	Haus bauen
 
 - Install Rust, if you don't have it: go to the official [install instructions](https://www.rust-lang.org/tools/install)
 - Open a *terminal* and do one of the following install methods:
-1. From [crates.io](crates.io): *easiest, recommended*
+1. From [crates.io](https://crates.io/crates/crablit): ***easiest, recommended!***
 ```shell
 # get binary
 cargo install crablit
@@ -62,7 +62,8 @@ crablit my_vocab_file.tsv
 ```
 2. Install source from github:
 ```shell
-curl -L  "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
+# if on windows: curl.exe
+curl -L "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
 cd crablit-main
 # running goes like this, with example file:
 cargo run -- examples/18_eng.txt

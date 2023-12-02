@@ -1,19 +1,17 @@
-use crate::Path;
-use colored::Colorize;
-use rustyline::DefaultEditor;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use crate::{user_input, BufReader, Colorize, Exp, File, Path};
+use std::io::BufRead;
+use std::mem::swap;
 use std::process::exit;
 
 #[derive(Debug)]
 pub struct Cards {
-    // term in known language
+    /// term in known language
     trm: String,
-    // definition in language to be learnt
+    /// definition in language to be learnt
     def: String,
+    // /// level of knowledge
     // lev: u32,
 }
-
 impl Cards {
     fn new(term: &str, def: &str) -> Self {
         Self {
@@ -21,14 +19,18 @@ impl Cards {
             def: def.to_string(),
         }
     }
-    // pub fn get_trm(self) -> String {
+    pub fn swap(&mut self) {
+        swap(&mut self.trm, &mut self.def);
+    }
+    // pub fn trm(self) -> String {
     //     self.trm
     // }
-    // pub fn get_def(self) -> String {
+    // pub fn def(self) -> String {
     //     self.def
     // }
 }
 
+/// Getting content of Deck from file.
 pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
     let mut tmp_vec: Vec<Cards> = Vec::new();
     let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
@@ -45,6 +47,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
         let mut words = line.split(delim);
 
         let trm = words.next().unwrap_or("NO_TERM").trim();
+        // ignoring newlines, lines starting with #
         if trm.is_empty() || trm.starts_with('#') {
             continue;
         };
@@ -62,6 +65,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Cards> {
     tmp_vec
 }
 
+/// Learning the previously initialized Deck
 pub fn question(v: Vec<Cards>) -> Vec<Cards> {
     // let mut printer = String::new();
     if v.len() != 1 {
@@ -80,92 +84,56 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             dbg!(&term);
             continue;
         }
-        println!("\n{} {}", "?".bright_yellow().bold(), term.bright_blue());
-        // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
-        let mut rl = DefaultEditor::new().expect("Something is wronk...");
-        let guess = rl.readline("> ").expect("Well");
-        // std::io::stdin()
-        //     .read_line(&mut guess)
-        //     .expect("hajajajajaja");
+        println!("\n{} {}", Exp::val(&Exp::Quest), term.bright_blue());
+        let guess = user_input("> ");
+        let guess = guess.trim();
 
         // printer = format!("{printer}{}", guess);
-        let guess = guess.trim();
         if guess == defi {
             // printer = format!("{printer}{}\n", "that's about it!".bright_green());
-            println!(
-                "{} {}\n",
-                "%".bright_green().bold(),
-                "That's about it!".bright_green()
-            );
+            println!("{} {}\n", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
         } else if guess == "skip" {
-            println!(
-                "{} {:?}",
-                "skipping:".bright_magenta(),
-                Cards {
-                    trm: term.to_owned(),
-                    def: defi.to_owned()
-                }
-            );
+            println!("{} {:?}", Exp::val(&Exp::Skip), Cards::new(term, defi));
             continue;
         // } else if guess == "repeat" || guess == "rep" {
-        //     let prev = r.last().unwrap_or(&Cards {
-        //         trm: term.to_string(),
-        //         def: defi.to_string(),
-        //     });
+        //     let prev = r.last().unwrap_or(&Cards::new(term, defi));
         //     if !question(vec![r.last().unwrap()]).is_empty() {
         //         r.push(r.last().expect("Should have at least one element"));
         //     }
         } else if guess == "revise" {
-            println!(
-                "{}",
-                "Going to the ones not guessed correctly...".bright_magenta()
-            );
+            if r.len() == 1 {
+                println!("Type revise again!");
+            } else if r.is_empty() {
+                println!("Nothing to revise, you might to type it again to make it work...");
+            } else {
+                println!("{}", Exp::val(&Exp::Revise));
+            }
             break;
         } else if guess == "typo" {
             // printer = format!("{printer}\n{}{:?}", "Corrected!".magenta(), r.last());
-            println!("{}{:?}", "Corrected: ".magenta(), r.last());
-            r.pop();
-            if !question(vec![Cards {
-                trm: term.to_string(),
-                def: defi.to_string(),
-            }])
-            .is_empty()
-            {
-                r.push(Cards {
-                    trm: term.to_string(),
-                    def: defi.to_string(),
-                });
+            println!("{}{:?}", Exp::val(&Exp::Typo), r.pop());
+            if !question(vec![Cards::new(term, defi)]).is_empty() {
+                r.push(Cards::new(term, defi));
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", "exiting...".bright_magenta());
-            // break;
+            println!("{}", Exp::val(&Exp::Exit));
             exit(0);
         } else if guess == "hint" {
-            let mut prt = defi.chars();
-            print!("{} ", "#".cyan().bold());
-            let n = defi.len() / 2;
-            for _ in 0..n {
-                print!("{}", prt.next().unwrap_or('×'));
-            }
-            println!("{ch:_>widht$}", ch = '_', widht = defi.len() - n);
+            crate::hint(defi);
 
-            if !question(vec![Cards {
-                trm: term.to_string(),
-                def: defi.to_string(),
-            }])
-            .is_empty()
-            {
-                r.push(Cards {
-                    trm: term.to_string(),
-                    def: defi.to_string(),
-                });
+            if !question(vec![Cards::new(term, defi)]).is_empty() {
+                r.push(Cards::new(term, defi));
             }
+        // treat them as flashcarding
+        // } else if guess == "" {
+        //     println!(
+        //         "{} {}\n{}\n\n\n",
+        //         Qot::val(&Qot::Flash),
+        //         defi.cyan().bold(),
+        //         "───────────────────".bright_purple()
+        //     );
         } else {
-            r.push(Cards {
-                trm: term.to_string(),
-                def: defi.to_string(),
-            });
-
+            r.push(Cards::new(term, defi));
             // printer = format!(
             //     "{printer}unfortunately no: {}: {}\nwhile your guess was: \"{}\"\n",
             //     term.yellow(),
@@ -173,10 +141,10 @@ pub fn question(v: Vec<Cards>) -> Vec<Cards> {
             //     guess.red()
             // );
             println!(
-                "{} {} <- {}\n",
-                "~".bright_red().bold(),
+                "{} {} {}\n",
+                Exp::val(&Exp::Wrong),
                 defi.yellow(),
-                "is the right answer.".bright_red()
+                Exp::val(&Exp::WrongIt)
             );
         }
         // println!("{:#>width$}\n\n", "#".magenta(), width = guess.len() + 12);

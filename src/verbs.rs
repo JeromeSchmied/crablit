@@ -1,12 +1,11 @@
-use crate::BufReader;
-use crate::File;
-use colored::Colorize;
-use rustyline::DefaultEditor;
-use std::io::BufRead;
-use std::path::Path;
-use std::{io::Write, process::exit};
+use crate::{user_input, BufReader, Colorize, Exp, File, Path};
+use std::{
+    io::{BufRead, Write},
+    process::exit,
+};
 
 #[derive(Debug)]
+/// Structure the store each Verb's data
 pub struct Verbs {
     inf: String,
     dri: String,
@@ -14,15 +13,14 @@ pub struct Verbs {
     per: String,
     trm: String,
 }
-
 impl Verbs {
-    fn new(inf: &str, dri: &str, pra: &str, per: &str, def: &str) -> Self {
+    fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
         Verbs {
             inf: inf.to_owned(),
             dri: dri.to_owned(),
             pra: pra.to_owned(),
             per: per.to_owned(),
-            trm: def.to_owned(),
+            trm: trm.to_owned(),
         }
     }
     // fn print_all(&self) {
@@ -46,15 +44,15 @@ impl Verbs {
     }
 }
 
+/// Getting content of Deck from file
 pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     let mut r: Vec<Verbs> = Vec::new();
     // getting contents of file
-
     let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
-    // storing lines of contents
+    // storing lines of content
     let mut lines = br.lines();
-    // ignoring properties and newline
-    for _ in 0..n + 1 {
+    // ignoring properties: [crablit]
+    for _ in 0..n {
         lines.next();
     }
     for line in lines {
@@ -69,12 +67,12 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
         let dri = words.next().unwrap_or("").trim();
         let pra = words.next().unwrap_or("").trim();
         let per = words.next().unwrap_or("").trim();
-        let def = words.next().unwrap_or("").trim();
-        // other
-        let _no_need = words.next().unwrap_or("NNNNNN").trim();
+        let trm = words.next().unwrap_or("").trim();
+
+        let _other = words.next().unwrap_or("NNNNNN").trim();
 
         // making a Verbs of the values
-        let tmp = Verbs::new(inf, dri, pra, per, def);
+        let tmp = Verbs::new(inf, dri, pra, per, trm);
         r.push(tmp);
     }
     // deleting header
@@ -89,6 +87,7 @@ pub fn init(path: &Path, delim: char, n: u8) -> Vec<Verbs> {
     r
 }
 
+/// Learning the previously initialized Deck
 pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
     // let mut printer = String::new();
     if v.len() != 1 {
@@ -109,31 +108,18 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             continue;
         }
 
-        println!("\n\n\n{} {}", "?".bright_yellow().bold(), trm.bright_blue());
+        println!("\n\n{} {}", Exp::val(&Exp::Quest), trm.bright_blue());
         // printer = format!("{printer}\nsay the term for: {}\n", term.blue());
-        let mut rl = DefaultEditor::new().expect("Something is wronk...");
-        let guess = rl.readline("> ").expect("Well");
-        // std::io::stdin()
-        //     .read_line(&mut guess)
-        //     .expect("hajajajajaja");
+        let guess = user_input("> ");
         let guess = guess.trim();
+
         if guess == format!("{}, {}, {}, {}", inf, dri, pra, per) {
-            println!(
-                "{} {}\n",
-                "%".bright_green().bold(),
-                "That's about it!".bright_green()
-            );
+            println!("{} {}\n", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
         } else if guess == "skip" {
             println!(
                 "{} {:?}",
-                "skipping:".bright_magenta(),
-                Verbs {
-                    inf: inf.to_string(),
-                    dri: dri.to_string(),
-                    pra: pra.to_string(),
-                    per: per.to_string(),
-                    trm: trm.to_string(),
-                }
+                Exp::val(&Exp::Skip),
+                Verbs::new(inf, dri, pra, per, trm),
             );
             continue;
         } else if guess == "revise" {
@@ -142,80 +128,30 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
             } else if r.is_empty() {
                 println!("Nothing to revise, you might to type it again to make it work...");
             } else {
-                println!(
-                    "{}",
-                    "Going to the ones not guessed correctly...".bright_magenta()
-                );
+                println!("{}", Exp::val(&Exp::Revise));
             }
             break;
         } else if guess == "typo" {
-            println!("{} {:?}", "Removed:".bright_magenta(), r.last());
-            r.pop();
-            if !question(vec![Verbs {
-                inf: inf.to_string(),
-                dri: dri.to_string(),
-                pra: pra.to_string(),
-                per: per.to_string(),
-                trm: trm.to_string(),
-            }])
-            .is_empty()
-            {
-                r.push(Verbs {
-                    inf: inf.to_owned(),
-                    dri: dri.to_owned(),
-                    pra: pra.to_owned(),
-                    per: per.to_owned(),
-                    trm: trm.to_owned(),
-                })
+            println!("{} {:?}", Exp::val(&Exp::Typo), r.pop());
+            if !question(vec![Verbs::new(inf, dri, pra, per, trm)]).is_empty() {
+                r.push(Verbs::new(inf, dri, pra, per, trm))
             }
         } else if guess == "hint" {
-            let mut prt = inf.chars();
-            print!("{} ", "#".cyan().bold());
-            let n = inf.len() / 2;
-            for _ in 0..n {
-                print!(
-                    "{}",
-                    prt.next().expect("Hint couldn't find next character!")
-                );
-            }
-            // println!("\"");
-            println!("{ch:_>widht$}", ch = '_', widht = inf.len() - n);
-            if !question(vec![Verbs {
-                inf: inf.to_string(),
-                dri: dri.to_string(),
-                pra: pra.to_string(),
-                per: per.to_string(),
-                trm: trm.to_string(),
-            }])
-            .is_empty()
-            {
-                r.push(Verbs {
-                    inf: inf.to_owned(),
-                    dri: dri.to_owned(),
-                    pra: pra.to_owned(),
-                    per: per.to_owned(),
-                    trm: trm.to_owned(),
-                })
+            crate::hint(inf);
+            if !question(vec![Verbs::new(inf, dri, pra, per, trm)]).is_empty() {
+                r.push(Verbs::new(inf, dri, pra, per, trm))
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
             println!("{}", "exiting...".bright_magenta());
             // break; <- doesn't work, as the outer while keeps repeating
             exit(0);
         } else {
-            let tmp = Verbs {
-                inf: inf.to_owned(),
-                dri: dri.to_owned(),
-                pra: pra.to_owned(),
-                per: per.to_owned(),
-                trm: trm.to_owned(),
-            };
-            // println!("Unfortunately that's not rigth.");
+            let tmp = Verbs::new(inf, dri, pra, per, trm);
             // tmp.print_all();
-            print!("{} ", "~".bright_red());
+            print!("{} ", Exp::val(&Exp::Wrong));
             tmp.print_em();
-            println!(" <- {}", "is the right answer.".bright_red());
+            println!(" {}", Exp::val(&Exp::WrongIt));
             r.push(tmp);
-            // println!("{}", "Pushed, will be questioned later on.".magenta());
         }
     }
     if r.len() > 1 {
@@ -225,12 +161,13 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
     r
 }
 
+/// Function to convert a Deck from Verbs to Cards
 pub fn conv(v: &[Verbs], o: &str, delim: char) {
     let mut output = File::create(o).expect("couldn't create file!");
-    writeln!(output, "[crablit]").expect("Not succesful.");
-    writeln!(output, "[mode: cards]").expect("Not succesful.");
-    writeln!(output, "[delim: {delim}]").expect("Not succesful.");
-    writeln!(output).expect("Couldn't write to file.");
+    // writeln!(output, "[crablit]").expect("Not succesful.");
+    // writeln!(output, "[mode: cards]").expect("Not succesful.");
+    // writeln!(output, "[delim: {delim}]").expect("Not succesful.");
+    // writeln!(output).expect("Couldn't write to file.");
 
     // let has_header = true;
     // if has_header {}
