@@ -15,7 +15,7 @@ struct Args {
     // #[arg(short, long, default_value_t = true)]
     // color: bool,
     /// Mode, either cards, verbs or verbs2cards, useful when want to convert from verbs to cards, or when using verbs.
-    #[arg(short, long, default_value = "cards")]
+    #[arg(short, long, default_value = "")]
     mode: String,
 
     /// Delimiter used in file to seperate terms and definitions.
@@ -39,14 +39,20 @@ fn main() {
     // path recieved as argument
     let path = Args::parse().file;
     dbg!(&path);
-    // mode recieved as argument
-    let mode = Mode::new(&Args::parse().mode);
-    dbg!(&mode);
     // delimiter as option from console
     let delim_s = Args::parse().delim;
     // let n = 0;
     // dbg!(&n);
-    let (_mode_det, delim_det, n) = determine_properties(&path);
+    let (mode_det, delim_det, n) = determine_properties(&path);
+    // mode recieved as argument
+    let mode_parsed = &Args::parse().mode;
+    let mode;
+    if mode_parsed.is_empty() {
+        mode = mode_det;
+    } else {
+        mode = Mode::new(&mode_parsed);
+    }
+    dbg!(&mode);
     // delimiter to be used
     let delim;
     // passed as option, same as determined one

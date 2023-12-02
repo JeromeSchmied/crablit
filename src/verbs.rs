@@ -142,7 +142,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
                 r.push(Verbs::new(inf, dri, pra, per, trm))
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", "exiting...".bright_magenta());
+            println!("{}", Exp::val(&Exp::Exit));
             // break; <- doesn't work, as the outer while keeps repeating
             exit(0);
         } else {
