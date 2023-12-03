@@ -95,7 +95,7 @@ cargo run -- examples/18_eng_deu.txt
 
 ## How it works
 
-- ![Sample][1]
+![Sample][1]
 - See [images for more](img)!
 - It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 - Stores them in a vector.
