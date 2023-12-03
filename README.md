@@ -6,7 +6,7 @@
 
 ## Features
 
-- *Cross-platform*: compiles where Rust does.
+- *Cross-platform*: compiles where Rust does, but GNU/Linux is the no. 1 priority.
 - Written answers: people tend to remember words *better* this way than flashcards.
 - *Fast*: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.12GB ram usage.
 - *Easy deck making*, in your favourite editor:
@@ -95,6 +95,8 @@ cargo run -- examples/18_eng_deu.txt
 
 ## How it works
 
+- ![Sample][1]
+- See [images for more](img)!
 - It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 - Stores them in a vector.
 - Asks them until you know all well (currently only till you guess them right once).
@@ -114,3 +116,5 @@ cargo run -- examples/18_eng_deu.txt
 - [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash
 - [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
 - [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust
+
+[1]: img/sample0_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
