@@ -2,9 +2,10 @@
 
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal.
 
+## Still in beta, functionality is not tested thoroughly.
+
 ## Features
 
-- **Still in beta, functionality is not tested thoroughly.**
 - *Cross-platform*: compiles where Rust does.
 - Written answers: people tend to remember words *better* this way than flashcards.
 - *Fast*: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.12GB ram usage.
