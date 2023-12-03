@@ -3,15 +3,18 @@
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal.
 
 ## Features
+
+- **Still in beta, functionality is not tested thoroughly.**
 - *Cross-platform*: compiles where Rust does.
 - Written answers: people tend to remember words *better* this way than flashcards.
-- *Fast*: initialization of **20000000** cards (574MB) takes about 5s with a maximum of 2.12GB ram usage.
-- *Easy deck making*:
+- *Fast*: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.12GB ram usage.
+- *Easy deck making*, in your favourite editor:
+    + Simple `.txt`, `.csv` or `.tsv` file.
     + Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     + File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "|", ":"`.
     + Lines starting with `#` are considered comments.
-    <!--+  If the first line is [crablit]: mode, delimiter may be set-->
     + Extra newlines cause no problem.
+    + Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.
     + For instance:
 ```text
 # example file that can be parsed by crablit
@@ -39,6 +42,7 @@ baden	badet	badete	h. gebadet	fürdik
 bauen	baut	baute	h. gebaut	épít	Haus bauen
 ...
 ```
+<!--+  If the first line is [crablit]: mode, delimiter may be set-->
 <!-- ## Why is it better than the others? -->
 <!---->
 <!-- |                 | quizlet     | knowt      | crablit                                 | -->
@@ -66,38 +70,44 @@ crablit my_vocab_file.tsv
 curl -L "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
 cd crablit-main
 # running goes like this, with example file:
-cargo run -- examples/18_eng.txt
+cargo run -- examples/18_eng_deu.txt
 ```
-3. Or you may install git: [downloads](https://git-scm.com/downloads), and clone the source with it:
+3. Or you may install it with [git](https://git-scm.com/downloads), and clone the source with it:
 ```shell
-# if you have git, clone the repo to have it locally
+# once you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/crablit.git
-# go to it's directory, where it's been cloned
+# go to the directory where it's been cloned
 cd crablit
 # running goes like this, with example file:
-cargo run -- examples/18_eng.txt
+cargo run -- examples/18_eng_deu.txt
 ```
 
 ## Usage
+
+- Run `crablit --help` to see options.
+- If `NO_COLOR=1` coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 - Type the definition of the questioned word/phrase.
-- If you mistyped it, but know it, type: `typo`.
 - To see hint: `hint`.
+- If you mistyped it, type: `typo`.
 - To skip: `skip`.
 - To quit: `quit` or `exit` or `:q`.
 
 ## How it works
+
 - It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 - Stores them in a vector.
 - Asks them until you know all well (currently only till you guess them right once).
 
 ## Notes
+
 - I'm only learning Rust at the moment, so code quality might not be outstanding.
 - TUI, flashcards are coming, but it takes time.
 - Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit), or [email](mailto:iITsnot.me214@proton.me).
 - To help with development, see [todos.](TODO.md)
 
 ## Alternatives: 
-- [speki](https://crates.io/crates/speki): only flashcards, tui, rust
+
+- [speki](https://crates.io/crates/speki): only flashcards, huge download size, tui, rust
 - [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust
 - [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust
 - [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash

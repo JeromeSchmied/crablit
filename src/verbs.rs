@@ -104,7 +104,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
     } in &v
     {
         if inf.is_empty() {
-            println!("Oh, no! Missing verbform found!");
+            eprintln!("Oh, no! Missing verbform found!");
             continue;
         }
 
@@ -114,7 +114,7 @@ pub fn question(v: Vec<Verbs>) -> Vec<Verbs> {
         let guess = guess.trim();
 
         if guess == format!("{}, {}, {}, {}", inf, dri, pra, per) {
-            println!("{} {}\n", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
+            println!("{} {}", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
         } else if guess == "skip" {
             println!(
                 "{} {:?}",

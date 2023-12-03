@@ -11,17 +11,6 @@ struct Args {
     #[arg(required = true)]
     file: String,
 
-    // /// Controls whether to color the output or not.
-    // #[arg(short, long, default_value_t = true)]
-    // color: bool,
-    /// Mode, either cards, verbs or verbs2cards, useful when want to convert from verbs to cards, or when using verbs.
-    #[arg(short, long, default_value = "")]
-    mode: String,
-
-    /// Delimiter used in file to seperate terms and definitions.
-    #[arg(short, long, default_value = "")]
-    delim: String,
-
     /// Swap terms and definitions. Only if mode is cards.
     #[arg(short, long, default_value_t = false)]
     swap: bool,
@@ -29,6 +18,14 @@ struct Args {
     /// Sometimes ask for term, sometimes definition. Only if mode is cards.
     #[arg(short, long, default_value_t = false)]
     both: bool,
+
+    /// Mode, either cards, verbs or verbs2cards, useful when want to convert from verbs to cards, or when using verbs.
+    #[arg(short, long, default_value = "")]
+    mode: String,
+
+    /// Delimiter used in file to seperate terms and definitions.
+    #[arg(short, long, default_value = "")]
+    delim: String,
     // /// Has header starting with [crablit] or not.
     // #[arg(short, long, default_value_t = false)]
     // header: bool,
@@ -89,7 +86,7 @@ fn main() {
         Mode::Verb => {
             let mut v = verbs::init(p, delim, n);
             println!(
-                "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>\n\n\n"
+                "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
             while !v.is_empty() {
                 let mut rng = WyRand::new();

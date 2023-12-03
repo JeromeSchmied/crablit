@@ -1,4 +1,4 @@
-# this is an example, that can't be parsed by crablit
+# this is an example, that can NOT be parsed correctly by crablit
 
 # has two ,-s which is used as delimiter
 art product,s Kunstprodukt, -e
