@@ -1,3 +1,4 @@
+use crate::verbs::Verbs;
 use clap::Parser;
 use colored::Colorize;
 use crablit::*;
@@ -33,22 +34,23 @@ struct Args {
 }
 
 fn main() {
+    let args = Args::parse();
     // path recieved as argument
-    let path = Args::parse().file;
+    let path = args.file;
     dbg!(&path);
     // delimiter as option from console
-    let delim_s = Args::parse().delim;
+    let delim_s = args.delim;
     // let n = 0;
     // dbg!(&n);
     let (mode_det, delim_det, n) = determine_properties(&path);
     // mode recieved as argument
-    let mode_parsed = &Args::parse().mode;
-    let mode;
-    if mode_parsed.is_empty() {
-        mode = mode_det;
+    let mode_parsed = args.mode;
+
+    let mode = if mode_parsed.is_empty() {
+        mode_det
     } else {
-        mode = Mode::new(&mode_parsed);
-    }
+        Mode::new(&mode_parsed)
+    };
     dbg!(&mode);
     // delimiter to be used
     let delim;
@@ -64,12 +66,13 @@ fn main() {
     }
     dbg!(&delim);
 
-    let swap = Args::parse().swap;
-    let both = Args::parse().both;
+    let swap = args.swap;
+    let both = args.both;
     let p = Path::new(&path);
     match mode {
         Mode::Card => {
-            let mut v = cards::init(p, delim, n);
+            let mut v = init(p, delim, n);
+            // let mut v = cards::init(p, delim, n);
             if swap {
                 swap_cards(&mut v);
             }
@@ -79,24 +82,28 @@ fn main() {
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 rng.shuffle(&mut v);
-                v = cards::question(v);
+                v = question(v);
             }
+
             println!("Gone through everything you wanted, great job!");
         }
         Mode::Verb => {
-            let mut v = verbs::init(p, delim, n);
+            let mut v: Vec<Verbs> = init(p, delim, n);
+            // let mut v = verbs::init(p, delim, n);
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 rng.shuffle(&mut v);
-                v = verbs::question(v);
+                // v = verbs::question(v);
+                v = question(v);
             }
             println!("Gone through everything you wanted, great job!");
         }
         Mode::VerbConv => {
-            let v = verbs::init(p, delim, n);
+            let v: Vec<Verbs> = init(p, delim, n);
+            // let v = verbs::init(p, delim, n);
             println!(
                 "\n\n\nConverting verbs to cards, from file: {:?} to file: {}",
                 p,

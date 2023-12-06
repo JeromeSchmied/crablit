@@ -1,4 +1,7 @@
 use nanorand::Rng;
+use std::fmt::Debug;
+use std::io::BufRead;
+use std::process::exit;
 // dirs::data_dir()
 use colored::{ColoredString, Colorize};
 use nanorand::WyRand;
@@ -13,6 +16,16 @@ use std::{
 pub mod cards;
 /// Module for learning Deck of Verbs
 pub mod verbs;
+/// The trait for learning either `Cards` of `Verbs`
+pub trait Learn {
+    fn show(&self) -> String;
+    fn correct(&self) -> String;
+    fn skip(&self) -> String;
+    fn wrong(&self) -> String;
+    fn hint(&self);
+    fn new_from_line(line: &str, delim: char) -> Self;
+    // fn copy(&self) -> Self;
+}
 
 /// commonly used expressions(text), colored strings
 enum Exp {
@@ -63,7 +76,6 @@ impl Mode {
             || s == "[mode: verb]"
             || s == "verb"
             || s == "[verb]"
-            || s == "[mode: verbs]"
         {
             Mode::Verb
         } else if s == "[mode: cards]"
@@ -72,7 +84,6 @@ impl Mode {
             || s == "[mode: card]"
             || s == "card"
             || s == "[card]"
-            || s == "[mode: card]"
         {
             Mode::Card
         } else if s == "[mode: conv]"
@@ -186,6 +197,101 @@ fn get_delim(line: &str) -> char {
         dlim.pop();
     }
     dlim.chars().next().unwrap_or(';')
+}
+
+pub fn init<T: Learn + Debug + Clone>(path: &Path, delim: char, n: u8) -> Vec<T> {
+    let mut r: Vec<T> = Vec::new();
+    let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
+    // let contents = fs::read_to_string(path).expect("what is wronk?");
+    // storing lines of contents
+    // let mut limes = contents.lines();
+    let mut lines = br.lines();
+    for _ in 0..n {
+        lines.next();
+    }
+    // iterating over the lines of file to store them in a vector
+    for line in lines {
+        let line = line.expect("Something wrong with bufread line");
+        let mut words = line.split(delim);
+        let s = words.next().unwrap_or("").trim();
+        // ignoring newlines, lines starting with #
+        if s.is_empty() || s.starts_with('#') {
+            continue;
+        };
+        r.push(Learn::new_from_line(&line, delim));
+    }
+    println!("{:?} file succesfully read.", path);
+    // println!("Basic file looks somehow like this:\n{}", contents);
+    // for card in &tmp_vec {
+    //     println!("\"{}\":\t\t\t\"{}\"", card.trm.yellow(), card.def.magenta());
+    // }
+    r
+}
+
+pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
+    // let mut printer = String::new();
+    if v.len() != 1 {
+        println!("\n\nYou have {} words to learn, let's start!", v.len());
+    }
+    let mut r: Vec<T> = Vec::new();
+
+    for elem in &v {
+        // if defi.is_empty() || defi == "NO_DEFINITION" || term.is_empty() || term == "NO_TERM" {
+        //     println!("{}", "Oh, no! Missing word found!".bright_red());
+        //     dbg!(&defi);
+        //     dbg!(&term);
+        //     continue;
+        // }
+        println!("{}", elem.show());
+
+        let guess = user_input("> ");
+        let guess = guess.trim();
+
+        if guess == elem.correct() {
+            println!("{} {}\n", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
+        } else if guess == "skip" {
+            println!("{}", elem.skip());
+            continue;
+        } else if guess == "revise" {
+            if r.len() == 1 {
+                println!("Type revise again!");
+            } else if r.is_empty() {
+                println!("Nothing to revise, you might to type it again to make it work...");
+            } else {
+                println!("{}", Exp::val(&Exp::Revise));
+            }
+            break;
+        } else if guess == "typo" {
+            println!("{}{:?}", Exp::val(&Exp::Typo), r.pop());
+            if !question(vec![elem.clone()]).is_empty() {
+                r.push(elem.clone());
+            }
+        } else if guess == ":q" || guess == "quit" || guess == "exit" {
+            println!("{}", Exp::val(&Exp::Exit));
+            exit(0);
+        } else if guess == "hint" {
+            elem.hint();
+
+            if !question(vec![elem.clone()]).is_empty() {
+                r.push(elem.clone());
+            }
+            // treat them as flashcarding
+            // } else if guess == "" {
+            //     println!(
+            //         "{} {}\n{}\n\n\n",
+            //         Qot::val(&Qot::Flash),
+            //         defi.cyan().bold(),
+            //         "───────────────────".bright_purple()
+            //     );
+        } else {
+            r.push(elem.clone());
+            println!("{}", elem.wrong());
+        }
+    }
+    if r.len() > 1 {
+        println!("\n\n{} remaining cards are {:#?}", r.len(), r);
+    }
+    r
 }
 
 /// Show hint
