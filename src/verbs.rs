@@ -59,7 +59,12 @@ impl Learn for Verbs {
     }
 
     fn wrong(&self) -> String {
-        self.print_em()
+        format!(
+            "{} {} {}",
+            Exp::val(&Exp::Wrong),
+            self.print_em(),
+            Exp::val(&Exp::WrongIt)
+        )
     }
 
     fn hint(&self) {
@@ -80,6 +85,32 @@ impl Learn for Verbs {
         // making a Verbs of the values
         Verbs::new(inf, dri, pra, per, trm)
     }
+
+    fn flashcard(&self) -> String {
+        let s = format!("{}, {}, {}, {}", &self.inf, &self.dri, &self.pra, &self.per);
+        let mut r = String::new();
+        for _ in 0..s.len() + 4 {
+            r.push('─');
+        }
+        format!("{}\n{}", s, r.bright_purple().bold())
+    }
+}
+
+/// Function to convert a Deck from Verbs to Cards
+pub fn conv(v: &[Verbs], o: &str, delim: char) {
+    let mut output = File::create(o).expect("couldn't create file!");
+    // writeln!(output, "[crablit]").expect("Not succesful.");
+    // writeln!(output, "[mode: cards]").expect("Not succesful.");
+    // writeln!(output, "[delim: {delim}]").expect("Not succesful.");
+    // writeln!(output).expect("Couldn't write to file.");
+
+    // let has_header = true;
+    // if has_header {}
+
+    for line in v {
+        writeln!(output, "{}{delim}{}", line.trm, line.inf).expect("couldn't write to file!");
+    }
+    println!("Converting verbs to cards written to {}", o);
 }
 
 // /// Getting content of Deck from file
@@ -199,20 +230,3 @@ impl Learn for Verbs {
 
 //     r
 // }
-
-/// Function to convert a Deck from Verbs to Cards
-pub fn conv(v: &[Verbs], o: &str, delim: char) {
-    let mut output = File::create(o).expect("couldn't create file!");
-    // writeln!(output, "[crablit]").expect("Not succesful.");
-    // writeln!(output, "[mode: cards]").expect("Not succesful.");
-    // writeln!(output, "[delim: {delim}]").expect("Not succesful.");
-    // writeln!(output).expect("Couldn't write to file.");
-
-    // let has_header = true;
-    // if has_header {}
-
-    for line in v {
-        writeln!(output, "{}{delim}{}", line.trm, line.inf).expect("couldn't write to file!");
-    }
-    println!("Converting verbs to cards written to {}", o);
-}

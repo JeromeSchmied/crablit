@@ -60,10 +60,28 @@ impl Learn for Cards {
 
     fn new_from_line(line: &str, delim: char) -> Self {
         let mut words = line.split(delim);
-        let trm = words.next().unwrap_or("NO_TERM").trim();
-        // ignoring newlines, lines starting with #
-        let def = words.next().unwrap_or("NO_DEFINITION").trim();
-        Cards::new(trm, def)
+        if &words.clone().count() != &2 {
+            panic!(
+                "{:?} line should consist of a {}{}{}.",
+                &words,
+                "<term>".blue().italic(),
+                "<delimiter>".red().bold(),
+                "<definition>".yellow().italic()
+            );
+        } else {
+            let trm = words.next().unwrap().trim();
+            let def = words.next().unwrap().trim();
+            Cards::new(trm, def)
+        }
+    }
+
+    fn flashcard(&self) -> String {
+        let s = &self.def;
+        let mut r = String::new();
+        for _ in 0..s.chars().count() + 4 {
+            r.push('─');
+        }
+        format!("{}\n{}", s, r.bright_purple().bold())
     }
 
     // fn copy(&self) -> Self {

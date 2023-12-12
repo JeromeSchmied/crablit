@@ -1,15 +1,13 @@
-use nanorand::Rng;
-use std::fmt::Debug;
-use std::io::BufRead;
-use std::process::exit;
 // dirs::data_dir()
 use colored::{ColoredString, Colorize};
-use nanorand::WyRand;
+use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
 use std::{
+    fmt::Debug,
     fs::File,
-    io::{BufReader, Read},
+    io::{BufRead, BufReader, Read},
     path::Path,
+    process::exit,
 };
 
 /// Module for learning Deck of Cards
@@ -22,6 +20,7 @@ pub trait Learn {
     fn correct(&self) -> String;
     fn skip(&self) -> String;
     fn wrong(&self) -> String;
+    fn flashcard(&self) -> String;
     fn hint(&self);
     fn new_from_line(line: &str, delim: char) -> Self;
     // fn copy(&self) -> Self;
@@ -29,16 +28,27 @@ pub trait Learn {
 
 /// commonly used expressions(text), colored strings
 enum Exp {
+    /// Question(mark)
     Quest,
+    /// Knew it mark
     Knew,
+    /// Knew it text
     KnewIt,
+    /// skipping the following:
     Skip,
+    /// goin' to the ones not guessed correctly
     Revise,
+    /// Correct the following:
     Typo,
+    /// Stop executing the program
     Exit,
+    /// show hint
     Hint,
+    /// didn't know mark
     Wrong,
+    /// didn't know text
     WrongIt,
+    /// flashcard
     Flash,
 }
 impl Exp {
@@ -64,8 +74,8 @@ impl Exp {
 /// Type of Deck
 pub enum Mode {
     Card,
-    VerbConv,
     Verb,
+    VerbConv,
 }
 impl Mode {
     pub fn new(s: &str) -> Self {
@@ -114,13 +124,13 @@ impl Mode {
 //     Wendungen(String),
 // }
 
-/// Take input from console with rustyline
+/// Take input from console with `rustyline`
 fn user_input(msg: &str) -> String {
     let mut rl = DefaultEditor::new().expect("Couldn't init rl");
     rl.readline(msg).expect("Couldn't read rustyline")
 }
 
-/// Determine delimiter, type fo Deck
+/// Determine delimiter, type of Deck
 pub fn determine_properties(path: &str) -> (Mode, char, u8) {
     println!("Trying to open {:?}", &path);
     let f = File::open(path).expect("couldn't open file");
@@ -199,6 +209,7 @@ fn get_delim(line: &str) -> char {
     dlim.chars().next().unwrap_or(';')
 }
 
+/// Initializing deck of either `cards`, or `verbs`
 pub fn init<T: Learn + Debug + Clone>(path: &Path, delim: char, n: u8) -> Vec<T> {
     let mut r: Vec<T> = Vec::new();
     let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
@@ -221,13 +232,10 @@ pub fn init<T: Learn + Debug + Clone>(path: &Path, delim: char, n: u8) -> Vec<T>
         r.push(Learn::new_from_line(&line, delim));
     }
     println!("{:?} file succesfully read.", path);
-    // println!("Basic file looks somehow like this:\n{}", contents);
-    // for card in &tmp_vec {
-    //     println!("\"{}\":\t\t\t\"{}\"", card.trm.yellow(), card.def.magenta());
-    // }
     r
 }
 
+/// Start learning the vector, return the remainders
 pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
     // let mut printer = String::new();
     if v.len() != 1 {
@@ -275,14 +283,15 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
             if !question(vec![elem.clone()]).is_empty() {
                 r.push(elem.clone());
             }
-            // treat them as flashcarding
-            // } else if guess == "" {
-            //     println!(
-            //         "{} {}\n{}\n\n\n",
-            //         Qot::val(&Qot::Flash),
-            //         defi.cyan().bold(),
-            //         "───────────────────".bright_purple()
-            //     );
+        //treat them as flashcarding
+        } else if guess == "" {
+            println!(
+                "{} {}\n\n\n",
+                Exp::val(&Exp::Flash),
+                elem.flashcard(),
+                // defi.cyan().bold(),
+                // "───────────────────".bright_purple()
+            );
         } else {
             r.push(elem.clone());
             println!("{}", elem.wrong());
@@ -294,7 +303,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
     r
 }
 
-/// Show hint
+/// Show hint from the string got
 fn hint(s: &str) {
     let mut prt = s.chars();
     print!("{} ", Exp::val(&Exp::Hint));

@@ -1,7 +1,6 @@
-use crate::verbs::Verbs;
 use clap::Parser;
 use colored::Colorize;
-use crablit::*;
+use crablit::{verbs::Verbs, *};
 use nanorand::{Rng, WyRand};
 use std::path::Path;
 
@@ -20,7 +19,7 @@ struct Args {
     #[arg(short, long, default_value_t = false)]
     both: bool,
 
-    /// Mode, either cards, verbs or verbs2cards, useful when want to convert from verbs to cards, or when using verbs.
+    /// Mode: either cards, verbs or verbs2cards, useful when converting from verbs to cards, or when using verbs.
     #[arg(short, long, default_value = "")]
     mode: String,
 
@@ -72,6 +71,7 @@ fn main() {
     match mode {
         Mode::Card => {
             let mut v = init(p, delim, n);
+            // println!("Cards:\n\n{:#?}", v);
             // let mut v = cards::init(p, delim, n);
             if swap {
                 swap_cards(&mut v);
@@ -89,7 +89,9 @@ fn main() {
         }
         Mode::Verb => {
             let mut v: Vec<Verbs> = init(p, delim, n);
+            v.remove(0);
             // let mut v = verbs::init(p, delim, n);
+            // println!("Verbs:\n\n{:#?}", v);
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
