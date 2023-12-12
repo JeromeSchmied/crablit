@@ -1,6 +1,6 @@
 [package]
 name = "crablit"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Jeromos Kovács <iitsnotme214@protonmail.com>"]
 description = "A cli learning app using spaced repetition."
 categories = ["command-line-interface"]
