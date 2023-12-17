@@ -16,8 +16,8 @@
 - [x] `clap` <- done, usage seen from tplay, flcard
 - [x] output the right amount of '_'-s even for special (more byte) characers <- done: s.chars().count()
 - [x] have organized, formatted output <- done: using nice charecters, colors
-- [ ] flashcards
 - [ ] use a printer String, always delete old questions
+- [ ] flashcards
 - [ ] save progress
 - [ ] levelled knowledge
 - [ ] find duplicates and deal with 'em
@@ -29,14 +29,11 @@
 - [ ] filtering what to learn, like unusual verbforms
 - [ ] taking cli arguments: [clap](https://crates.io/crates/clap) 
     + [x] file name
-    + [ ] delimiter
-    + [ ] mode
-    + [ ] title
-    + [ ] swapping term and definition fully or partially
-    + [ ] author
-    + [ ] languages
-    + [ ] verbosity
+    + [x] delimiter
+    + [x] mode
+    + [x] swapping term and definition fully or partially
     + [x] help
+    + [ ] verbosity
     + [ ] other great stuff
 - [ ] fetching definitions from 
     + [ ] anki decks
@@ -49,16 +46,16 @@
     + [ ] lots of other stuff
     + [ ] using [deepl](https://deepl.com)
 
-- [ ] write docs
-- [ ] being able to determine every property itself
+- [ ] write docs, man
+- [x] being able to determine every property itself <- kinda?
 - [ ] everything knowt or quizlet has
 - [x] being able to learn verbs with their forms from tables
 - [ ] fuzzy matching words
 - [ ] tests: like in school
-- [ ] very nice statistics
+- [ ] very nice statistics, plots
 
 ## development
-- [ ] don't write almost the same functions twice, use generics and all
+- [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
 - [ ] tests: being cross-platform
 - [ ] being stupid-proof == no bugs
 - [ ] non-spagethi code with 
@@ -68,7 +65,7 @@
 
 - [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative 
 - [x] [crates](https://crates.io)
-- [ ] website
+- [ ] website: crablit.com/crablit.io/crab.lit
 - [ ] being able to share decks
 - [ ] being able to create flashcard decks in app
 - [ ] clean API
@@ -81,6 +78,6 @@
     + [ ] other great stuff
 - [ ] community
 - [ ] gui interface
+    + [ ] webapp for learning
     + [ ] desktop apps
-    + [ ] website for learning
     + [ ] mobile
