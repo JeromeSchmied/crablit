@@ -26,6 +26,8 @@ pub trait Learn {
     // fn copy(&self) -> Self;
 }
 
+const SPACER: &str = "    ";
+
 /// commonly used expressions(text), colored strings
 enum Exp {
     /// Question(mark)
@@ -55,17 +57,19 @@ impl Exp {
     /// get value for expression
     fn val(&self) -> ColoredString {
         match *self {
-            Exp::Quest => "?".bright_yellow().bold(),
-            Exp::Knew => "%".bright_green().bold(),
+            Exp::Quest => format!("{}?", SPACER).bright_yellow().bold(),
+            Exp::Knew => format!("{}%", SPACER).bright_green().bold(),
             Exp::KnewIt => "That's about it!".bright_green(),
-            Exp::Skip => "Skipping:".bright_magenta(),
-            Exp::Revise => "Going to the ones not guessed correctly...".bright_magenta(),
-            Exp::Typo => "Corrected: ".bright_magenta(),
-            Exp::Exit => "Exiting...".bright_magenta(),
-            Exp::Hint => "#".cyan().bold(),
-            Exp::Wrong => "~".bright_red().bold(),
+            Exp::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
+            Exp::Revise => {
+                format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
+            }
+            Exp::Typo => format!("{}Corrected: ", SPACER).bright_magenta(),
+            Exp::Exit => format!("{}Exiting...", SPACER).bright_magenta(),
+            Exp::Hint => format!("{}#", SPACER).cyan().bold(),
+            Exp::Wrong => format!("{}~", SPACER).bright_red().bold(),
             Exp::WrongIt => "<-is the right answer.".bright_red(),
-            Exp::Flash => "=".bright_cyan().bold(),
+            Exp::Flash => format!("{}=", SPACER).bright_cyan().bold(),
         }
     }
 }
@@ -252,7 +256,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
         // }
         println!("{}", elem.show());
 
-        let guess = user_input("> ");
+        let guess = user_input(&format!("{}> ", SPACER));
         let guess = guess.trim();
 
         if guess == elem.correct() {
