@@ -86,6 +86,7 @@ cargo run -- examples/18_eng_deu.txt
 ## Usage
 
 - Run `crablit --help` to see options.
+- Strange text may appear on your console (on windows, cmd.exe), to fix this you shall compile the source yourself. (2.,3. method)
 - If `NO_COLOR=1` coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 - Type the definition of the questioned word/phrase.
 - To see hint: `hint`.
