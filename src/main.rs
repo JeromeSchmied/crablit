@@ -78,7 +78,7 @@ fn main() {
                 swap_cards(&mut v);
             }
             if both {
-                println!("swapping terms and definitions of some cardss");
+                println!("swapping terms and definitions of some cards");
                 random_swap_cards(&mut v);
             }
             while !v.is_empty() {
