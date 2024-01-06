@@ -49,7 +49,7 @@ impl Learn for Cards {
         format!(
             "{} {} {}\n",
             Exp::val(&Exp::Wrong),
-            self.def.yellow(),
+            self.def.yellow().underline(),
             Exp::val(&Exp::WrongIt)
         )
     }
@@ -60,7 +60,7 @@ impl Learn for Cards {
 
     fn new_from_line(line: &str, delim: char) -> Self {
         let mut words = line.split(delim);
-        if &words.clone().count() != &2 {
+        if words.clone().count() != 2 {
             panic!(
                 "{:?} line should consist of a {}{}{}.",
                 &words,

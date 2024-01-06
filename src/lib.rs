@@ -50,8 +50,8 @@ enum Exp {
     Wrong,
     /// didn't know text
     WrongIt,
-    /// flashcard
-    Flash,
+    // /// flashcard
+    // Flash,
 }
 impl Exp {
     /// get value for expression
@@ -64,12 +64,12 @@ impl Exp {
             Exp::Revise => {
                 format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
             }
-            Exp::Typo => format!("{}Corrected: ", SPACER).bright_magenta(),
-            Exp::Exit => format!("{}Exiting...", SPACER).bright_magenta(),
+            Exp::Typo => format!("{}Corrected: ", SPACER).bright_magenta().italic(),
+            Exp::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
             Exp::Hint => format!("{}#", SPACER).cyan().bold(),
             Exp::Wrong => format!("{}~", SPACER).bright_red().bold(),
-            Exp::WrongIt => "<-is the right answer.".bright_red(),
-            Exp::Flash => format!("{}=", SPACER).bright_cyan().bold(),
+            Exp::WrongIt => "<-is the right answer.".bright_red().italic(),
+            // Exp::Flash => format!("{}=", SPACER).bright_cyan().bold(),
         }
     }
 }
@@ -227,6 +227,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &Path, delim: char, n: u8) -> Vec<T>
     // iterating over the lines of file to store them in a vector
     for line in lines {
         let line = line.expect("Something wrong with bufread line");
+        // dbg!(&line);
         let mut words = line.split(delim);
         let s = words.next().unwrap_or("").trim();
         // ignoring newlines, lines starting with #
@@ -236,6 +237,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &Path, delim: char, n: u8) -> Vec<T>
         r.push(Learn::new_from_line(&line, delim));
     }
     println!("{:?} file succesfully read.", path);
+    // println!("content: {:?}", r);
     r
 }
 
@@ -288,14 +290,8 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
                 r.push(elem.clone());
             }
         //treat them as flashcarding
-        } else if guess == "" {
-            println!(
-                "{} {}\n\n\n",
-                Exp::val(&Exp::Flash),
-                elem.flashcard(),
-                // defi.cyan().bold(),
-                // "───────────────────".bright_purple()
-            );
+        // } else if guess.is_empty() {
+        //     println!("{} {}\n\n\n", Exp::val(&Exp::Flash), elem.flashcard(),);
         } else {
             r.push(elem.clone());
             println!("{}", elem.wrong());

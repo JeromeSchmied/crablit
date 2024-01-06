@@ -1,7 +1,10 @@
+extern crate output_vt100;
+
 use clap::Parser;
 use colored::Colorize;
 use crablit::{verbs::Verbs, *};
 use nanorand::{Rng, WyRand};
+// use output_vt100;
 use std::path::Path;
 
 #[derive(Parser, Debug)]
@@ -33,6 +36,7 @@ struct Args {
 }
 
 fn main() {
+    output_vt100::init();
     let args = Args::parse();
     // path recieved as argument
     let path = args.file;

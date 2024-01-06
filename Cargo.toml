@@ -26,5 +26,6 @@ clap = { version = "4.4.8", features = ["derive"] }
 colored = "2.0"
 # for shuffling deck
 nanorand = "0.7.0"
+output_vt100 = "0.1.3"
 # for editable input
 rustyline = "12.0.0"

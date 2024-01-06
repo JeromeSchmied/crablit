@@ -33,10 +33,10 @@ impl Verbs {
     fn print_em(&self) -> String {
         format!(
             "{}, {}, {}, {}",
-            self.inf.yellow(),
-            self.dri.bright_blue(),
-            self.pra.cyan(),
-            self.per.bright_magenta()
+            self.inf.yellow().underline(),
+            self.dri.bright_blue().underline(),
+            self.pra.cyan().underline(),
+            self.per.bright_magenta().underline()
         )
     }
 }
