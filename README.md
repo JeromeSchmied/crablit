@@ -2,7 +2,8 @@
 
 ## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal.
 
-## Still in beta, functionality is not tested thoroughly.
+> [!IMPORTANT]
+> Crablit is still in beta, functionality is not tested thoroughly.
 
 ## Features
 
@@ -96,7 +97,6 @@ cargo run -- examples/18_eng_deu.txt
 ## Usage
 
 -   Run `crablit --help` to see options.
--   Strange text may appear on your console (on windows, cmd.exe), to fix this you shall compile the source yourself. (2.,3. method)
 -   If `NO_COLOR=1` coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 -   Type the definition of the questioned word/phrase.
 -   To see hint: `hint`.
