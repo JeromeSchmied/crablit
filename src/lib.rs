@@ -132,6 +132,7 @@ impl Mode {
 fn user_input(msg: &str) -> String {
     let mut rl = DefaultEditor::new().expect("Couldn't init rl");
     rl.readline(msg).expect("Couldn't read rustyline")
+    // rl.add_history_entry(line)
 }
 
 /// Determine delimiter, type of Deck
@@ -263,10 +264,10 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
 
         if guess == elem.correct() {
             println!("{} {}\n", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
-        } else if guess == "skip" {
+        } else if guess == ":skip" {
             println!("{}", elem.skip());
             continue;
-        } else if guess == "revise" {
+        } else if guess == ":revise" {
             if r.len() == 1 {
                 println!("Type revise again!");
             } else if r.is_empty() {
@@ -275,7 +276,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
                 println!("{}", Exp::val(&Exp::Revise));
             }
             break;
-        } else if guess == "typo" {
+        } else if guess == ":typo" {
             println!("{}{:?}", Exp::val(&Exp::Typo), r.pop());
             if !question(vec![elem.clone()]).is_empty() {
                 r.push(elem.clone());
@@ -283,7 +284,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
             println!("{}", Exp::val(&Exp::Exit));
             exit(0);
-        } else if guess == "hint" {
+        } else if guess == ":hint" || guess == ":h" {
             elem.hint();
 
             if !question(vec![elem.clone()]).is_empty() {
