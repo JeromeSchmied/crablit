@@ -1,10 +1,8 @@
 extern crate output_vt100;
-
 use clap::Parser;
 use colored::Colorize;
 use crablit::{verbs::Verbs, *};
 use nanorand::{Rng, WyRand};
-// use output_vt100;
 use std::path::Path;
 
 #[derive(Parser, Debug)]
@@ -120,11 +118,4 @@ fn main() {
             verbs::conv(&v, "verbs_as_cards.tsv", '\t');
         }
     }
-
-    // let (delim, p) = nice_args(args);
-    // let mut v = cards::init(Path::new("big.txt"), ';', 4);
-    // while !v.is_empty() {
-    //     v.shuffle(&mut thread_rng());
-    //     v = cards::question(v);
-    // }
 }
