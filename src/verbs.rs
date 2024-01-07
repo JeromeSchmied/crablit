@@ -1,4 +1,4 @@
-use crate::{Colorize, Exp, File, Learn};
+use crate::{consts::Exp, Colorize, File, Learn};
 use std::io::Write;
 
 #[derive(Debug, Clone)]
@@ -43,7 +43,7 @@ impl Verbs {
 
 impl Learn for Verbs {
     fn show(&self) -> String {
-        format!("\n\n{} {}", Exp::val(&Exp::Quest), self.trm.bright_blue())
+        format!("\n\n{} {}", Exp::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -53,7 +53,7 @@ impl Learn for Verbs {
     fn skip(&self) -> String {
         format!(
             "{} {:?}",
-            Exp::val(&Exp::Skip),
+            Exp::Skip.val(),
             Verbs::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
         )
     }
@@ -61,9 +61,9 @@ impl Learn for Verbs {
     fn wrong(&self) -> String {
         format!(
             "{} {} {}",
-            Exp::val(&Exp::Wrong),
+            Exp::Wrong.val(),
             self.print_em(),
-            Exp::val(&Exp::WrongIt)
+            Exp::WrongIt.val()
         )
     }
 

@@ -1,4 +1,5 @@
 // dirs::data_dir()
+use crate::consts::*;
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
@@ -12,6 +13,8 @@ use std::{
 
 /// Module for learning Deck of Cards
 pub mod cards;
+/// commonly used expressions(text), colored strings
+pub mod consts;
 /// Module for learning Deck of Verbs
 pub mod verbs;
 /// The trait for learning either `Cards` of `Verbs`
@@ -24,54 +27,6 @@ pub trait Learn {
     fn hint(&self);
     fn new_from_line(line: &str, delim: char) -> Self;
     // fn copy(&self) -> Self;
-}
-
-const SPACER: &str = "    ";
-
-/// commonly used expressions(text), colored strings
-enum Exp {
-    /// Question(mark)
-    Quest,
-    /// Knew it mark
-    Knew,
-    /// Knew it text
-    KnewIt,
-    /// skipping the following:
-    Skip,
-    /// goin' to the ones not guessed correctly
-    Revise,
-    /// Correct the following:
-    Typo,
-    /// Stop executing the program
-    Exit,
-    /// show hint
-    Hint,
-    /// didn't know mark
-    Wrong,
-    /// didn't know text
-    WrongIt,
-    // /// flashcard
-    // Flash,
-}
-impl Exp {
-    /// get value for expression
-    fn val(&self) -> ColoredString {
-        match *self {
-            Exp::Quest => format!("{}?", SPACER).bright_yellow().bold(),
-            Exp::Knew => format!("{}%", SPACER).bright_green().bold(),
-            Exp::KnewIt => "That's about it!".bright_green(),
-            Exp::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
-            Exp::Revise => {
-                format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
-            }
-            Exp::Typo => format!("{}Corrected: ", SPACER).bright_magenta().italic(),
-            Exp::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
-            Exp::Hint => format!("{}#", SPACER).cyan().bold(),
-            Exp::Wrong => format!("{}~", SPACER).bright_red().bold(),
-            Exp::WrongIt => "<-is the right answer.".bright_red().italic(),
-            // Exp::Flash => format!("{}=", SPACER).bright_cyan().bold(),
-        }
-    }
 }
 
 #[derive(Debug)]
@@ -259,11 +214,11 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
         // }
         println!("{}", elem.show());
 
-        let guess = user_input(&format!("{}> ", SPACER));
+        let guess = user_input(&format!("{}> ", consts::SPACER));
         let guess = guess.trim();
 
         if guess == elem.correct() {
-            println!("{} {}\n", Exp::val(&Exp::Knew), Exp::val(&Exp::KnewIt));
+            println!("{} {}\n", Exp::Knew.val(), &Exp::KnewIt.val());
         } else if guess == ":skip" {
             println!("{}", elem.skip());
             continue;
@@ -273,16 +228,16 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
             } else if r.is_empty() {
                 println!("Nothing to revise, you might to type it again to make it work...");
             } else {
-                println!("{}", Exp::val(&Exp::Revise));
+                println!("{}", Exp::Revise.val());
             }
             break;
         } else if guess == ":typo" {
-            println!("{}{:?}", Exp::val(&Exp::Typo), r.pop());
+            println!("{}{:?}", Exp::Typo.val(), r.pop());
             if !question(vec![elem.clone()]).is_empty() {
                 r.push(elem.clone());
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", Exp::val(&Exp::Exit));
+            println!("{}", Exp::Exit.val());
             exit(0);
         } else if guess == ":hint" || guess == ":h" {
             elem.hint();
@@ -307,7 +262,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
 /// Show hint from the string got
 fn hint(s: &str) {
     let mut prt = s.chars();
-    print!("{} ", Exp::val(&Exp::Hint));
+    print!("{} ", Exp::Hint.val());
     let n = s.chars().count() / 2;
     for _ in 0..n {
         print!("{}", prt.next().unwrap());

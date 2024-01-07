@@ -1,4 +1,4 @@
-use crate::{Colorize, Exp, Learn};
+use crate::{consts::Exp, Colorize, Learn};
 use std::mem::swap;
 
 #[derive(Debug, Clone)]
@@ -30,7 +30,7 @@ impl Cards {
 
 impl Learn for Cards {
     fn show(&self) -> String {
-        format!("\n{} {}", Exp::val(&Exp::Quest), self.trm.bright_blue())
+        format!("\n{} {}", Exp::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -38,19 +38,15 @@ impl Learn for Cards {
     }
 
     fn skip(&self) -> String {
-        format!(
-            "{} {:?}",
-            Exp::val(&Exp::Skip),
-            Cards::new(&self.trm, &self.def)
-        )
+        format!("{} {:?}", Exp::Skip.val(), Cards::new(&self.trm, &self.def))
     }
 
     fn wrong(&self) -> String {
         format!(
             "{} {} {}\n",
-            Exp::val(&Exp::Wrong),
+            Exp::Wrong.val(),
             self.def.yellow().underline(),
-            Exp::val(&Exp::WrongIt)
+            Exp::WrongIt.val()
         )
     }
 
