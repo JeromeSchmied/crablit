@@ -97,11 +97,11 @@ cargo run -- examples/18_eng_deu.txt
 ## Usage
 
 -   Run `crablit --help` to see options.
--   If `NO_COLOR=1` coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
+-   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 -   Type the definition of the questioned word/phrase.
--   To see hint: `hint`.
--   If you mistyped it, type: `typo`.
--   To skip: `skip`.
+-   To see hint: `:hint` or `:h`.
+-   If you mistyped it, type: `:typo`.
+-   To skip: `:skip`.
 -   To quit: `quit` or `exit` or `:q`.
 
 ## How it works
