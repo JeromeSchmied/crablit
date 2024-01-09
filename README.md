@@ -1,8 +1,6 @@
-# [Crablit](https://github.com/JeromeSchmied/crablit)
+# [Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.
 
-## [Anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com) inspired learning app, but in the terminal.
-
-> [!IMPORTANT]
+> ## IMPORTANT!
 > Crablit is still in beta, functionality is not tested thoroughly.
 
 ## Features
@@ -14,7 +12,7 @@
     -   Simple `.txt`, `.csv` or `.tsv` file.
     -   Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     -   File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "|", ":"`.
-    -   Lines starting with `#` are considered comments.
+    -   Lines starting with `#` are considered to be comments.
     -   Extra newlines cause no problem.
     -   Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.
     -   For instance:
@@ -27,8 +25,8 @@ soup | Suppe
 fast | schnell
 alpaca | das Alpaka
 proud | stolz
-to pour | gießen
 # I don't know what to write next. | Ich weiß nicht was...
+to pour | gießen
 ```
 
 -   Mode for _Verb-learning_: if you need to learn lots of verbforms, like:
@@ -41,10 +39,10 @@ to pour | gießen
 # Verben Tabelle von DaF leicht 1,2
 # it's hungarian but that really doesn't matter
 
-Infini	Dritte	Präter	Perfekt 	Jelentés	Komment
+INFINI	DRITTE	PRÄTER	PERFEKT 	MEANING 	KOMMENT
 atmen	atmet	atmete	h. geatmet	lélegzik	Er hat ruhig geatmet.
-baden	badet	badete	h. gebadet	fürdik
-bauen	baut	baute	h. gebaut	épít	Haus bauen
+baden	badet	badete	h. gebadet	fürdik  	Das Mädchen duscht den Hund.
+bauen	baut	baute	h. gebaut	épít    	Haus bauen
 ...
 ```
 
@@ -57,7 +55,9 @@ bauen	baut	baute	h. gebaut	épít	Haus bauen
 <!-- | ad-free         | nope        | nope       | 100%                                    | -->
 <!-- | totally free    | not really  | not really | Yes, and it always will be              | -->
 <!-- | speed out of 10 | 4           | 2          | 10                                      | -->
-<!-- | offline version | paid        | no         | cross-platform, fast, TUI: coming soon  | -->
+<!-- | offline version | paid        | no         | cross-platform, fast, TUI,GUI : coming soon  | -->
+<!-- # or you can install latest development version with -->
+<!-- cargo install --git https://github.com/jeromeschmied/crablit -->
 
 ## Installing:
 
@@ -116,9 +116,9 @@ cargo run -- examples/18_eng_deu.txt
 ## Notes
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
--   TUI, flashcards are coming, but it takes time.
+-   flashcards, TUI, GUI, Website are coming, but it takes time.
 -   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit), or [email](mailto:iITsnot.me214@proton.me).
--   To help with development, see [todos.](TODO.md)
+-   To help with development, see [todos](TODO.md).
 
 ## Alternatives:
 
