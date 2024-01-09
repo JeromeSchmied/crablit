@@ -154,7 +154,7 @@ pub fn determine_properties(path: &str) -> (Mode, char, u8) {
 
 /// Get delimiter from a line
 fn get_delim(line: &str) -> char {
-    const DELIMS: [char; 6] = [';', '|', '\t', ':', ',', '-'];
+    const DELIMS: [char; 7] = [';', '|', '\t', '=', ':', ',', '-'];
     // let line = line.unwrap_or("".to_owned());
     for delim in DELIMS {
         if !(line.is_empty() || line.starts_with('#')) && line.chars().any(|x| x == delim) {
