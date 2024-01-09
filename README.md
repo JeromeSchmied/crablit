@@ -1,17 +1,23 @@
 # [Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.
 
 > ## IMPORTANT!
+>
 > Crablit is still in beta, functionality is not tested thoroughly.
 
 ## Features
 
+-   open-source, MIT licensed
 -   _Cross-platform_: compiles where Rust does, but GNU/Linux is the no. 1 priority.
--   Written answers: people tend to remember words _better_ this way than flashcards.
 -   _Fast_: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.12GB ram usage.
+-   Written answers: people tend to remember words _better_ this way than flashcards.
+
+## Creating files to learn
+
 -   _Easy deck making_, in your favourite editor:
     -   Simple `.txt`, `.csv` or `.tsv` file.
     -   Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
-    -   File of Cards with the same delimiter in every line, good ones are: ` ";", "    "(tab), "|", ":"`.
+    -   File of Cards with the same delimiter in every line.
+    -   Good delimiters are: ` ";", "|", "    "(tab), "="`.
     -   Lines starting with `#` are considered to be comments.
     -   Extra newlines cause no problem.
     -   Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.
