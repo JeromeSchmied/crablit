@@ -29,7 +29,7 @@ struct Args {
     delim: String,
 
     /// Shuffle card order
-    #[arg(short, long, default_value_t = false)]
+    #[arg(short, long, default_value_t = true)]
     shuffle: bool,
 }
 
