@@ -21,11 +21,11 @@ struct Args {
     ask_both: bool,
 
     /// Mode: either cards, verbs or verbs2cards
-    #[arg(short, long, default_value = "cards")]
+    #[arg(short, long, default_value = "")]
     mode: String,
 
     /// Delimiter used in file to seperate terms and definitions
-    #[arg(short, long, default_value = ";")]
+    #[arg(short, long, default_value = "")]
     delim: String,
 
     /// Shuffle card order
@@ -37,34 +37,33 @@ fn main() {
     output_vt100::init();
     let args = Args::parse();
     // path recieved as argument
-    let path = args.file;
+    let path = &args.file;
     dbg!(&path);
     // delimiter as option from console
-    let delim_s = args.delim;
+    let delim_s = &args.delim;
     // let n = 0;
     // dbg!(&n);
-    let (mode_det, delim_det, n) = determine_properties(&path);
+    let (mode_det, delim_det, n) = determine_properties(path);
     // mode recieved as argument
-    let mode_parsed = args.mode;
+    let mode_parsed = &args.mode;
 
     let mode = if mode_parsed.is_empty() {
         mode_det
     } else {
-        Mode::new(&mode_parsed)
+        Mode::new(mode_parsed)
     };
     dbg!(&mode);
     // delimiter to be used
-    let delim;
     // passed as option, same as determined one
-    if !delim_s.is_empty() {
+    let delim = if !delim_s.is_empty() {
         if delim_det == delim_s.chars().next().unwrap() {
-            delim = delim_det;
+            delim_det
         } else {
             panic!("Delims don't match!");
         }
     } else {
-        delim = delim_det;
-    }
+        delim_det
+    };
     dbg!(&delim);
 
     let swap = args.card_swap;
