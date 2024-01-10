@@ -33,6 +33,7 @@
     + [x] mode
     + [x] swapping term and definition fully or partially
     + [x] help
+    + [x] shuffling
     + [ ] verbosity
     + [ ] other great stuff
 - [ ] fetching definitions from 
@@ -61,6 +62,8 @@
 - [ ] non-spagethi code with 
     + [x] `mod`s 
     + [x] `enum`s 
+    + [x] `generics`
+    + [x] `trait`s
     + [ ] all kinds of crazy stuff  
 
 - [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative 
