@@ -5,8 +5,8 @@
 -   [x] initialization from file <- `std::fs`
 -   [x] basic matching every term <- vector of either `Cards` or `Verbs`
 -   [x] spaced repetition <- iterating over vector, pushing back not guessed ones, they get questioned later, shuffled
--   [x] end-user dealing with typos <- typo
--   [x] hints <- hint
+-   [x] end-user dealing with typos <- :typo
+-   [x] hints <- :hint
 -   [x] colored output <- [colored](https://crates.io/crates/colored) from crates.io
 
 ## further development
@@ -16,7 +16,7 @@
 -   [x] add keyword skip <- done: `continue;`
 -   [x] `rustyline` for editable input <- done, followed docs
 -   [x] `clap` <- done, usage seen from tplay, flcard
--   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: s.chars().count()
+-   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
 -   [ ] save progress
 -   [ ] levelled knowledge
