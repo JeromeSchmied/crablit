@@ -83,12 +83,12 @@ impl Mode {
 //     Wendungen(String),
 // }
 
-/// Take input from console with `rustyline`
-fn user_input(msg: &str) -> String {
-    let mut rl = DefaultEditor::new().expect("Couldn't init rl");
-    rl.readline(msg).expect("Couldn't read rustyline")
-    // rl.add_history_entry(line)
-}
+// /// Take input from console with `rustyline`
+// fn user_input(msg: &str) -> String {
+//     let mut rl = DefaultEditor::new().expect("Couldn't init rl");
+//     rl.readline(msg).expect("Couldn't read rustyline")
+//     // rl.add_history_entry(line)
+// }
 
 /// Determine delimiter, type of Deck
 pub fn determine_properties(path: &str) -> (Mode, char, u8) {
@@ -162,7 +162,12 @@ fn get_delim(line: &str) -> char {
         }
     }
     // asking for user input as delimiter is unknown
-    let mut dlim = user_input("What character is the delimiter? ");
+    let mut dlim = {
+        let mut rl = DefaultEditor::new().expect("Couldn't init rl");
+        rl.readline("What character is the delimiter? ")
+            .expect("Couldn't read rustyline")
+        // rl.add_history_entry(line)
+    };
     if dlim.ends_with('\n') {
         dlim.pop();
     }
@@ -204,6 +209,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
         println!("\n\nYou have {} words to learn, let's start!", v.len());
     }
     let mut r: Vec<T> = Vec::new();
+    let mut rl = DefaultEditor::new().expect("Couldn't init rl");
 
     for elem in &v {
         // if defi.is_empty() || defi == "NO_DEFINITION" || term.is_empty() || term == "NO_TERM" {
@@ -213,8 +219,12 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
         //     continue;
         // }
         println!("{}", elem.show());
+        // print!("{}> ", consts::SPACER);
+        // io::stdout().flush().unwrap();
 
-        let guess = user_input(&format!("{}> ", consts::SPACER));
+        let msg: &str = &format!("{}> ", consts::SPACER);
+        let guess = rl.readline(msg).expect("Couldn't read rustyline");
+        rl.add_history_entry(&guess).unwrap();
         let guess = guess.trim();
 
         if guess == elem.correct() {
@@ -269,12 +279,6 @@ fn hint(s: &str) {
     }
     println!("{ch:_>widht$}", ch = '_', widht = s.chars().count() - n);
 }
-
-// /// shuffling whole deck
-// fn shuffle_cards(v: &mut [Cards]) {
-//     let mut rng = WyRand::new();
-//     rng.shuffle(v);
-// }
 
 /// Swap definition and term of deck of cards
 pub fn swap_cards(v: &mut [cards::Cards]) {
