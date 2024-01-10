@@ -8,29 +8,29 @@ use std::path::Path;
 #[derive(Parser, Debug)]
 #[command(version, about, author, long_about = None)]
 struct Args {
-    /// Path of the file to learn.
+    /// Path of the file to learn
     #[arg(required = true)]
     file: String,
 
-    /// Swap terms and definitions. Only if mode is cards.
+    /// Swap terms and definitions of cards
     #[arg(short, long, default_value_t = false)]
-    swap: bool,
+    card_swap: bool,
 
-    /// Sometimes ask for term, sometimes definition. Only if mode is cards.
+    /// Sometimes ask the term, sometimes definition of cards
     #[arg(short, long, default_value_t = false)]
-    both: bool,
+    ask_both: bool,
 
-    /// Mode: either cards, verbs or verbs2cards, useful when converting from verbs to cards, or when using verbs.
-    #[arg(short, long, default_value = "")]
+    /// Mode: either cards, verbs or verbs2cards
+    #[arg(short, long, default_value = "cards")]
     mode: String,
 
-    /// Delimiter used in file to seperate terms and definitions.
-    #[arg(short, long, default_value = "")]
+    /// Delimiter used in file to seperate terms and definitions
+    #[arg(short, long, default_value = ";")]
     delim: String,
-    // /// Has header starting with [crablit] or not.
-    // #[arg(short, long, default_value_t = false)]
-    // header: bool,
-    // /// The number of lines to skip
+
+    /// Shuffle card order
+    #[arg(short, long, default_value_t = false)]
+    shuffle: bool,
 }
 
 fn main() {
@@ -67,8 +67,8 @@ fn main() {
     }
     dbg!(&delim);
 
-    let swap = args.swap;
-    let both = args.both;
+    let swap = args.card_swap;
+    let both = args.ask_both;
     let p = Path::new(&path);
     match mode {
         Mode::Card => {
@@ -85,7 +85,9 @@ fn main() {
             }
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                rng.shuffle(&mut v);
+                if args.shuffle {
+                    rng.shuffle(&mut v);
+                }
                 v = question(v);
             }
 
@@ -101,7 +103,9 @@ fn main() {
             );
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                rng.shuffle(&mut v);
+                if args.shuffle {
+                    rng.shuffle(&mut v);
+                }
                 // v = verbs::question(v);
                 v = question(v);
             }
