@@ -52,10 +52,8 @@ bauen	baut	baute	h. gebaut	épít    	Haus bauen
 ...
 ```
 
-<!--+  If the first line is [crablit]: mode, delimiter may be set-->
 <!-- ## Why is it better than the others? -->
-<!---->
-<!-- |                 | quizlet     | knowt      | crablit                                 | -->
+<!-- |                 | quizlet     | knowt      | crablit                       | anki          | -->
 <!-- |---------------- | ----------- | ---------- | --------------------------              | -->
 <!-- | open-source     | no          | no         | of course!                              | -->
 <!-- | ad-free         | nope        | nope       | 100%                                    | -->
