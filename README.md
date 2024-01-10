@@ -112,7 +112,7 @@ cargo run -- examples/18_eng_deu.txt
 
 ![Sample][1]
 
--   See [images for more](img)!
+-   See [images for more](examples/img)!
 -   It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 -   Stores them in a vector.
 -   Asks them until you know all well (currently only till you guess them right once).
