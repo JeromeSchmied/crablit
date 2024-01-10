@@ -133,4 +133,4 @@ cargo run -- examples/18_eng_deu.txt
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
 -   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust
 
-[1]: img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
+[1]: examples/img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
