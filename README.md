@@ -112,7 +112,7 @@ cargo run -- examples/18_eng_deu.txt
 
 ![Sample][1]
 
--   See [images for more](img)!
+-   See [images for more](examples/img)!
 -   It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 -   Stores them in a vector.
 -   Asks them until you know all well (currently only till you guess them right once).
@@ -133,4 +133,4 @@ cargo run -- examples/18_eng_deu.txt
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
 -   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust
 
-[1]: img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
+[1]: examples/img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
