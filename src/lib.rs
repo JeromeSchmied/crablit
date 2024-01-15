@@ -83,13 +83,6 @@ impl Mode {
 //     Wendungen(String),
 // }
 
-// /// Take input from console with `rustyline`
-// fn user_input(msg: &str) -> String {
-//     let mut rl = DefaultEditor::new().expect("Couldn't init rl");
-//     rl.readline(msg).expect("Couldn't read rustyline")
-//     // rl.add_history_entry(line)
-// }
-
 /// Determine delimiter, type of Deck
 pub fn determine_properties(path: &str) -> (Mode, char, u8) {
     println!("Trying to open {:?}", &path);
@@ -100,18 +93,6 @@ pub fn determine_properties(path: &str) -> (Mode, char, u8) {
     // storing lines of contents
     br.read_to_string(&mut limes).expect("couldnt Read");
 
-    // let mut contents = fs::read_to_string(&path).unwrap_or("redo".to_string());
-    // let mut path_fixed = path.to_owned();
-    // loop {
-    //     if content == "redo" {
-    //         println!("No luck opening the file...");
-    //         path_fixed = user_input("Sorry, what is the correct path?");
-    //         content = fs::read_to_string(&path_fixed).unwrap_or("redo".to_string());
-    //     } else {
-    //         break;
-    //     }
-    //     println!("Trying to open {:?}", path_fixed);
-    // }
     let delim: char;
     let mode: String;
     // plus one for [crablit], one for an extra newline at the end
