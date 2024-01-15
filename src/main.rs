@@ -28,9 +28,9 @@ struct Args {
     #[arg(short, long, default_value = "")]
     delim: String,
 
-    /// Shuffle card order
+    /// Don't shuffle card order
     #[arg(short, long, default_value_t = true)]
-    shuffle: bool,
+    no_shuffle: bool,
 }
 
 fn main() {
@@ -84,7 +84,7 @@ fn main() {
             }
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                if args.shuffle {
+                if !args.no_shuffle {
                     rng.shuffle(&mut v);
                 }
                 v = question(v);
@@ -102,7 +102,7 @@ fn main() {
             );
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                if args.shuffle {
+                if !args.no_shuffle {
                     rng.shuffle(&mut v);
                 }
                 // v = verbs::question(v);
