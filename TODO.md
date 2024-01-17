@@ -62,7 +62,7 @@
 ## development
 
 -   [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
--   [ ] tests: being cross-platform
+-   [ ] tests: being cross-platform, `lib` tests
 -   [ ] being stupid-proof == no bugs
 -   [ ] non-spagethi code with
 
@@ -70,6 +70,7 @@
     -   [x] `enum`s
     -   [x] `generics`
     -   [x] `trait`s
+    -   [ ] `Result`s
     -   [ ] all kinds of crazy stuff
 
 -   [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative
