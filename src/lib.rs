@@ -414,7 +414,7 @@ mod tests {
     }
     #[test]
     fn get_delim_hard() {
-        let line = "barn\ta ; braun";
+        let line = "barn\ta ; braun\nfluxus ; bohókás ármány";
         assert_eq!(';', get_delim(line).unwrap());
     }
     #[test]
