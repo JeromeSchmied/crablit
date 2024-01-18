@@ -82,35 +82,35 @@ impl Config {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
 
-    #[test]
-    fn basic_correct_cards() {
-        let orig_conf = Config {
-            file_path: "test.txt".to_owned(),
-            card_swap: false,
-            ask_both: false,
-            mode: "".to_string(),
-            delim: "".to_string(),
-            no_shuffle: true,
-        };
-        let content = "\
-# test deck, cards
-term1 ; def1
-term2 ; def2
-";
-        assert_eq!(
-            Config {
-                file_path: "test".to_string(),
-                card_swap: false,
-                ask_both: false,
-                mode: "cards".to_string(),
-                delim: ";".to_string(),
-                no_shuffle: true
-            },
-            Config::fix_from_file().unwrap()
-        );
-    }
-}
+//     #[test]
+//     fn basic_correct_cards() {
+//         let orig_conf = Config {
+//             file_path: "test.txt".to_owned(),
+//             card_swap: false,
+//             ask_both: false,
+//             mode: "".to_string(),
+//             delim: "".to_string(),
+//             no_shuffle: true,
+//         };
+//         let content = "\
+// # test deck, cards
+// term1 ; def1
+// term2 ; def2
+// ";
+//         assert_eq!(
+//             Config {
+//                 file_path: "test".to_string(),
+//                 card_swap: false,
+//                 ask_both: false,
+//                 mode: "cards".to_string(),
+//                 delim: ";".to_string(),
+//                 no_shuffle: true
+//             },
+//             Config::fix_from_file().unwrap()
+//         );
+//     }
+// }

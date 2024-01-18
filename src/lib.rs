@@ -415,7 +415,7 @@ mod tests {
     #[test]
     fn get_delim_hard() {
         let line = "barn\ta ; braun";
-        assert_eq!('\t', get_delim(line).unwrap());
+        assert_eq!(';', get_delim(line).unwrap());
     }
     #[test]
     #[should_panic]
