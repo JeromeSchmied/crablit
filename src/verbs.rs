@@ -68,7 +68,7 @@ impl Learn for Verbs {
     }
 
     fn hint(&self) {
-        crate::hint(&self.inf);
+        println!("{}", crate::hint(&self.inf));
     }
 
     fn new_from_line(line: &str, delim: char) -> Self {
@@ -81,6 +81,17 @@ impl Learn for Verbs {
         let trm = words.next().unwrap_or("").trim();
 
         let _other = words.next().unwrap_or("NNNNNN").trim();
+        if inf.is_empty() || dri.is_empty() || pra.is_empty() || per.is_empty() || trm.is_empty() {
+            panic!(
+                "{:?} line should consist of a {}{}{}{}{}.",
+                &words,
+                "<infinitive>".yellow().italic(),
+                "<3rd person>".red().bold(),
+                "<simple past>".green().bold(),
+                "<present perfect>".red().bold(),
+                "<term>".blue().italic(),
+            );
+        }
 
         // making a Verbs of the values
         Verbs::new(inf, dri, pra, per, trm)

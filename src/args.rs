@@ -1,6 +1,5 @@
-use crate::*;
 use clap::Parser;
-use std::{error::Error, fs};
+use std::{collections::HashMap, error::Error, fs};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -32,7 +31,8 @@ pub struct Config {
 
 impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
-        let config = args::Config::parse();
+        let config = Config::parse();
+
         eprintln!("Trying to open {}", &config.file_path);
         let content = fs::read_to_string(&config.file_path)?;
 
@@ -41,20 +41,6 @@ impl Config {
         } else {
             get_delim(&content)?
         };
-        // let mut limes = content.lines();
-        // let mut prev = '\0';
-        // let mut avg_delims = 0;
-
-        // loop {
-        //     let line = &limes.next().unwrap_or("");
-        //     if !(line.is_empty() || line.starts_with('#')) {
-        //         delim = get_delim(line);
-        //         if delim == prev {
-        //             break;
-        //         }
-        //         prev = delim;
-        //     }
-        // }
 
         let mode = if config.mode != "cards" {
             config.mode
@@ -82,35 +68,79 @@ impl Config {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
+/// Get delimiter from a file
+fn get_delim(content: &str) -> Result<char, String> {
+    const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
 
-//     #[test]
-//     fn basic_correct_cards() {
-//         let orig_conf = Config {
-//             file_path: "test.txt".to_owned(),
-//             card_swap: false,
-//             ask_both: false,
-//             mode: "".to_string(),
-//             delim: "".to_string(),
-//             no_shuffle: true,
-//         };
-//         let content = "\
-// # test deck, cards
-// term1 ; def1
-// term2 ; def2
-// ";
-//         assert_eq!(
-//             Config {
-//                 file_path: "test".to_string(),
-//                 card_swap: false,
-//                 ask_both: false,
-//                 mode: "cards".to_string(),
-//                 delim: ";".to_string(),
-//                 no_shuffle: true
-//             },
-//             Config::fix_from_file().unwrap()
-//         );
-//     }
-// }
+    let mut delims_counts: HashMap<char, u32> = HashMap::new();
+    for delim in DELIMS {
+        let delim_count = content.chars().filter(|ch| ch == &delim).count();
+        if delim_count > 0 {
+            delims_counts.insert(delim, delim_count as u32);
+        }
+    }
+    if delims_counts.is_empty() {
+        Err(format!(
+            "Couldn't determine delimiter type, should be one of: {:?}",
+            DELIMS
+        ))
+    } else {
+        let mut max: (char, u32) = ('\0', 0);
+        for (k, v) in delims_counts {
+            if v > max.1 {
+                max = (k, v);
+            }
+        }
+        Ok(max.0)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn get_delim_correct() {
+        let line = "rot ; narancssárga";
+        assert_eq!(';', get_delim(line).unwrap());
+    }
+    #[test]
+    fn get_delim_hard() {
+        let line = "barn\ta ; braun\nfluxus ; bohókás ármány";
+        assert_eq!(';', get_delim(line).unwrap());
+    }
+    #[test]
+    #[should_panic]
+    fn get_delim_incorrect() {
+        let line = "# barna , braun";
+        assert_eq!(';', get_delim(line).unwrap());
+    }
+
+    //     #[test]
+    //     fn basic_correct_cards() {
+    //         let orig_conf = Config {
+    //             file_path: "test.txt".to_owned(),
+    //             card_swap: false,
+    //             ask_both: false,
+    //             mode: "".to_string(),
+    //             delim: "".to_string(),
+    //             no_shuffle: true,
+    //         };
+    //         let content = "\
+    // # test deck, cards
+    // term1 ; def1
+    // term2 ; def2
+    // ";
+    //         assert_eq!(
+    //             Config {
+    //                 file_path: "test".to_string(),
+    //                 card_swap: false,
+    //                 ask_both: false,
+    //                 mode: "cards".to_string(),
+    //                 delim: ";".to_string(),
+    //                 no_shuffle: true
+    //             },
+    //             Config::fix_from_file().unwrap()
+    //         );
+    //     }
+}

@@ -20,12 +20,6 @@ impl Cards {
     pub fn swap(&mut self) {
         swap(&mut self.trm, &mut self.def);
     }
-    // pub fn trm(self) -> String {
-    //     self.trm
-    // }
-    // pub fn def(self) -> String {
-    //     self.def
-    // }
 }
 
 impl Learn for Cards {
@@ -79,8 +73,4 @@ impl Learn for Cards {
         }
         format!("{}\n{}", s, r.bright_purple().bold())
     }
-
-    // fn copy(&self) -> Self {
-    //     Cards::new(&self.trm, &self.def)
-    // }
 }

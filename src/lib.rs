@@ -1,10 +1,14 @@
 // dirs::data_dir()
-use crate::consts::*;
-use crate::verbs::Verbs;
+use crate::{consts::*, verbs::Verbs};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
-use std::{collections::HashMap, error::Error, fmt::Debug, fs, fs::File, process::exit};
+use std::{
+    error::Error,
+    fmt::Debug,
+    fs::{self, File},
+    process::exit,
+};
 
 /// Module for parsing cli arguments
 pub mod args;
@@ -14,6 +18,7 @@ pub mod cards;
 pub mod consts;
 /// Module for learning Deck of Verbs
 pub mod verbs;
+
 /// The trait for learning either `Cards` of `Verbs`
 pub trait Learn {
     fn show(&self) -> String;
@@ -23,7 +28,6 @@ pub trait Learn {
     fn flashcard(&self) -> String;
     fn hint(&self);
     fn new_from_line(line: &str, delim: char) -> Self;
-    // fn copy(&self) -> Self;
 }
 
 #[derive(Debug, PartialEq)]
@@ -79,33 +83,6 @@ impl Mode {
 //     },
 //     Wendungen(String),
 // }
-
-/// Get delimiter from a line
-fn get_delim(content: &str) -> Result<char, String> {
-    const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
-
-    let mut delims_counts: HashMap<char, u32> = HashMap::new();
-    for delim in DELIMS {
-        let delim_count = content.chars().filter(|ch| ch == &delim).count();
-        if delim_count > 0 {
-            delims_counts.insert(delim, delim_count as u32);
-        }
-    }
-    if delims_counts.is_empty() {
-        Err(format!(
-            "Couldn't determine delimiter type, should be one of: {:?}",
-            DELIMS
-        ))
-    } else {
-        let mut max: (char, u32) = ('\0', 0);
-        for (k, v) in delims_counts {
-            if v > max.1 {
-                max = (k, v);
-            }
-        }
-        Ok(max.0)
-    }
-}
 
 /// Initializing deck of either `cards`, or `verbs`
 pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
@@ -207,14 +184,14 @@ fn hint(s: &str) -> String {
 }
 
 /// Swap definition and term of deck of cards
-pub fn swap_cards(cards: &mut [cards::Cards]) {
+fn swap_cards(cards: &mut [cards::Cards]) {
     for card in cards {
         card.swap();
     }
 }
 
 /// Randomly swap definition and term of deck of cards
-pub fn random_swap_cards(v: &mut [cards::Cards]) {
+fn random_swap_cards(v: &mut [cards::Cards]) {
     for card in v {
         let mut rng = WyRand::new();
         let swap_terms: bool = rng.generate();
@@ -322,22 +299,6 @@ mod tests {
         assert_eq!(Mode::Card, Mode::new("cards"));
     }
 
-    #[test]
-    fn get_delim_correct() {
-        let line = "rot ; narancssárga";
-        assert_eq!(';', get_delim(line).unwrap());
-    }
-    #[test]
-    fn get_delim_hard() {
-        let line = "barn\ta ; braun\nfluxus ; bohókás ármány";
-        assert_eq!(';', get_delim(line).unwrap());
-    }
-    #[test]
-    #[should_panic]
-    fn get_delim_incorrect() {
-        let line = "# barna , braun";
-        assert_eq!(';', get_delim(line).unwrap());
-    }
     // init()
     // get_delim()
     // det_props()
