@@ -1,8 +1,8 @@
-[crablit]
-[mode: verbs]
-[delim: 	]
+# [crablit]
+# [mode: verbs]
+# [delim: 	]
 
-Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
+# Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 akzeptieren	akzeptiert	akzeptierte	hat akzeptiert	elfogad	
 ändern	ändert	änderte	hat geändert	változtat v-t, v-n	
 sich ändern	ändert sich	änderte sich	hat sich geändert	változik	

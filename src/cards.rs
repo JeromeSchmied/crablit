@@ -1,7 +1,7 @@
 use crate::*;
 use std::mem::swap;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Cards {
     /// term in known language
     trm: String,
@@ -51,7 +51,7 @@ impl Learn for Cards {
     }
 
     fn hint(&self) {
-        crate::hint(&self.def);
+        println!("{}", crate::hint(&self.def));
     }
 
     fn new_from_line(line: &str, delim: char) -> Self {

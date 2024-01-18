@@ -38,17 +38,17 @@ to pour | gießen
 -   Mode for _Verb-learning_: if you need to learn lots of verbforms, like:
 
 ```text
-[crablit]
-[mode: verbs]
-[delim: 	]
+# [crablit]
+# [mode: verbs]
+# [delim: 	]
 
 # Verben Tabelle von DaF leicht 1,2
 # it's hungarian but that really doesn't matter
 
-INFINI	DRITTE	PRÄTER	PERFEKT 	MEANING 	KOMMENT
-atmen	atmet	atmete	h. geatmet	lélegzik	Er hat ruhig geatmet.
-baden	badet	badete	h. gebadet	fürdik  	Das Mädchen duscht den Hund.
-bauen	baut	baute	h. gebaut	épít    	Haus bauen
+# INFINI	DRITTE	PRÄTER	PERFEKT 	MEANING 	KOMMENT
+atmen	    atmet	atmete	h. geatmet	lélegzik	Er hat ruhig geatmet.
+baden	    badet	badete	h. gebadet	fürdik  	Das Mädchen duscht den Hund.
+bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 ...
 ```
 
