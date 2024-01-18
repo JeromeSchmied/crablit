@@ -61,6 +61,8 @@
 
 ## development
 
+-   [ ] `Args::build()`
+-   [ ] clean main.rs
 -   [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
 -   [ ] tests: being cross-platform, `lib` tests
 -   [ ] being stupid-proof == no bugs

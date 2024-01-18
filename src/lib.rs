@@ -1,16 +1,13 @@
 // dirs::data_dir()
 use crate::consts::*;
+use crate::verbs::Verbs;
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
-use std::{
-    fmt::Debug,
-    fs::File,
-    io::{BufRead, BufReader, Read},
-    path::Path,
-    process::exit,
-};
+use std::{collections::HashMap, error::Error, fmt::Debug, fs, fs::File, process::exit};
 
+/// Module for parsing cli arguments
+pub mod args;
 /// Module for learning Deck of Cards
 pub mod cards;
 /// commonly used expressions(text), colored strings
@@ -29,7 +26,7 @@ pub trait Learn {
     // fn copy(&self) -> Self;
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 /// Type of Deck
 pub enum Mode {
     Card,
@@ -83,129 +80,150 @@ impl Mode {
 //     Wendungen(String),
 // }
 
-/// Determine delimiter, type of Deck
-pub fn determine_properties(path: &str) -> (Mode, char, u8) {
-    println!("Trying to open {:?}", &path);
-    let f = File::open(path).expect("couldn't open file");
-    // getting contents of file
-    let mut br = BufReader::new(f);
-    let mut limes = String::new();
-    // storing lines of contents
-    br.read_to_string(&mut limes).expect("couldnt Read");
+// /// Determine delimiter, type of Deck
+// pub fn determine_properties(path: &str) -> (Mode, char, u8) {
+//     println!("Trying to open {:?}", &path);
+//     let f = File::open(path).expect("couldn't open file");
+//     // getting contents of file
+//     let mut br = BufReader::new(f);
+//     let mut limes = String::new();
+//     // storing lines of contents
+//     br.read_to_string(&mut limes).expect("couldnt Read");
 
-    let delim: char;
-    let mode: String;
-    // plus one for [crablit], one for an extra newline at the end
-    let mut num = 2;
+//     // let delim: char;
+//     let mode: String;
+//     // plus one for [crablit], one for an extra newline at the end
+//     let mut num = 2;
 
-    // let mut limes = br.lines().flatten();
-    let mut limes = limes.lines();
-    // checking wether first line includes [crablit] to know if it is made for crablit
-    if limes.next().unwrap() == "[crablit]" {
-        mode = limes.next().unwrap_or("cards").to_string();
-        num += 1;
-        delim = limes
-            .next()
-            .unwrap_or(";")
-            .chars()
-            .nth_back(1)
-            .unwrap_or(';');
-        // mode = limes.next().unwrap_or_else(|| user_input("Mode?"));
-        num += 1;
-    } else {
-        let last = limes.clone().last().unwrap_or("");
-        loop {
-            let line = &limes.next().unwrap_or("");
-            if !(line.is_empty() || line.starts_with('#')) && get_delim(line) == get_delim(last) {
-                delim = get_delim(line);
-                break;
-            }
-        }
-        // mode = user_input("Mode(cards/verbs)?").to_string();
-        mode = "cards".to_owned();
-        // resetting lines to start from beginning
-        num = 0;
-    }
-    println!(
-        "Mode: \"{}\", delimiter: \"{}\", number of lines skipping: \"{}\"",
-        mode, delim, num
-    );
-    (Mode::new(&mode), delim, num)
-}
+//     // let mut limes = br.lines().flatten();
+//     // let mut limes = limes.lines();
+//     // checking wether first line includes [crablit] to know if it is made for crablit
+//     if limes.next().unwrap() == "[crablit]" {
+//         mode = limes.next().unwrap_or("cards").to_string();
+//         num += 1;
+//         delim = limes
+//             .next()
+//             .unwrap_or(";")
+//             .chars()
+//             .nth_back(1)
+//             .unwrap_or(';');
+//         // mode = limes.next().unwrap_or_else(|| user_input("Mode?"));
+//         num += 1;
+//     } else {
+//         let last = limes.clone().last().unwrap_or("");
+//         loop {
+//             let line = &limes.next().unwrap_or("");
+//             if !(line.is_empty() || line.starts_with('#')) && get_delim(line) == get_delim(last) {
+//                 delim = get_delim(line);
+//                 break;
+//             }
+//         }
+//         // mode = user_input("Mode(cards/verbs)?").to_string();
+//         mode = "cards".to_owned();
+//         // resetting lines to start from beginning
+//         num = 0;
+//     }
+//     println!(
+//         "Mode: \"{}\", delimiter: \"{}\", number of lines skipping: \"{}\"",
+//         mode, delim, num
+//     );
+//     (Mode::new(&mode), delim, num)
+// }
 
 /// Get delimiter from a line
-fn get_delim(line: &str) -> char {
-    const DELIMS: [char; 7] = [';', '|', '\t', '=', ':', ',', '-'];
-    // let line = line.unwrap_or("".to_owned());
+fn get_delim(content: &str) -> Result<char, String> {
+    const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
+
+    let mut delims_counts: HashMap<char, u32> = HashMap::new();
     for delim in DELIMS {
-        if !(line.is_empty() || line.starts_with('#')) && line.chars().any(|x| x == delim) {
-            return delim;
+        let delim_count = content.chars().filter(|ch| ch == &delim).count();
+        if delim_count > 0 {
+            delims_counts.insert(delim, delim_count as u32);
         }
     }
-    // asking for user input as delimiter is unknown
-    let mut dlim = {
-        let mut rl = DefaultEditor::new().expect("Couldn't init rl");
-        rl.readline("What character is the delimiter? ")
-            .expect("Couldn't read rustyline")
-        // rl.add_history_entry(line)
-    };
-    if dlim.ends_with('\n') {
-        dlim.pop();
+    if delims_counts.is_empty() {
+        Err(format!(
+            "Couldn't determine delimiter type, should be one of: {:?}",
+            DELIMS
+        ))
+    } else {
+        let mut max: (char, u32) = ('\0', 0);
+        for (k, v) in delims_counts {
+            if v > max.1 {
+                max = (k, v);
+            }
+        }
+        Ok(max.0)
     }
-    dlim.chars().next().unwrap_or(';')
+    // delims_counts.iter().max();
+
+    // for line in content.lines() {
+    // if line.chars().filter(|ch| DELIMS.contains(ch)).count() == 1
+    // }
+    // if !(line.is_empty() || line.starts_with('#')) {
+    //     delim = get_delim(line);
+    //     if delim == prev {}
+    //     prev = delim;
+    // }
+    // for delim in DELIMS {
+    //     if !(line.is_empty() || line.starts_with('#')) && line.chars().any(|x| x == delim) {
+    //         return delim;
+    //     }
+    // }
+    // panic!(
+    //     "Couldn't determine delimiter type, should be one of: {:?}",
+    //     DELIMS
+    // );
+    // asking for user input as delimiter is unknown
+    // let mut dlim = {
+    //     let mut rl = DefaultEditor::new().expect("Couldn't init rl");
+    //     rl.readline("What character is the delimiter? ")
+    //         .expect("Couldn't read rustyline")
+    // rl.add_history_entry(line)
+    // };
+    // if dlim.ends_with('\n') {
+    //     dlim.pop();
+    // }
+    // dlim.chars().next().unwrap_or(';')
 }
 
 /// Initializing deck of either `cards`, or `verbs`
-pub fn init<T: Learn + Debug + Clone>(path: &Path, delim: char, n: u8) -> Vec<T> {
+pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
     let mut r: Vec<T> = Vec::new();
-    let br = BufReader::new(File::open(path).expect("Couldn't open file, quitting..."));
-    // let contents = fs::read_to_string(path).expect("what is wronk?");
-    // storing lines of contents
-    // let mut limes = contents.lines();
-    let mut lines = br.lines();
-    for _ in 0..n {
-        lines.next();
-    }
+    let contents = fs::read_to_string(path)?;
     // iterating over the lines of file to store them in a vector
-    for line in lines {
-        let line = line.expect("Something wrong with bufread line");
-        // dbg!(&line);
+    for line in contents.lines() {
         let mut words = line.split(delim);
         let s = words.next().unwrap_or("").trim();
         // ignoring newlines, lines starting with #
         if s.is_empty() || s.starts_with('#') {
             continue;
         };
-        r.push(Learn::new_from_line(&line, delim));
+        r.push(Learn::new_from_line(line, delim));
     }
     println!("{:?} file succesfully read.", path);
     // println!("content: {:?}", r);
-    r
+    Ok(r)
 }
 
 /// Start learning the vector, return the remainders
-pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
+pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Error>> {
     // let mut printer = String::new();
     if v.len() != 1 {
         println!("\n\nYou have {} words to learn, let's start!", v.len());
     }
     let mut r: Vec<T> = Vec::new();
-    let mut rl = DefaultEditor::new().expect("Couldn't init rl");
+    let mut rl = DefaultEditor::new()?;
 
-    for elem in &v {
-        // if defi.is_empty() || defi == "NO_DEFINITION" || term.is_empty() || term == "NO_TERM" {
-        //     println!("{}", "Oh, no! Missing word found!".bright_red());
-        //     dbg!(&defi);
-        //     dbg!(&term);
-        //     continue;
-        // }
+    for elem in v {
         println!("{}", elem.show());
         // print!("{}> ", consts::SPACER);
         // io::stdout().flush().unwrap();
 
         let msg: &str = &format!("{}> ", consts::SPACER);
         let guess = rl.readline(msg).expect("Couldn't read rustyline");
-        rl.add_history_entry(&guess).unwrap();
+        rl.add_history_entry(&guess)
+            .expect("couldn't add to history");
         let guess = guess.trim();
 
         if guess == elem.correct() {
@@ -224,7 +242,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
             break;
         } else if guess == ":typo" {
             println!("{}{:?}", Exp::Typo.val(), r.pop());
-            if !question(vec![elem.clone()]).is_empty() {
+            if !question(&[elem.clone()])?.is_empty() {
                 r.push(elem.clone());
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
@@ -233,7 +251,7 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
         } else if guess == ":hint" || guess == ":h" {
             elem.hint();
 
-            if !question(vec![elem.clone()]).is_empty() {
+            if !question(&[elem.clone()])?.is_empty() {
                 r.push(elem.clone());
             }
         //treat them as flashcarding
@@ -247,23 +265,30 @@ pub fn question<T: Learn + Debug + Clone>(v: Vec<T>) -> Vec<T> {
     if r.len() > 1 {
         println!("\n\n{} remaining cards are {:#?}", r.len(), r);
     }
-    r
+    Ok(r)
 }
 
 /// Show hint from the string got
-fn hint(s: &str) {
+fn hint(s: &str) -> String {
+    let mut result = String::new();
     let mut prt = s.chars();
-    print!("{} ", Exp::Hint.val());
+    result = format!("{}{} ", result, Exp::Hint.val());
     let n = s.chars().count() / 2;
     for _ in 0..n {
-        print!("{}", prt.next().unwrap());
+        result = format!("{}{}", result, prt.next().unwrap());
     }
-    println!("{ch:_>widht$}", ch = '_', widht = s.chars().count() - n);
+    result = format!(
+        "{}{ch:_>widht$}",
+        result,
+        ch = '_',
+        widht = s.chars().count() - n
+    );
+    result
 }
 
 /// Swap definition and term of deck of cards
-pub fn swap_cards(v: &mut [cards::Cards]) {
-    for card in v {
+pub fn swap_cards(cards: &mut [cards::Cards]) {
+    for card in cards {
         card.swap();
     }
 }
@@ -277,4 +302,129 @@ pub fn random_swap_cards(v: &mut [cards::Cards]) {
             card.swap();
         }
     }
+}
+
+/// executing program core
+pub fn run(args: &args::Config) -> Result<(), Box<dyn Error>> {
+    let delim = args.delim.chars().next().unwrap();
+    match Mode::new(&args.mode) {
+        Mode::Card => {
+            let mut v = init(&args.file_path, delim)?;
+            if args.card_swap {
+                println!("swapping terms and definitions of each card");
+                swap_cards(&mut v);
+            }
+            if args.ask_both {
+                println!("swapping terms and definitions of some cards");
+                random_swap_cards(&mut v);
+            }
+            while !v.is_empty() {
+                let mut rng = WyRand::new();
+                if !args.no_shuffle {
+                    eprintln!("shuffling");
+                    rng.shuffle(&mut v);
+                }
+                v = question(&v)?;
+            }
+
+            println!("Gone through everything you wanted, great job!");
+            Ok(())
+        }
+        Mode::Verb => {
+            let mut v: Vec<Verbs> = init(&args.file_path, delim)?;
+            v.remove(0);
+            // let mut v = verbs::init(p, delim, n);
+            // println!("Verbs:\n\n{:#?}", v);
+            println!(
+                "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
+            );
+            while !v.is_empty() {
+                let mut rng = WyRand::new();
+                eprintln!("shuffling");
+                if !args.no_shuffle {
+                    rng.shuffle(&mut v);
+                }
+                // v = verbs::question(v);
+                v = question(&v)?;
+            }
+            println!("Gone through everything you wanted, great job!");
+            Ok(())
+        }
+        Mode::VerbConv => {
+            let v: Vec<Verbs> = init(&args.file_path, delim)?;
+            // let v = verbs::init(p, delim, n);
+            println!(
+                "\n\n\nConverting verbs to cards, from file: {:?} to file: {}",
+                args.file_path,
+                "verbs_as_cards.tsv".bright_blue()
+            );
+            verbs::conv(&v, "verbs_as_cards.tsv", '\t');
+            Ok(())
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::cards::Cards;
+
+    use super::*;
+
+    #[test]
+    fn swap_works() {
+        let mut cards = vec![Cards::new("term", "definition")];
+
+        swap_cards(&mut cards);
+        assert_eq!(cards, vec![Cards::new("definition", "term")]);
+    }
+
+    #[test]
+    fn hint_not_odd() {
+        let get_hint = String::from("1234");
+        assert_eq!(format!("{} 12__", Exp::Hint.val()), hint(&get_hint));
+    }
+    #[test]
+    fn hint_odd() {
+        let get_hint = String::from("12345");
+        assert_eq!(format!("{} 12___", Exp::Hint.val()), hint(&get_hint));
+    }
+    #[test]
+    fn hint_non_ascii() {
+        let get_hint = String::from("aáéűúőóüöíä|Ä");
+        assert_eq!(
+            format!("{} aáéűúő_______", Exp::Hint.val()),
+            hint(&get_hint)
+        );
+    }
+
+    #[test]
+    #[should_panic]
+    fn incorrect_mode() {
+        Mode::new("mode");
+    }
+    #[test]
+    fn correct_mode_cards() {
+        assert_eq!(Mode::Card, Mode::new("cards"));
+    }
+
+    #[test]
+    fn get_delim_correct() {
+        let line = "rot ; narancssárga";
+        assert_eq!(';', get_delim(line).unwrap());
+    }
+    #[test]
+    fn get_delim_hard() {
+        let line = "barn\ta ; braun";
+        assert_eq!('\t', get_delim(line).unwrap());
+    }
+    #[test]
+    #[should_panic]
+    fn get_delim_incorrect() {
+        let line = "# barna , braun";
+        assert_eq!(';', get_delim(line).unwrap());
+    }
+    // init()
+    // get_delim()
+    // det_props()
+    // verbs::conv()
 }
