@@ -71,6 +71,12 @@ impl Config {
 /// Get delimiter from a file
 fn get_delim(content: &str) -> Result<char, String> {
     const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
+    // if content.contains("[crablit]") && content.contains("[delim: ") {
+    //     return Ok(content
+    //         .get(content.find("[delim: ").unwrap() + "[delim: ".len() + 1)
+    //         .unwrap()
+    //         .clone());
+    // }
 
     let mut delims_counts: HashMap<char, u32> = HashMap::new();
     for delim in DELIMS {

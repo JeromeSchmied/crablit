@@ -10,10 +10,10 @@ use std::{
     process::exit,
 };
 
-/// Module for parsing cli arguments
-pub mod args;
 /// Module for learning Deck of Cards
 pub mod cards;
+/// Module for parsing cli arguments
+pub mod config;
 /// commonly used expressions(text), colored strings
 pub mod consts;
 /// Module for learning Deck of Verbs
@@ -201,23 +201,23 @@ fn random_swap_cards(v: &mut [cards::Cards]) {
     }
 }
 
-/// executing program core
-pub fn run(args: &args::Config) -> Result<(), Box<dyn Error>> {
-    let delim = args.delim.chars().next().unwrap();
-    match Mode::new(&args.mode) {
+/// Executing program core
+pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
+    let delim = config.delim.chars().next().unwrap();
+    match Mode::new(&config.mode) {
         Mode::Card => {
-            let mut v = init(&args.file_path, delim)?;
-            if args.card_swap {
+            let mut v = init(&config.file_path, delim)?;
+            if config.card_swap {
                 println!("swapping terms and definitions of each card");
                 swap_cards(&mut v);
             }
-            if args.ask_both {
+            if config.ask_both {
                 println!("swapping terms and definitions of some cards");
                 random_swap_cards(&mut v);
             }
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                if !args.no_shuffle {
+                if !config.no_shuffle {
                     eprintln!("shuffling");
                     rng.shuffle(&mut v);
                 }
@@ -228,14 +228,14 @@ pub fn run(args: &args::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::Verb => {
-            let mut v: Vec<Verbs> = init(&args.file_path, delim)?;
+            let mut v: Vec<Verbs> = init(&config.file_path, delim)?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 eprintln!("shuffling");
-                if !args.no_shuffle {
+                if !config.no_shuffle {
                     rng.shuffle(&mut v);
                 }
                 v = question(&v)?;
@@ -244,10 +244,10 @@ pub fn run(args: &args::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::VerbConv => {
-            let v: Vec<Verbs> = init(&args.file_path, delim)?;
+            let v: Vec<Verbs> = init(&config.file_path, delim)?;
             println!(
                 "\n\n\nConverting verbs to cards, from file: {:?} to file: {}",
-                args.file_path,
+                config.file_path,
                 "verbs_as_cards.tsv".bright_blue()
             );
             verbs::conv(&v, "verbs_as_cards.tsv", '\t');
