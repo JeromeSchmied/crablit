@@ -19,14 +19,15 @@
     -   File of Cards with the same delimiter in every line.
     -   Supported delimiters are: `";", "|", "    "(tab), "=", ":"`.
     -   Lines starting with `#` are considered to be comments.
-    -   Extra newlines cause no problem.
+    -   Extra newlines, indent cause no problem.
     -   Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.
     -   For instance:
 
 ```text
 # example file that can be parsed by crablit
 
-soup | Suppe
+    # special soup!
+    soup | Suppe
 
 fast | schnell
 alpaca | das Alpaka
