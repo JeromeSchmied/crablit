@@ -1,6 +1,6 @@
 # [crablit]
-# [mode: verbs]
-# [delim: 	]
+# mode = "verbs"
+# delim = '	'
 
 # Infinitiv	E/3	Präteritum	Perfekt	Jelentés	Egyéb
 akzeptieren	akzeptiert	akzeptierte	hat akzeptiert	elfogad	
