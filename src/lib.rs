@@ -185,20 +185,18 @@ fn hint(s: &str) -> String {
 
 /// Swap definition and term of deck of cards
 fn swap_cards(cards: &mut [cards::Cards]) {
-    for card in cards {
-        card.swap();
-    }
+    cards.iter_mut().for_each(|card| card.swap());
 }
 
 /// Randomly swap definition and term of deck of cards
-fn random_swap_cards(v: &mut [cards::Cards]) {
-    for card in v {
-        let mut rng = WyRand::new();
-        let swap_terms: bool = rng.generate();
-        if swap_terms {
-            card.swap();
+fn random_swap_cards(cards: &mut [cards::Cards]) {
+    let mut rng = WyRand::new();
+    cards.iter_mut().for_each(|card| {
+        let swap: bool = rng.generate();
+        if swap {
+            card.swap()
         }
-    }
+    });
 }
 
 /// Executing program core
