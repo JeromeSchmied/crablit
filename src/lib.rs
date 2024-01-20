@@ -89,15 +89,12 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
     let mut r: Vec<T> = Vec::new();
     let contents = fs::read_to_string(path)?;
     // iterating over the lines of file to store them in a vector
-    for line in contents.lines() {
-        let mut words = line.split(delim);
-        let s = words.next().unwrap_or("").trim();
-        // ignoring newlines, lines starting with #
-        if s.is_empty() || s.starts_with('#') {
-            continue;
-        };
-        r.push(Learn::new_from_line(line, delim));
-    }
+    contents
+        .lines()
+        .filter(|line| !line.starts_with('#') && !line.starts_with('\n') && !line.is_empty())
+        .for_each(|line| {
+            r.push(Learn::new_from_line(line, delim));
+        });
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
     Ok(r)
