@@ -39,8 +39,8 @@ to pour | gießen
 
 ```text
 # [crablit]
-# mode = verbs
-# delim = 	
+# mode = "verbs"
+# delim = '	'
 
 # Verben Tabelle von DaF leicht 1,2
 # it's hungarian but that really doesn't matter
