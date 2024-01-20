@@ -7,8 +7,8 @@
 ## Features
 
 -   open-source, MIT licensed
--   _Cross-platform_: compiles where Rust does, but GNU/Linux is the no. 1 priority.
--   _Fast_: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.12GB ram usage.
+-   _Cross-platform_: compiles where Rust does, but with GNU/Linux 1st philosophy.
+-   _Fast_: initialization of **20000000** cards (574MB) takes about **6.3s** with a maximum of 2.2GB ram usage.
 -   Written answers: people tend to remember words _better_ this way than flashcards.
 
 ## Creating files to learn
@@ -17,7 +17,7 @@
     -   Simple `.txt`, `.csv` or `.tsv` file.
     -   Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     -   File of Cards with the same delimiter in every line.
-    -   Good delimiters are: ` ";", "|", "    "(tab), "="`.
+    -   Supported delimiters are: `";", "|", "    "(tab), "=", ":"`.
     -   Lines starting with `#` are considered to be comments.
     -   Extra newlines cause no problem.
     -   Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.
@@ -39,8 +39,8 @@ to pour | gießen
 
 ```text
 # [crablit]
-# [mode: verbs]
-# [delim: 	]
+# mode = "verbs"
+# delim = '	'
 
 # Verben Tabelle von DaF leicht 1,2
 # it's hungarian but that really doesn't matter

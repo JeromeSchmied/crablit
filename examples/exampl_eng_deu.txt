@@ -1,11 +1,8 @@
 # example file that can be parsed by crablit
-# - (dash) is okay as a delimiter, as long as no word contains it
-# for example, the following line would ruin everything
-# well-known - berühmt
 
-soup - Suppe
-fast - schnell
-alpaca - das Alpaka
-proud - stolz
-to pour - gießen
-# I don't know what to write next. - Ich weiß nicht was...
+soup ; Suppe
+fast ; schnell
+alpaca ; das Alpaka
+proud ; stolz
+to pour ; gießen
+# I don't know what to write next. ; Ich weiß nicht was...

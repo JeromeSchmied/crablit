@@ -1,11 +1,11 @@
 extern crate output_vt100;
-use crablit::args;
+use crablit::config;
 use std::process;
 
 fn main() {
     output_vt100::init();
 
-    let config = args::Config::fix_from_file().unwrap_or_else(|err| {
+    let config = config::Config::fix_from_file().unwrap_or_else(|err| {
         eprintln!("Problem during parsing file: {}", err);
         process::exit(1);
     });

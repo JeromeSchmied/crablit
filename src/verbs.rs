@@ -1,3 +1,4 @@
+//! # This module includes code specific to learning verbforms.
 use crate::*;
 use std::io::Write;
 
@@ -68,7 +69,7 @@ impl Learn for Verbs {
     }
 
     fn hint(&self) {
-        crate::hint(&self.inf);
+        println!("{}", crate::hint(&self.inf));
     }
 
     fn new_from_line(line: &str, delim: char) -> Self {
@@ -81,6 +82,18 @@ impl Learn for Verbs {
         let trm = words.next().unwrap_or("").trim();
 
         let _other = words.next().unwrap_or("NNNNNN").trim();
+
+        if inf.is_empty() || dri.is_empty() || pra.is_empty() || per.is_empty() || trm.is_empty() {
+            panic!(
+                "{:?} line should consist of a {}{}{}{}{}.",
+                &words,
+                "<infinitive>".yellow().italic(),
+                "<3rd person>".red().bold(),
+                "<simple past>".green().bold(),
+                "<present perfect>".red().bold(),
+                "<term>".blue().italic(),
+            );
+        }
 
         // making a Verbs of the values
         Verbs::new(inf, dri, pra, per, trm)
@@ -97,8 +110,8 @@ impl Learn for Verbs {
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn conv(v: &[Verbs], o: &str, delim: char) {
-    let mut output = File::create(o).expect("couldn't create file!");
+pub fn conv(verbs: &[Verbs], ofile: &str, delim: char) -> Result<(), Box<dyn Error>> {
+    let mut output = File::create(ofile)?;
     // writeln!(output, "[crablit]").expect("Not succesful.");
     // writeln!(output, "[mode: cards]").expect("Not succesful.");
     // writeln!(output, "[delim: {delim}]").expect("Not succesful.");
@@ -107,8 +120,9 @@ pub fn conv(v: &[Verbs], o: &str, delim: char) {
     // let has_header = true;
     // if has_header {}
 
-    for line in v {
-        writeln!(output, "{}{delim}{}", line.trm, line.inf).expect("couldn't write to file!");
+    for line in verbs {
+        writeln!(output, "{}{delim}{}", line.trm, line.inf)?;
     }
-    println!("Converting verbs to cards written to {}", o);
+    println!("Converting from verbs to cards done");
+    Ok(())
 }
