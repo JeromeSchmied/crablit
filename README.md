@@ -1,5 +1,12 @@
 # [Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.
 
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)
+![Crates.io Version](https://img.shields.io/crates/v/crablit)
+![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)
+![GitHub top language](https://img.shields.io/github/languages/top/jeromeschmied/crablit)
+![Crates.io License](https://img.shields.io/crates/l/crablit)
+
 > ## IMPORTANT!
 >
 > Crablit is still in beta, functionality is not tested thoroughly.
