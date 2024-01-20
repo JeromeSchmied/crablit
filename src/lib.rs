@@ -39,34 +39,33 @@ pub enum Mode {
     VerbConv,
 }
 impl Mode {
-    pub fn new(s: &str) -> Self {
-        let s = &s.to_lowercase();
-        if s == "[mode: verbs]"
-            || s == "verbs"
-            || s == "[verbs]"
-            || s == "[mode: verb]"
-            || s == "verb"
-            || s == "[verb]"
-        {
-            Mode::Verb
-        } else if s == "[mode: cards]"
-            || s == "cards"
-            || s == "[cards]"
-            || s == "[mode: card]"
-            || s == "card"
-            || s == "[card]"
-        {
-            Mode::Card
-        } else if s == "[mode: conv]"
+    /// Creates new instance of `Self`
+    /// # usage
+    /// ```
+    /// use crablit::Mode;
+    ///
+    /// let mode = Mode::new("verbs");
+    ///
+    /// assert_eq!(mode, Mode::Verb);
+    /// ```
+    /// # panics
+    /// if mode is neither verbs, cards, or verbs2cards
+    pub fn new(mode: &str) -> Self {
+        let s = &mode.to_lowercase();
+        if s == "mode = verbs" || s == "verbs" || s == "mode = verb" || s == "verb" {
+            Self::Verb
+        } else if s == "mode = cards" || s == "cards" || s == "mode = card" || s == "card" {
+            Self::Card
+        } else if s == "mode = conv"
             || s == "conv"
             || s == "verb_conv"
-            || s == "[mode: convert]"
+            || s == "mode = convert"
             || s == "convert"
             || s == "cards2verbs"
             || s == "cardstoverbs"
             || s == "card2verb"
         {
-            Mode::VerbConv
+            Self::VerbConv
         } else {
             panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'cards2verbs'!");
         }
@@ -298,6 +297,17 @@ mod tests {
     #[test]
     fn correct_mode_cards() {
         assert_eq!(Mode::Card, Mode::new("cards"));
+    }
+
+    #[test]
+    fn mode_new_simple() {
+        let mode = "verbs";
+        assert_eq!(Mode::Verb, Mode::new(mode));
+    }
+    #[test]
+    fn mode_new_in_config() {
+        let mode = "mode = verbs";
+        assert_eq!(Mode::Verb, Mode::new(mode));
     }
 
     // init()
