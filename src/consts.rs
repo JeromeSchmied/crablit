@@ -1,3 +1,4 @@
+//! # Code containing expressions used in `crablit` regularly.
 use super::*;
 
 /// space before any output

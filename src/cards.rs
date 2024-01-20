@@ -1,3 +1,4 @@
+//! # This module includes code specific to learning expressions.
 use crate::*;
 use std::mem::swap;
 

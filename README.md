@@ -17,7 +17,7 @@
     -   Simple `.txt`, `.csv` or `.tsv` file.
     -   Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     -   File of Cards with the same delimiter in every line.
-    -   Good delimiters are: ` ";", "|", "    "(tab), "="`.
+    -   Supported delimiters are: ` ";", "|", "    "(tab), "=", ":"`.
     -   Lines starting with `#` are considered to be comments.
     -   Extra newlines cause no problem.
     -   Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.

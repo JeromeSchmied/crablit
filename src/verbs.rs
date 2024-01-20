@@ -1,3 +1,4 @@
+//! # This module includes code specific to learning verbforms.
 use crate::*;
 use std::io::Write;
 
