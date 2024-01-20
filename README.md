@@ -7,7 +7,7 @@
 ## Features
 
 -   open-source, MIT licensed
--   _Cross-platform_: compiles where Rust does, but GNU/Linux is the no. 1 priority.
+-   _Cross-platform_: compiles where Rust does, but with GNU/Linux 1st philosophy.
 -   _Fast_: initialization of **20000000** cards (574MB) takes about **6.3s** with a maximum of 2.2GB ram usage.
 -   Written answers: people tend to remember words _better_ this way than flashcards.
 
