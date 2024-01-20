@@ -6,10 +6,10 @@
 
 ## Features
 
--   open-source, MIT licensed
--   _Cross-platform_: compiles where Rust does, but with GNU/Linux 1st philosophy.
+-   _open-source_, MIT licensed
+-   _Cross-platform_: works on Windows, MacOS, but with GNU/Linux 1st philosophy.
 -   _Fast_: initialization of **20000000** cards (574MB) takes about **6.3s** with a maximum of 2.2GB ram usage.
--   Written answers: people tend to remember words _better_ this way than flashcards.
+-   Written answers.
 
 ## Creating files to learn
 
@@ -60,13 +60,14 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 <!-- | totally free    | not really  | not really | Yes, and it always will be              | -->
 <!-- | speed out of 10 | 4           | 2          | 10                                      | -->
 <!-- | offline version | paid        | no         | cross-platform, fast, TUI,GUI : coming soon  | -->
+
 <!-- # or you can install latest development version with -->
 <!-- cargo install --git https://github.com/jeromeschmied/crablit -->
 
 ## Installing:
 
--   Install Rust, if you don't have it: go to the official [install instructions](https://www.rust-lang.org/tools/install)
--   Open a _terminal_ and do one of the following install methods:
+-   [Install Rust](https://www.rust-lang.org/tools/install), if you don't have it.
+-   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
 
 1. From [crates.io](https://crates.io/crates/crablit): **_easiest, recommended!_**
 
@@ -101,12 +102,13 @@ cargo run -- examples/18_eng_deu.txt
 ## Usage
 
 -   Run `crablit --help` to see options.
--   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 -   Type the definition of the questioned word/phrase.
 -   To see hint: `:hint` or `:h`.
 -   If you mistyped it, type: `:typo`.
 -   To skip: `:skip`.
 -   To quit: `quit` or `exit` or `:q`.
+-   To edit previously typed guess, press arrow-up. Doesn't always work.
+-   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 
 ## How it works
 
@@ -120,7 +122,7 @@ cargo run -- examples/18_eng_deu.txt
 ## Notes
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
--   flashcards, TUI, GUI, Website are coming, but it takes time.
+-   Flashcards, TUI, GUI, Website are coming, but it takes time.
 -   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit), or [email](mailto:iITsnot.me214@proton.me).
 -   To help with development, see [todos](TODO.md).
 
