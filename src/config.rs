@@ -77,7 +77,7 @@ fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
         .count();
 
     let avg = (sum as f32 / n as f32).ceil();
-    println!("sum: {sum}, n: {n}, avg: {avg}");
+    eprintln!("sum: {sum}, n: {n}, avg: {avg}");
     if avg == 2. {
         Ok("cards".to_string())
     } else if avg > 2. && avg < 7. {
@@ -122,9 +122,14 @@ fn get_delim(content: &str) -> Result<char, String> {
 fn get_prop(content: &str, prop: &str) -> Result<String, String> {
     if content.contains("[crablit]") {
         eprintln!("text contains [crablit]!");
+        let prop = &format!("{} = ", prop);
+        if !content.contains(prop) {
+            eprintln!("Coudln't find \"{prop}\"");
+            return Err(format!("Coudln't find \"{prop}\""));
+        }
         Ok(content
             .lines()
-            .find(|line| line.contains(&format!("{} = ", prop)))
+            .find(|line| line.contains(prop))
             .unwrap()
             .split('=')
             .last()

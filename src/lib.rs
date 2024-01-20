@@ -98,7 +98,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
         };
         r.push(Learn::new_from_line(line, delim));
     }
-    println!("{:?} file succesfully read.", path);
+    eprintln!("{:?} file succesfully read.", path);
     // println!("content: {:?}", r);
     Ok(r)
 }
