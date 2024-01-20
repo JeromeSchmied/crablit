@@ -1,11 +1,12 @@
 # [Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.
 
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/commits)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)](https://github.com/jeromeschmied/crablit/actions)
 [![Crates.io Version](https://img.shields.io/crates/v/crablit)](https://crates.io/crates/crablit)
-[![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/)
+[![Crates.io License](https://img.shields.io/crates/l/crablit)](https://choosealicense.com/licenses/mit/)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)](https://github.com/jeromeschmied/crablit/actions)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/commits)
+[![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/issues)
 [![GitHub top language](https://img.shields.io/github/languages/top/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/)
-[![Crates.io License](https://img.shields.io/crates/l/crablit)](https://github.com/jeromeschmied/crablit/)
+
 > ## IMPORTANT!
 >
 > Crablit is still in beta, functionality is not tested thoroughly.
