@@ -168,9 +168,7 @@ fn hint(s: &str) -> String {
     let mut prt = s.chars();
     result = format!("{}{} ", result, Exp::Hint.val());
     let n = s.chars().count() / 2;
-    for _ in 0..n {
-        result = format!("{}{}", result, prt.next().unwrap());
-    }
+    (0..n).for_each(|_| result = format!("{}{}", result, prt.next().unwrap()));
     result = format!(
         "{}{ch:_>widht$}",
         result,
