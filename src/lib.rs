@@ -92,7 +92,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
     // iterating over the lines of file to store them in a vector
     contents
         .lines()
-        .filter(|line| !line.starts_with('#') && !line.starts_with('\n') && !line.is_empty())
+        .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
         .for_each(|line| {
             r.push(Learn::new_from_line(line, delim));
         });

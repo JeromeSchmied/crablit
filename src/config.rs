@@ -72,7 +72,7 @@ fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
     let mut sum = 0;
     let n = content
         .lines()
-        .filter(|line| !line.starts_with('#') && !line.starts_with('\n') && !line.is_empty())
+        .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
         .map(|line| sum += line.split(*delim).count())
         .count();
 

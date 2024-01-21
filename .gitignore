@@ -12,3 +12,4 @@ examples/wronk_verben.txt
 install.*
 *big*
 pr.sh
+depgraph*
