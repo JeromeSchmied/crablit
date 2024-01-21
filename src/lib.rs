@@ -136,6 +136,7 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
             }
             break;
         } else if guess == ":typo" {
+            // ask to type before correcting
             println!("{}{:?}", Exp::Typo.val(), r.pop());
             if !question(&[elem.clone()])?.is_empty() {
                 r.push(elem.clone());

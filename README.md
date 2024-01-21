@@ -15,7 +15,7 @@
 
 -   _open-source_, MIT licensed
 -   _Cross-platform_: works on Windows, MacOS, but with GNU/Linux 1st philosophy.
--   _Fast_: initialization of **20000000** cards (574MB) takes about **6.3s** with a maximum of 2.2GB ram usage.
+-   _Fast_: initialization of **20000000** cards (574MB) takes about **4.3s** with a maximum of 2.4GB RAM usage.
 -   Written answers.
 
 ## Creating files to learn
