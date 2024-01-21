@@ -19,11 +19,11 @@ pub struct Config {
     pub ask_both: bool,
 
     /// Mode: either cards, verbs or verbs2cards
-    #[arg(short, long, default_value = "cards")]
+    #[arg(short, long, default_value = "None")]
     pub mode: String,
 
     /// Delimiter used in file to seperate terms and definitions
-    #[arg(short, long, default_value = ";")]
+    #[arg(short, long, default_value = "None")]
     pub delim: String,
 
     /// Don't shuffle card order
@@ -39,13 +39,13 @@ impl Config {
         eprintln!("Trying to open {}", &config.file_path);
         let content = fs::read_to_string(&config.file_path)?;
 
-        let delim = if config.delim != ";" {
+        let delim = if config.delim != "None" {
             config.delim.chars().next().unwrap()
         } else {
             get_delim(&content)?
         };
 
-        let mode = if config.mode != "cards" {
+        let mode = if config.mode != "None" {
             config.mode
         } else {
             get_mode(&content, &delim)?
@@ -96,25 +96,27 @@ fn get_delim(content: &str) -> Result<char, String> {
     }
 
     let mut delims_counts: HashMap<char, u32> = HashMap::new();
-    for delim in DELIMS {
-        let delim_count = content.chars().filter(|ch| ch == &delim).count();
+
+    for delim in &DELIMS {
+        let mut delim_count = 0;
+        content
+            .lines()
+            .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
+            .for_each(|line| delim_count += line.trim().chars().filter(|c| c == delim).count());
         if delim_count > 0 {
-            delims_counts.insert(delim, delim_count as u32);
+            delims_counts.insert(*delim, delim_count as u32);
         }
+    }
+    for delim in &delims_counts {
+        println!("{}: {}", delim.0, delim.1);
     }
     if delims_counts.is_empty() {
         Err(format!(
-            "Couldn't determine delimiter type, should be one of: {:?}",
+            "Couldn't determine delimiter, should be one of: {:?}",
             DELIMS
         ))
     } else {
-        let mut max: (char, u32) = ('\0', 0);
-        for (k, v) in delims_counts {
-            if v > max.1 {
-                max = (k, v);
-            }
-        }
-        Ok(max.0)
+        Ok(*delims_counts.iter().max_by_key(|x| x.1).unwrap().0)
     }
 }
 
