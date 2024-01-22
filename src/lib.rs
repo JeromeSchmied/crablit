@@ -113,10 +113,10 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
     for elem in v {
         println!("{}", elem.show());
         // print!("{}> ", consts::SPACER);
-        // io::stdout().flush().unwrap();
+        // io::stdout().flush()?;
 
-        let msg: &str = &format!("{}> ", consts::SPACER);
-        let guess = rl.readline(msg).expect("Couldn't read rustyline");
+        let msg = &format!("{}> ", consts::SPACER);
+        let guess = rl.readline(msg)?;
         rl.add_history_entry(&guess)
             .expect("couldn't add to history");
         let guess = guess.trim();
