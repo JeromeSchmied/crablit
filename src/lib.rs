@@ -57,9 +57,9 @@ impl Mode {
         } else if s == "mode = cards" || s == "cards" || s == "mode = card" || s == "card" {
             Self::Card
         } else if s == "mode = conv"
+            || s == "conv"
             || s == "v2c"
             || s == "mode = convert"
-            || s == "conv"
             || s == "verb_conv"
             || s == "convert"
             || s == "verbs2cards"
