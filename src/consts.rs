@@ -34,7 +34,7 @@ impl Exp {
         match *self {
             Exp::Quest => format!("{}?", SPACER).bright_yellow().bold(),
             Exp::Knew => format!("{}%", SPACER).bright_green().bold(),
-            Exp::KnewIt => "That's about it!".bright_green(),
+            Exp::KnewIt => "Yes, that's right!".bright_green(),
             Exp::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
             Exp::Revise => {
                 format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
