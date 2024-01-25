@@ -2,6 +2,7 @@
 
 [![Crates.io Version](https://img.shields.io/crates/v/crablit)](https://crates.io/crates/crablit)
 [![Crates.io License](https://img.shields.io/crates/l/crablit)](https://choosealicense.com/licenses/mit/)
+[![dependency status](https://deps.rs/crate/crablit/0.1.5/status.svg)](https://deps.rs/crate/crablit/0.1.5)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)](https://github.com/jeromeschmied/crablit/actions)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/commits)
 [![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/issues)
@@ -136,11 +137,11 @@ cargo run -- examples/18_eng_deu.txt
 
 ## Alternatives:
 
--   [speki](https://crates.io/crates/speki): only flashcards, huge download size, tui, rust
--   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust
--   [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust
+-   [speki](https://crates.io/crates/speki): only flashcards, huge download size, tui, rust, unmaintained?
+-   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust, unmaintained?
+-   [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust, unmaintained?
 -   [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
--   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust
+-   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust, unmaintained?
 
 [1]: examples/img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
