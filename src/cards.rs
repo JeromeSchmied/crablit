@@ -55,7 +55,7 @@ impl Learn for Cards {
             Err(format!(
                 "A line should consist of a {}{}{}.\nInstead looks like this: {}",
                 "<term>".blue().italic(),
-                "<delimiter>".red().bold(),
+                delim.to_string().red().bold(),
                 "<definition>".yellow().italic(),
                 line,
             ))
