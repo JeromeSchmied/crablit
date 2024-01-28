@@ -52,20 +52,11 @@ impl Mode {
     /// if mode is neither verbs, cards, or verbs2cards
     pub fn new(mode: &str) -> Self {
         let s = &mode.to_lowercase();
-        if s == "mode = verbs" || s == "verbs" || s == "mode = verb" || s == "verb" {
+        if s == "verbs" || s == "verb" {
             Self::Verb
-        } else if s == "mode = cards" || s == "cards" || s == "mode = card" || s == "card" {
+        } else if s == "cards" || s == "card" {
             Self::Card
-        } else if s == "mode = conv"
-            || s == "conv"
-            || s == "v2c"
-            || s == "mode = convert"
-            || s == "verb_conv"
-            || s == "convert"
-            || s == "verbs2cards"
-            || s == "verbstocards"
-            || s == "verb2card"
-        {
+        } else if s == "conv" || s == "convert" || s == "verb_conv" || s == "verbs2cards" {
             Self::VerbConv
         } else {
             panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'verbs2cards'!");
@@ -87,8 +78,8 @@ impl Mode {
 
 /// Initializing deck of either `cards`, or `verbs`
 pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
-    let mut r: Vec<T> = Vec::new();
     let contents = fs::read_to_string(path)?;
+    let mut r: Vec<T> = Vec::new();
     // iterating over the lines of file to store them in a vector
     for line in contents.lines() {
         if line.trim().starts_with('#') || line.is_empty() {
