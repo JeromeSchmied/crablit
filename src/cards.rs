@@ -53,7 +53,7 @@ impl Learn for Cards {
         let mut words = line.split(delim);
         if words.clone().count() != 2 {
             Err(format!(
-                "A line should consist of a {}{}{}.\nInstead looks like this: {}",
+                "A line should look like this:\n\t\"{}{}{}\".\nInstead looks like this:\n\t\"{}\".",
                 "<term>".blue().italic(),
                 delim.to_string().red().bold(),
                 "<definition>".yellow().italic(),

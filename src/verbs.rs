@@ -85,7 +85,7 @@ impl Learn for Verbs {
 
         if inf.is_empty() || dri.is_empty() || pra.is_empty() || per.is_empty() || trm.is_empty() {
             Err(format!(
-                "A line should consist of a {}{}{}{}{}{}{}{}{}.\nInstead looks like this: {}",
+                "A line should look like this: \n\t\"{}{}{}{}{}{}{}{}{}\".\nInstead looks like this: \n\t\"{}\".",
                 "<infinitive>".yellow().italic(),
                 delim.to_string().red().bold(),
                 "<3rd person>".red().bold(),
