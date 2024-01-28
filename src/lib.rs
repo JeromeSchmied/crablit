@@ -97,7 +97,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
     //         r.push(*Learn::new_from_line(line, delim).unwrap());
     //     });
     for line in contents.lines() {
-        if line.trim().starts_with('#') && line.is_empty() {
+        if line.trim().starts_with('#') || line.is_empty() {
             continue;
         }
         r.push(*Learn::new_from_line(line, delim)?);
