@@ -28,7 +28,7 @@ pub trait Learn {
     fn wrong(&self) -> String;
     fn flashcard(&self) -> String;
     fn hint(&self);
-    fn new_from_line(line: &str, delim: char) -> Self;
+    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String>;
 }
 
 #[derive(Debug, PartialEq)]
@@ -90,12 +90,18 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
     let mut r: Vec<T> = Vec::new();
     let contents = fs::read_to_string(path)?;
     // iterating over the lines of file to store them in a vector
-    contents
-        .lines()
-        .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
-        .for_each(|line| {
-            r.push(Learn::new_from_line(line, delim));
-        });
+    // contents
+    //     .lines()
+    //     .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
+    //     .for_each(|line| {
+    //         r.push(*Learn::new_from_line(line, delim).unwrap());
+    //     });
+    for line in contents.lines() {
+        if line.trim().starts_with('#') && line.is_empty() {
+            continue;
+        }
+        r.push(*Learn::new_from_line(line, delim)?);
+    }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
     Ok(r)
