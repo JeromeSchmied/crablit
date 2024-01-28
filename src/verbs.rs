@@ -72,7 +72,7 @@ impl Learn for Verbs {
         println!("{}", crate::hint(&self.inf));
     }
 
-    fn new_from_line(line: &str, delim: char) -> Self {
+    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String> {
         let mut words = line.split(delim);
 
         let inf = words.next().unwrap_or("").trim();
@@ -84,19 +84,23 @@ impl Learn for Verbs {
         let _other = words.next().unwrap_or("NNNNNN").trim();
 
         if inf.is_empty() || dri.is_empty() || pra.is_empty() || per.is_empty() || trm.is_empty() {
-            panic!(
-                "{:?} line should consist of a {}{}{}{}{}.",
-                &words,
+            Err(format!(
+                "A line should look like this: \n\t\"{}{}{}{}{}{}{}{}{}\".\nInstead looks like this: \n\t\"{}\".",
                 "<infinitive>".yellow().italic(),
+                delim.to_string().red().bold(),
                 "<3rd person>".red().bold(),
+                delim.to_string().red().bold(),
                 "<simple past>".green().bold(),
+                delim.to_string().red().bold(),
                 "<present perfect>".red().bold(),
+                delim.to_string().red().bold(),
                 "<term>".blue().italic(),
-            );
+                line,
+            ))
+        } else {
+            // making a Verbs of the values
+            Ok(Box::new(Verbs::new(inf, dri, pra, per, trm)))
         }
-
-        // making a Verbs of the values
-        Verbs::new(inf, dri, pra, per, trm)
     }
 
     fn flashcard(&self) -> String {

@@ -49,20 +49,20 @@ impl Learn for Cards {
         println!("{}", crate::hint(&self.def));
     }
 
-    fn new_from_line(line: &str, delim: char) -> Self {
+    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 {
-            panic!(
-                "{:?} line should consist of a {}{}{}.",
-                &words,
+            Err(format!(
+                "A line should look like this:\n\t\"{}{}{}\".\nInstead looks like this:\n\t\"{}\".",
                 "<term>".blue().italic(),
-                "<delimiter>".red().bold(),
-                "<definition>".yellow().italic()
-            );
+                delim.to_string().red().bold(),
+                "<definition>".yellow().italic(),
+                line,
+            ))
         } else {
             let trm = words.next().unwrap().trim();
             let def = words.next().unwrap().trim();
-            Cards::new(trm, def)
+            Ok(Box::new(Cards::new(trm, def)))
         }
     }
 

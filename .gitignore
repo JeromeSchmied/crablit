@@ -5,8 +5,6 @@ version_history/
 files/
 # projects with similar goals
 alt/
-# maybe it's needed, being a binary crate
-# Cargo.lock
 release.sh
 examples/wronk_verben.txt
 install.*

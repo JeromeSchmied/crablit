@@ -28,7 +28,7 @@ pub trait Learn {
     fn wrong(&self) -> String;
     fn flashcard(&self) -> String;
     fn hint(&self);
-    fn new_from_line(line: &str, delim: char) -> Self;
+    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String>;
 }
 
 #[derive(Debug, PartialEq)]
@@ -52,20 +52,11 @@ impl Mode {
     /// if mode is neither verbs, cards, or verbs2cards
     pub fn new(mode: &str) -> Self {
         let s = &mode.to_lowercase();
-        if s == "mode = verbs" || s == "verbs" || s == "mode = verb" || s == "verb" {
+        if s == "verbs" || s == "verb" {
             Self::Verb
-        } else if s == "mode = cards" || s == "cards" || s == "mode = card" || s == "card" {
+        } else if s == "cards" || s == "card" {
             Self::Card
-        } else if s == "mode = conv"
-            || s == "conv"
-            || s == "v2c"
-            || s == "mode = convert"
-            || s == "verb_conv"
-            || s == "convert"
-            || s == "verbs2cards"
-            || s == "verbstocards"
-            || s == "verb2card"
-        {
+        } else if s == "conv" || s == "convert" || s == "verb_conv" || s == "verbs2cards" {
             Self::VerbConv
         } else {
             panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'verbs2cards'!");
@@ -87,15 +78,15 @@ impl Mode {
 
 /// Initializing deck of either `cards`, or `verbs`
 pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
-    let mut r: Vec<T> = Vec::new();
     let contents = fs::read_to_string(path)?;
+    let mut r: Vec<T> = Vec::new();
     // iterating over the lines of file to store them in a vector
-    contents
-        .lines()
-        .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
-        .for_each(|line| {
-            r.push(Learn::new_from_line(line, delim));
-        });
+    for line in contents.lines() {
+        if line.trim().starts_with('#') || line.is_empty() {
+            continue;
+        }
+        r.push(*Learn::new_from_line(line, delim)?);
+    }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
     Ok(r)
@@ -312,8 +303,8 @@ mod tests {
     }
     #[test]
     fn mode_new_in_config() {
-        let mode = "mode = verbs";
-        assert_eq!(Mode::Verb, Mode::new(mode));
+        let mode = "verbs2cards";
+        assert_eq!(Mode::VerbConv, Mode::new(mode));
     }
 
     // init()
