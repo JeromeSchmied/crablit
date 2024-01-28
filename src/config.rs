@@ -40,12 +40,14 @@ impl Config {
         let content = fs::read_to_string(&config.file_path)?;
 
         let delim = if config.delim != "None" {
+            eprintln!("got delimiter as arg");
             config.delim.chars().next().unwrap()
         } else {
             get_delim(&content)?
         };
 
         let mode = if config.mode != "None" {
+            eprintln!("got mode as arg");
             config.mode
         } else {
             get_mode(&content, &delim)?
