@@ -303,8 +303,8 @@ mod tests {
     }
     #[test]
     fn mode_new_in_config() {
-        let mode = "mode = verbs";
-        assert_eq!(Mode::Verb, Mode::new(mode));
+        let mode = "verbs2cards";
+        assert_eq!(Mode::VerbConv, Mode::new(mode));
     }
 
     // init()
