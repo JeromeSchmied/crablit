@@ -28,7 +28,7 @@ pub trait Learn {
     fn wrong(&self) -> String;
     fn flashcard(&self) -> String;
     fn hint(&self);
-    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String>;
+    fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
 }
 
 #[derive(Debug, PartialEq)]
@@ -85,7 +85,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
         if line.trim().starts_with('#') || line.is_empty() {
             continue;
         }
-        r.push(*Learn::new_from_line(line, delim)?);
+        r.push(*Learn::serialize(line, delim)?);
     }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
