@@ -133,18 +133,24 @@ pub fn question<T: Learn + Debug + Clone>(
             }
 
             ":w" | ":write" | ":save" => {
-                let state_file_path = &format!("{}{}", STATE_HOME, &conf.file_path);
+                // let state_file_path =
+                //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
 
-                let mut ofile = File::create(state_file_path)?;
+                let mut ofile = File::create(&conf.file_path)?;
 
                 writeln!(ofile, "# [crablit]")?;
-                writeln!(ofile, "# mode = \"cards\"")?;
+                writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
                 writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
 
+                println!("r: {:?}", r);
                 let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
                 writeln!(ofile, "{}", content)?;
 
-                eprintln!("Saved file to {}{}.", SPACER, state_file_path);
+                eprintln!("Saved file to {}{}.", SPACER, conf.file_path);
+
+                if !question(&[elem.clone()], conf)?.is_empty() {
+                    r.push(elem.clone());
+                }
             }
 
             ":typo" => {
@@ -274,6 +280,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 }
 
 fn deserialize<T: Learn>(v: &[T], delim: char) -> Result<String, Box<dyn Error>> {
+    // v.iter().map(|item| item.to_str(delim)).collect()
     let mut r = String::new();
     for item in v {
         r.push_str(&item.to_str(delim));

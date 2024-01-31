@@ -42,18 +42,20 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let config = Config::parse();
 
-        let state_file_path = &format!("{}{}", STATE_HOME, &config.file_path);
+        let state_file_path = &format!("{}{}", STATE_HOME, &config.file_path.replace('/', "_"));
         eprintln!("Searching for state at: \"{}\"", &state_file_path);
-        let content = if let Ok(state_file) = fs::read_to_string(state_file_path) {
+        let (content, fpath) = if let Ok(state_file) = fs::read_to_string(state_file_path) {
             eprintln!(
                 "Opening file from previously saved state: \"{}\"",
                 state_file_path
             );
-            state_file
+            println!("state file content:\n{:?}\n", state_file);
+            (state_file, state_file_path)
         } else {
-            fs::read_to_string(&config.file_path)?
+            eprintln!("Trying to open {}", &config.file_path);
+            let content = fs::read_to_string(&config.file_path)?;
+            (content, &config.file_path)
         };
-        eprintln!("Trying to open {}", &config.file_path);
         // let content = fs::read_to_string(&config.file_path)?;
 
         let delim = if config.delim != "None" {
@@ -72,7 +74,7 @@ impl Config {
 
         eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
         Ok(Config {
-            file_path: config.file_path.clone(),
+            file_path: fpath.to_string(),
             card_swap: config.card_swap,
             ask_both: config.ask_both,
             no_shuffle: config.no_shuffle,
