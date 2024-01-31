@@ -10,8 +10,10 @@ fn main() {
         process::exit(1);
     });
 
-    if let Err(e) = crablit::run(&config) {
-        eprintln!("App error: {}", e);
-        process::exit(2);
-    };
+    if !config.only_check {
+        if let Err(e) = crablit::run(&config) {
+            eprintln!("App error: {}", e);
+            process::exit(2);
+        };
+    }
 }

@@ -13,7 +13,7 @@ pub struct Config {
     pub file_path: String,
 
     /// Swap terms and definitions of cards
-    #[arg(short, long, default_value_t = false)]
+    #[arg(short = 's', long, default_value_t = false)]
     pub card_swap: bool,
 
     /// Sometimes ask the term, sometimes definition of cards
@@ -31,6 +31,10 @@ pub struct Config {
     /// Don't shuffle card order
     #[arg(short, long, default_value_t = false)]
     pub no_shuffle: bool,
+
+    /// Don't actually start learning deck, only check if it's correct
+    #[arg(short = 'c', long = "check", default_value_t = false)]
+    pub only_check: bool,
 }
 
 impl Config {
@@ -74,6 +78,7 @@ impl Config {
             no_shuffle: config.no_shuffle,
             mode,
             delim: delim.to_string(),
+            only_check: config.only_check,
         })
     }
 }
