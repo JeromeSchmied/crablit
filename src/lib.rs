@@ -1,6 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
 // dirs::data_dir()
-use crate::{consts::*, verbs::Verbs};
+use crate::{consts::*, verbs::Verb};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
@@ -133,7 +133,6 @@ pub fn question<T: Learn + Debug + Clone>(
             }
 
             ":w" | ":write" | ":save" => {
-                let content = elem.deserialize(&r)?;
                 let state_file_path = &format!("{}{}", STATE_HOME, &conf.file_path);
 
                 let mut ofile = File::create(state_file_path)?;
@@ -142,6 +141,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 writeln!(ofile, "# mode = \"cards\"")?;
                 writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
 
+                let content = elem.deserialize(&r)?;
                 writeln!(ofile, "{}", content)?;
 
                 eprintln!("Saved file to {}{}.", SPACER, state_file_path);
@@ -205,12 +205,12 @@ fn hint(s: &str) -> String {
 }
 
 /// Swap definition and term of deck of cards
-fn swap_cards(cards: &mut [cards::Cards]) {
+fn swap_cards(cards: &mut [cards::Card]) {
     cards.iter_mut().for_each(|card| card.swap());
 }
 
 /// Randomly swap definition and term of deck of cards
-fn randomly_swap_cards(cards: &mut [cards::Cards]) {
+fn randomly_swap_cards(cards: &mut [cards::Card]) {
     let mut rng = WyRand::new();
     cards.iter_mut().for_each(|card| {
         let swap: bool = rng.generate();
@@ -248,7 +248,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::Verb => {
-            let mut v: Vec<Verbs> = init(&conf.file_path, delim)?;
+            let mut v: Vec<Verb> = init(&conf.file_path, delim)?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
@@ -265,7 +265,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::VerbConv => {
-            let v: Vec<Verbs> = init(&conf.file_path, delim)?;
+            let v: Vec<Verb> = init(&conf.file_path, delim)?;
             verbs::deser_to_conv(&v, conf)?;
 
             Ok(())
@@ -275,16 +275,16 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::cards::Cards;
+    use crate::cards::Card;
 
     use super::*;
 
     #[test]
     fn swap_works() {
-        let mut cards = vec![Cards::new("term", "definition")];
+        let mut cards = vec![Card::new("term", "definition")];
 
         swap_cards(&mut cards);
-        assert_eq!(cards, vec![Cards::new("definition", "term")]);
+        assert_eq!(cards, vec![Card::new("definition", "term")]);
     }
 
     #[test]

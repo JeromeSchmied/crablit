@@ -4,16 +4,16 @@ use std::io::Write;
 
 #[derive(Debug, Clone)]
 /// Structure the store each Verb's data
-pub struct Verbs {
+pub struct Verb {
     inf: String,
     dri: String,
     pra: String,
     per: String,
     trm: String,
 }
-impl Verbs {
+impl Verb {
     fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
-        Verbs {
+        Verb {
             inf: inf.to_owned(),
             dri: dri.to_owned(),
             pra: pra.to_owned(),
@@ -42,7 +42,7 @@ impl Verbs {
     }
 }
 
-impl Learn for Verbs {
+impl Learn for Verb {
     fn show(&self) -> String {
         format!("\n\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
@@ -55,7 +55,7 @@ impl Learn for Verbs {
         format!(
             "{} {:?}",
             Msg::Skip.val(),
-            Verbs::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
+            Verb::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
         )
     }
 
@@ -99,7 +99,7 @@ impl Learn for Verbs {
             ))
         } else {
             // making a Verbs of the values
-            Ok(Box::new(Verbs::new(inf, dri, pra, per, trm)))
+            Ok(Box::new(Verb::new(inf, dri, pra, per, trm)))
         }
     }
 
@@ -115,7 +115,7 @@ impl Learn for Verbs {
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn deser_to_conv(verbs: &[Verbs], conf: &Config) -> Result<(), Box<dyn Error>> {
+pub fn deser_to_conv(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
     let ofile_name = &format!(
         "{}_as_cards.csv",
         conf.file_path

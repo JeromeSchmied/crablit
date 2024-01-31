@@ -3,7 +3,7 @@ use crate::*;
 use std::mem::swap;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct Cards {
+pub struct Card {
     /// Term in known language
     trm: String,
     /// Definition in language to be learnt
@@ -11,7 +11,7 @@ pub struct Cards {
     // /// level of knowledge
     // lev: u32,
 }
-impl Cards {
+impl Card {
     pub fn new(term: &str, def: &str) -> Self {
         Self {
             trm: term.to_string(),
@@ -23,7 +23,7 @@ impl Cards {
     }
 }
 
-impl Learn for Cards {
+impl Learn for Card {
     fn show(&self) -> String {
         format!("\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
@@ -33,7 +33,7 @@ impl Learn for Cards {
     }
 
     fn skip(&self) -> String {
-        format!("{} {:?}", Msg::Skip.val(), Cards::new(&self.trm, &self.def))
+        format!("{} {:?}", Msg::Skip.val(), Card::new(&self.trm, &self.def))
     }
 
     fn wrong(&self) -> String {
@@ -62,7 +62,7 @@ impl Learn for Cards {
         } else {
             let trm = words.next().unwrap().trim();
             let def = words.next().unwrap().trim();
-            Ok(Box::new(Cards::new(trm, def)))
+            Ok(Box::new(Card::new(trm, def)))
         }
     }
 
