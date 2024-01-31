@@ -114,19 +114,18 @@ impl Learn for Verbs {
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn conv(verbs: &[Verbs], ofile: &str, delim: char) -> Result<(), Box<dyn Error>> {
-    let mut output = File::create(ofile)?;
-    // writeln!(output, "[crablit]").expect("Not succesful.");
-    // writeln!(output, "[mode: cards]").expect("Not succesful.");
-    // writeln!(output, "[delim: {delim}]").expect("Not succesful.");
-    // writeln!(output).expect("Couldn't write to file.");
+pub fn conv(verbs: &[Verbs], out_file_path: &str, delim: char) -> Result<(), Box<dyn Error>> {
+    let mut outfile = File::create(out_file_path)?;
 
-    // let has_header = true;
-    // if has_header {}
+    writeln!(outfile, "# [crablit]")?;
+    writeln!(outfile, "# mode = \"cards\"")?;
+    writeln!(outfile, "# delim = \'{delim}\'\n\n")?;
 
     for line in verbs {
-        writeln!(output, "{}{delim}{}", line.trm, line.inf)?;
+        writeln!(outfile, "{}{delim}{}", line.trm, line.inf)?;
     }
+
     println!("Converting from verbs to cards done");
+
     Ok(())
 }

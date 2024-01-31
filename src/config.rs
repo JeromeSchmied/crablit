@@ -3,6 +3,8 @@
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs};
 
+use crate::consts::STATE_HOME;
+
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
 pub struct Config {
@@ -36,8 +38,19 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let config = Config::parse();
 
+        let state_file_path = &format!("{}{}", STATE_HOME, &config.file_path);
+        eprintln!("Searching for state at: \"{}\"", &state_file_path);
+        let content = if let Ok(state_file) = fs::read_to_string(state_file_path) {
+            eprintln!(
+                "Opening file from previously saved state: \"{}\"",
+                state_file_path
+            );
+            state_file
+        } else {
+            fs::read_to_string(&config.file_path)?
+        };
         eprintln!("Trying to open {}", &config.file_path);
-        let content = fs::read_to_string(&config.file_path)?;
+        // let content = fs::read_to_string(&config.file_path)?;
 
         let delim = if config.delim != "None" {
             eprintln!("got delimiter as arg");

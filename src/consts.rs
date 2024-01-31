@@ -1,6 +1,8 @@
 //! # Code containing expressions used in `crablit` regularly.
 use super::*;
 
+/// State home
+pub const STATE_HOME: &str = "/home/jeromos/.local/state/crablit/";
 /// space before any output
 pub const SPACER: &str = "    ";
 /// commonly used expressions(text), colored strings
