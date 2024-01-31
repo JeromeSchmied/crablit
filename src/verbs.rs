@@ -111,8 +111,24 @@ impl Learn for Verbs {
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn deser_conv(verbs: &[Verbs], conf: &Config) -> Result<(), Box<dyn Error>> {
-    let mut outfile = File::create(&conf.file_path)?;
+pub fn deser_to_conv(verbs: &[Verbs], conf: &Config) -> Result<(), Box<dyn Error>> {
+    let ofile_name = &format!(
+        "{}_as_cards.csv",
+        conf.file_path
+            .split('/')
+            .last()
+            .unwrap()
+            .split('.')
+            .next()
+            .unwrap()
+    );
+
+    println!(
+        "\n\nConverting verbs to cards, from file: {:?} to file: {}",
+        conf.file_path,
+        ofile_name.bright_blue()
+    );
+    let mut outfile = File::create(ofile_name)?;
 
     writeln!(outfile, "# [crablit]")?;
     writeln!(outfile, "# mode = \"cards\"")?;

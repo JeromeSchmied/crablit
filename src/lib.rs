@@ -247,23 +247,7 @@ pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
         }
         Mode::VerbConv => {
             let v: Vec<Verbs> = init(&config.file_path, delim)?;
-            let ofile_name = &format!(
-                "{}_as_cards.csv",
-                config
-                    .file_path
-                    .split('/')
-                    .last()
-                    .unwrap()
-                    .split('.')
-                    .next()
-                    .unwrap()
-            );
-            println!(
-                "\n\nConverting verbs to cards, from file: {:?} to file: {}",
-                config.file_path,
-                ofile_name.bright_blue()
-            );
-            verbs::deser_conv(&v, config)?;
+            verbs::deser_to_conv(&v, config)?;
 
             Ok(())
         }
