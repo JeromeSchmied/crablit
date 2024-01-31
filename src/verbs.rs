@@ -44,7 +44,7 @@ impl Verbs {
 
 impl Learn for Verbs {
     fn show(&self) -> String {
-        format!("\n\n{} {}", Exp::Quest.val(), self.trm.bright_blue())
+        format!("\n\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -54,7 +54,7 @@ impl Learn for Verbs {
     fn skip(&self) -> String {
         format!(
             "{} {:?}",
-            Exp::Skip.val(),
+            Msg::Skip.val(),
             Verbs::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
         )
     }
@@ -62,9 +62,9 @@ impl Learn for Verbs {
     fn wrong(&self) -> String {
         format!(
             "{} {} {}",
-            Exp::Wrong.val(),
+            Msg::Wrong.val(),
             self.print_em(),
-            Exp::WrongIt.val()
+            Msg::WrongIt.val()
         )
     }
 
