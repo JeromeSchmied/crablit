@@ -112,41 +112,54 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
             .expect("couldn't add to history");
         let guess = guess.trim();
 
-        if guess == elem.correct() {
-            println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val());
-        } else if guess == ":skip" {
-            println!("{}", elem.skip());
-            continue;
-        } else if guess == ":revise" {
-            if r.len() == 1 {
-                println!("Type revise again!");
-            } else if r.is_empty() {
-                println!("Nothing to revise, you might to type it again to make it work...");
-            } else {
-                println!("{}", Msg::Revise.val());
-            }
-            break;
-        } else if guess == ":typo" {
-            // ask to type before correcting
-            println!("{}{:?}", Msg::Typo.val(), r.pop());
-            if !question(&[elem.clone()])?.is_empty() {
-                r.push(elem.clone());
-            }
-        } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", Msg::Exit.val());
-            exit(0);
-        } else if guess == ":hint" || guess == ":h" {
-            elem.hint();
+        match guess {
+            s if s == elem.correct() => println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val()),
 
-            if !question(&[elem.clone()])?.is_empty() {
-                r.push(elem.clone());
+            ":q" | "quit" | "exit" => {
+                println!("{}", Msg::Exit.val());
+                exit(0);
             }
-        //treat them as flashcarding
-        // } else if guess.is_empty() {
-        //     println!("{} {}\n\n\n", Exp::val(&Exp::Flash), elem.flashcard(),);
-        } else {
-            r.push(elem.clone());
-            println!("{}", elem.wrong());
+
+            ":h" | ":hint" => {
+                elem.hint();
+                if !question(&[elem.clone()])?.is_empty() {
+                    r.push(elem.clone());
+                }
+            }
+
+            ":typo" => {
+                // ask to type before correcting
+                println!("{}{:?}", Msg::Typo.val(), r.pop());
+                if !question(&[elem.clone()])?.is_empty() {
+                    r.push(elem.clone());
+                }
+            }
+
+            ":skip" => {
+                println!("{}", elem.skip());
+                continue;
+            }
+
+            ":revise" => {
+                if r.len() == 1 {
+                    println!("Type revise again!");
+                } else if r.is_empty() {
+                    println!("Nothing to revise, you might to type it again to make it work...");
+                } else {
+                    println!("{}", Msg::Revise.val());
+                }
+                break;
+            }
+
+            ":flash" => {
+                //     println!("{} {}\n\n\n", Exp::val(&Exp::Flash), elem.flashcard(),);
+                todo!();
+            }
+
+            _ => {
+                r.push(elem.clone());
+                println!("{}", elem.wrong());
+            }
         }
     }
     if r.len() > 1 {
