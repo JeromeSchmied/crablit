@@ -109,8 +109,15 @@ impl Learn for Verb {
         format!("{}\n{}", s, r.bright_purple().bold())
     }
 
-    fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
-        todo!()
+    // fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
+    //     todo!()
+    // }
+
+    fn to_str(&self, delim: char) -> String {
+        format!(
+            "{}{delim}{}{delim}{}{delim}{}",
+            self.inf, self.dri, self.pra, self.per
+        )
     }
 }
 

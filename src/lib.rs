@@ -30,7 +30,7 @@ pub trait Learn {
     fn flashcard(&self) -> String;
     fn hint(&self);
     fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
-    fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>>;
+    fn to_str(&self, delim: char) -> String;
 }
 
 #[derive(Debug, PartialEq)]
@@ -141,7 +141,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 writeln!(ofile, "# mode = \"cards\"")?;
                 writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
 
-                let content = elem.deserialize(&r)?;
+                let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
                 writeln!(ofile, "{}", content)?;
 
                 eprintln!("Saved file to {}{}.", SPACER, state_file_path);
@@ -271,6 +271,14 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
     }
+}
+
+fn deserialize<T: Learn>(v: &[T], delim: char) -> Result<String, Box<dyn Error>> {
+    let mut r = String::new();
+    for item in v {
+        r.push_str(&item.to_str(delim));
+    }
+    Ok(r)
 }
 
 #[cfg(test)]
