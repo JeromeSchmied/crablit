@@ -29,6 +29,7 @@ pub trait Learn {
     fn flashcard(&self) -> String;
     fn hint(&self);
     fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
+    // fn deserialize()
 }
 
 #[derive(Debug, PartialEq)]
@@ -262,7 +263,7 @@ pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
                 config.file_path,
                 ofile_name.bright_blue()
             );
-            verbs::conv(&v, ofile_name, ';')?;
+            verbs::deser_conv(&v, config)?;
 
             Ok(())
         }

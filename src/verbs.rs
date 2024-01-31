@@ -1,5 +1,5 @@
 //! # This module includes code specific to learning verbforms.
-use crate::*;
+use crate::{config::Config, *};
 use std::io::Write;
 
 #[derive(Debug, Clone)]
@@ -111,15 +111,15 @@ impl Learn for Verbs {
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn conv(verbs: &[Verbs], out_file_path: &str, delim: char) -> Result<(), Box<dyn Error>> {
-    let mut outfile = File::create(out_file_path)?;
+pub fn deser_conv(verbs: &[Verbs], conf: &Config) -> Result<(), Box<dyn Error>> {
+    let mut outfile = File::create(&conf.file_path)?;
 
     writeln!(outfile, "# [crablit]")?;
     writeln!(outfile, "# mode = \"cards\"")?;
-    writeln!(outfile, "# delim = \'{delim}\'\n\n")?;
+    writeln!(outfile, "# delim = \'{}\'\n\n", conf.delim)?;
 
     for line in verbs {
-        writeln!(outfile, "{}{delim}{}", line.trm, line.inf)?;
+        writeln!(outfile, "{}{}{}", line.trm, conf.delim, line.inf)?;
     }
 
     println!("Converting from verbs to cards done");
