@@ -8,6 +8,7 @@ use std::{
     error::Error,
     fmt::Debug,
     fs::{self, File},
+    io::Write,
     process::exit,
 };
 
@@ -29,7 +30,7 @@ pub trait Learn {
     fn flashcard(&self) -> String;
     fn hint(&self);
     fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
-    // fn deserialize()
+    fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>>;
 }
 
 #[derive(Debug, PartialEq)]
@@ -94,7 +95,10 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
 }
 
 /// Start learning the vector, return the remainders
-pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Error>> {
+pub fn question<T: Learn + Debug + Clone>(
+    v: &[T],
+    conf: &config::Config,
+) -> Result<Vec<T>, Box<dyn Error>> {
     // let mut printer = String::new();
     if v.len() != 1 {
         println!("\n\nYou have {} words to learn, let's start!", v.len());
@@ -123,15 +127,30 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
 
             ":h" | ":hint" => {
                 elem.hint();
-                if !question(&[elem.clone()])?.is_empty() {
+                if !question(&[elem.clone()], conf)?.is_empty() {
                     r.push(elem.clone());
                 }
+            }
+
+            ":w" | ":write" | ":save" => {
+                let content = elem.deserialize(&r)?;
+                let state_file_path = &format!("{}{}", STATE_HOME, &conf.file_path);
+
+                let mut ofile = File::create(state_file_path)?;
+
+                writeln!(ofile, "# [crablit]")?;
+                writeln!(ofile, "# mode = \"cards\"")?;
+                writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
+
+                writeln!(ofile, "{}", content)?;
+
+                eprintln!("Saved file to {}{}.", SPACER, state_file_path);
             }
 
             ":typo" => {
                 // ask to type before correcting
                 println!("{}{:?}", Msg::Typo.val(), r.pop());
-                if !question(&[elem.clone()])?.is_empty() {
+                if !question(&[elem.clone()], conf)?.is_empty() {
                     r.push(elem.clone());
                 }
             }
@@ -202,26 +221,26 @@ fn randomly_swap_cards(cards: &mut [cards::Cards]) {
 }
 
 /// Executing program core
-pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
-    let delim = config.delim.chars().next().unwrap();
-    match Mode::new(&config.mode) {
+pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
+    let delim = conf.delim.chars().next().unwrap();
+    match Mode::new(&conf.mode) {
         Mode::Card => {
-            let mut v = init(&config.file_path, delim)?;
-            if config.card_swap {
+            let mut v = init(&conf.file_path, delim)?;
+            if conf.card_swap {
                 println!("swapping terms and definitions of each card");
                 swap_cards(&mut v);
             }
-            if config.ask_both {
+            if conf.ask_both {
                 println!("swapping terms and definitions of some cards");
                 randomly_swap_cards(&mut v);
             }
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                if !config.no_shuffle {
+                if !conf.no_shuffle {
                     eprintln!("shuffling");
                     rng.shuffle(&mut v);
                 }
-                v = question(&v)?;
+                v = question(&v, conf)?;
             }
 
             println!("Gone through everything you wanted, great job!");
@@ -229,25 +248,25 @@ pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::Verb => {
-            let mut v: Vec<Verbs> = init(&config.file_path, delim)?;
+            let mut v: Vec<Verbs> = init(&conf.file_path, delim)?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 eprintln!("shuffling");
-                if !config.no_shuffle {
+                if !conf.no_shuffle {
                     rng.shuffle(&mut v);
                 }
-                v = question(&v)?;
+                v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
 
             Ok(())
         }
         Mode::VerbConv => {
-            let v: Vec<Verbs> = init(&config.file_path, delim)?;
-            verbs::deser_to_conv(&v, config)?;
+            let v: Vec<Verbs> = init(&conf.file_path, delim)?;
+            verbs::deser_to_conv(&v, conf)?;
 
             Ok(())
         }

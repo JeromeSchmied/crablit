@@ -108,6 +108,10 @@ impl Learn for Verbs {
         let r = "─".repeat(s.len() + 4);
         format!("{}\n{}", s, r.bright_purple().bold())
     }
+
+    fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
+        todo!()
+    }
 }
 
 /// Function to convert a Deck from Verbs to Cards

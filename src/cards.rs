@@ -66,6 +66,11 @@ impl Learn for Cards {
         }
     }
 
+    fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
+        // for card in
+        todo!()
+    }
+
     fn flashcard(&self) -> String {
         let s = &self.def;
         let r = "─".repeat(s.len() + 4);
