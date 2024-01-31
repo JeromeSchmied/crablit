@@ -1,5 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
 // dirs::data_dir()
+// use etcetera::{choose_base_strategy, BaseStrategy};
 use crate::{consts::*, verbs::Verbs};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
@@ -153,7 +154,7 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
             }
 
             ":flash" => {
-                //     println!("{} {}\n\n\n", Exp::val(&Exp::Flash), elem.flashcard(),);
+                //     println!("{} {}\n\n\n", &Msg::Flash.val(), elem.flashcard(),);
                 todo!();
             }
 
