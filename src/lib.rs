@@ -211,6 +211,7 @@ pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
             }
 
             println!("Gone through everything you wanted, great job!");
+
             Ok(())
         }
         Mode::Verb => {
@@ -227,6 +228,7 @@ pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v)?;
             }
             println!("Gone through everything you wanted, great job!");
+
             Ok(())
         }
         Mode::VerbConv => {
@@ -248,6 +250,7 @@ pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
                 ofile_name.bright_blue()
             );
             verbs::conv(&v, ofile_name, ';')?;
+
             Ok(())
         }
     }

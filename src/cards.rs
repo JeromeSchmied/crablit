@@ -4,9 +4,9 @@ use std::mem::swap;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Cards {
-    /// term in known language
+    /// Term in known language
     trm: String,
-    /// definition in language to be learnt
+    /// Definition in language to be learnt
     def: String,
     // /// level of knowledge
     // lev: u32,
@@ -68,10 +68,7 @@ impl Learn for Cards {
 
     fn flashcard(&self) -> String {
         let s = &self.def;
-        let mut r = String::new();
-        for _ in 0..s.chars().count() + 4 {
-            r.push('─');
-        }
+        let r = "─".repeat(s.len() + 4);
         format!("{}\n{}", s, r.bright_purple().bold())
     }
 }
