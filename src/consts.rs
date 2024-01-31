@@ -6,7 +6,7 @@ pub const STATE_HOME: &str = "/home/jeromos/.local/state/crablit/";
 /// space before any output
 pub const SPACER: &str = "    ";
 /// commonly used expressions(text), colored strings
-pub(crate) enum Exp {
+pub(crate) enum Msg {
     /// Question(mark)
     Quest,
     /// Knew it mark
@@ -30,22 +30,22 @@ pub(crate) enum Exp {
     // /// flashcard
     // Flash,
 }
-impl Exp {
+impl Msg {
     /// get value for expression
     pub fn val(&self) -> ColoredString {
         match *self {
-            Exp::Quest => format!("{}?", SPACER).bright_yellow().bold(),
-            Exp::Knew => format!("{}%", SPACER).bright_green().bold(),
-            Exp::KnewIt => "Yes, that's right!".bright_green(),
-            Exp::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
-            Exp::Revise => {
+            Msg::Quest => format!("{}?", SPACER).bright_yellow().bold(),
+            Msg::Knew => format!("{}%", SPACER).bright_green().bold(),
+            Msg::KnewIt => "Yes, that's right!".bright_green(),
+            Msg::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
+            Msg::Revise => {
                 format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
             }
-            Exp::Typo => format!("{}Corrected: ", SPACER).bright_magenta().italic(),
-            Exp::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
-            Exp::Hint => format!("{}#", SPACER).cyan().bold(),
-            Exp::Wrong => format!("{}~", SPACER).bright_red().bold(),
-            Exp::WrongIt => "<-is the right answer.".bright_red().italic(),
+            Msg::Typo => format!("{}Corrected: ", SPACER).bright_magenta().italic(),
+            Msg::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
+            Msg::Hint => format!("{}#", SPACER).cyan().bold(),
+            Msg::Wrong => format!("{}~", SPACER).bright_red().bold(),
+            Msg::WrongIt => "<-is the right answer.".bright_red().italic(),
             // Exp::Flash => format!("{}=", SPACER).bright_cyan().bold(),
         }
     }

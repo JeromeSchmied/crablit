@@ -113,7 +113,7 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
         let guess = guess.trim();
 
         if guess == elem.correct() {
-            println!("{} {}\n", Exp::Knew.val(), &Exp::KnewIt.val());
+            println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val());
         } else if guess == ":skip" {
             println!("{}", elem.skip());
             continue;
@@ -123,17 +123,17 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
             } else if r.is_empty() {
                 println!("Nothing to revise, you might to type it again to make it work...");
             } else {
-                println!("{}", Exp::Revise.val());
+                println!("{}", Msg::Revise.val());
             }
             break;
         } else if guess == ":typo" {
             // ask to type before correcting
-            println!("{}{:?}", Exp::Typo.val(), r.pop());
+            println!("{}{:?}", Msg::Typo.val(), r.pop());
             if !question(&[elem.clone()])?.is_empty() {
                 r.push(elem.clone());
             }
         } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", Exp::Exit.val());
+            println!("{}", Msg::Exit.val());
             exit(0);
         } else if guess == ":hint" || guess == ":h" {
             elem.hint();
@@ -159,7 +159,7 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
 fn hint(s: &str) -> String {
     let mut result = String::new();
     let mut prt = s.chars();
-    result = format!("{}{} ", result, Exp::Hint.val());
+    result = format!("{}{} ", result, Msg::Hint.val());
     let n = s.chars().count() / 2;
     (0..n).for_each(|_| result = format!("{}{}", result, prt.next().unwrap()));
     result = format!(
@@ -270,18 +270,18 @@ mod tests {
     #[test]
     fn hint_not_odd() {
         let get_hint = String::from("1234");
-        assert_eq!(format!("{} 12__", Exp::Hint.val()), hint(&get_hint));
+        assert_eq!(format!("{} 12__", Msg::Hint.val()), hint(&get_hint));
     }
     #[test]
     fn hint_odd() {
         let get_hint = String::from("12345");
-        assert_eq!(format!("{} 12___", Exp::Hint.val()), hint(&get_hint));
+        assert_eq!(format!("{} 12___", Msg::Hint.val()), hint(&get_hint));
     }
     #[test]
     fn hint_non_ascii() {
         let get_hint = String::from("aáéűúőóüöíä|Ä");
         assert_eq!(
-            format!("{} aáéűúő_______", Exp::Hint.val()),
+            format!("{} aáéűúő_______", Msg::Hint.val()),
             hint(&get_hint)
         );
     }

@@ -25,7 +25,7 @@ impl Cards {
 
 impl Learn for Cards {
     fn show(&self) -> String {
-        format!("\n{} {}", Exp::Quest.val(), self.trm.bright_blue())
+        format!("\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -33,15 +33,15 @@ impl Learn for Cards {
     }
 
     fn skip(&self) -> String {
-        format!("{} {:?}", Exp::Skip.val(), Cards::new(&self.trm, &self.def))
+        format!("{} {:?}", Msg::Skip.val(), Cards::new(&self.trm, &self.def))
     }
 
     fn wrong(&self) -> String {
         format!(
             "{} {} {}\n",
-            Exp::Wrong.val(),
+            Msg::Wrong.val(),
             self.def.yellow().underline(),
-            Exp::WrongIt.val()
+            Msg::WrongIt.val()
         )
     }
 
