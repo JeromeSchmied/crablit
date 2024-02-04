@@ -136,7 +136,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 // let state_file_path =
                 //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
 
-                let mut ofile = File::create(&conf.file_path)?;
+                let mut ofile = File::create(consts::get_state_path(&conf.file_path)?)?;
 
                 writeln!(ofile, "# [crablit]")?;
                 writeln!(ofile, "# mode = \"{}\"", conf.mode)?;

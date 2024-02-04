@@ -3,6 +3,17 @@ use super::*;
 
 /// State home
 pub const STATE_HOME: &str = "/home/jeromos/.local/state/crablit/";
+
+/// Path for statefile of filepath got
+pub fn get_state_path(path: &str) -> Result<String, Box<dyn Error>> {
+    let pwd = std::env::current_dir()?;
+    let pwd = pwd.to_str().expect("Couldn't get working dir.");
+
+    let current_file_path = &format!("{}/{}", pwd, path).replace('/', "_");
+
+    Ok(format!("{}{}", STATE_HOME, current_file_path))
+}
+
 /// space before any output
 pub const SPACER: &str = "    ";
 /// commonly used expressions(text), colored strings

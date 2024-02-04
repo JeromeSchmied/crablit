@@ -3,7 +3,7 @@
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs};
 
-use crate::consts::STATE_HOME;
+use crate::consts;
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -40,34 +40,40 @@ pub struct Config {
 impl Config {
     /// Fixing properties by opening file that contains vocab data.
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
-        let config = Config::parse();
+        let conf = Config::parse();
 
-        let state_file_path = &format!("{}{}", STATE_HOME, &config.file_path.replace('/', "_"));
+        // let pwd = std::env::current_dir()?;
+        // let pwd = pwd.to_str().expect("Couldn't get working dir.");
+
+        // let current_file_path = &format!("{}/{}", pwd, &conf.file_path).replace('/', "_");
+
+        let state_file_path = consts::get_state_path(&conf.file_path)?;
+
         eprintln!("Searching for state at: \"{}\"", &state_file_path);
-        let (content, fpath) = if let Ok(state_file) = fs::read_to_string(state_file_path) {
+        let (content, fpath) = if let Ok(state_file) = fs::read_to_string(&state_file_path) {
             eprintln!(
                 "Opening file from previously saved state: \"{}\"",
-                state_file_path
+                &state_file_path
             );
             println!("state file content:\n{:?}\n", state_file);
-            (state_file, state_file_path)
+            (state_file, &state_file_path)
         } else {
-            eprintln!("Trying to open {}", &config.file_path);
-            let content = fs::read_to_string(&config.file_path)?;
-            (content, &config.file_path)
+            eprintln!("Trying to open {}", &conf.file_path);
+            let content = fs::read_to_string(&conf.file_path)?;
+            (content, &conf.file_path)
         };
         // let content = fs::read_to_string(&config.file_path)?;
 
-        let delim = if config.delim != "None" {
+        let delim = if conf.delim != "None" {
             eprintln!("got delimiter as arg");
-            config.delim.chars().next().unwrap()
+            conf.delim.chars().next().unwrap()
         } else {
             get_delim(&content)?
         };
 
-        let mode = if config.mode != "None" {
+        let mode = if conf.mode != "None" {
             eprintln!("got mode as arg");
-            config.mode
+            conf.mode
         } else {
             get_mode(&content, &delim)?
         };
@@ -75,12 +81,12 @@ impl Config {
         eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
         Ok(Config {
             file_path: fpath.to_string(),
-            card_swap: config.card_swap,
-            ask_both: config.ask_both,
-            no_shuffle: config.no_shuffle,
+            card_swap: conf.card_swap,
+            ask_both: conf.ask_both,
+            no_shuffle: conf.no_shuffle,
             mode,
             delim: delim.to_string(),
-            only_check: config.only_check,
+            only_check: conf.only_check,
         })
     }
 }
