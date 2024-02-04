@@ -136,7 +136,8 @@ pub fn question<T: Learn + Debug + Clone>(
                 // let state_file_path =
                 //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
 
-                let mut ofile = File::create(consts::get_state_path(&conf.file_path)?)?;
+                let ofile_path = consts::get_state_path(&conf.file_path)?;
+                let mut ofile = File::create(&ofile_path)?;
 
                 writeln!(ofile, "# [crablit]")?;
                 writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
@@ -146,7 +147,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
                 writeln!(ofile, "{}", content)?;
 
-                eprintln!("Saved file to {}{}.", SPACER, conf.file_path);
+                eprintln!("Saved file to {}{}.", SPACER, ofile_path);
 
                 if !question(&[elem.clone()], conf)?.is_empty() {
                     r.push(elem.clone());
