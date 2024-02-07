@@ -3,7 +3,7 @@
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs};
 
-use crate::consts;
+use crate::state::{get_state_path, progress_exists};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -46,8 +46,8 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let (content, fpath) = if !conf.no_state && consts::progress_exists(&conf.file_path) {
-            let state_file_path = consts::get_state_path(&conf.file_path)?;
+        let (content, fpath) = if !conf.no_state && progress_exists(&conf.file_path) {
+            let state_file_path = get_state_path(&conf.file_path)?;
 
             eprintln!("Searching for state at: \"{}\"", &state_file_path);
             eprintln!(

@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::{consts::*, verbs::Verb};
+use crate::{consts::*, state::*, verbs::Verb};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
@@ -17,6 +17,8 @@ pub mod cards;
 pub mod config;
 /// commonly used expressions(text), colored strings
 pub mod consts;
+/// Module for saving state: progress
+pub mod state;
 /// Module for learning Deck of Verbs
 pub mod verbs;
 
@@ -135,7 +137,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 // let state_file_path =
                 //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
 
-                let ofile_path = consts::get_state_path(&conf.file_path)?;
+                let ofile_path = get_state_path(&conf.file_path)?;
                 let mut ofile = File::create(&ofile_path)?;
 
                 writeln!(ofile, "# [crablit]")?;
@@ -253,12 +255,12 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
 
-            if consts::progress_exists(&conf.file_path) {
+            if progress_exists(&conf.file_path) {
                 eprintln!(
                     "Removing state file from: {}",
-                    consts::get_state_path(&conf.file_path)?
+                    get_state_path(&conf.file_path)?
                 );
-                fs::remove_dir(consts::get_state_path(&conf.file_path)?)?;
+                fs::remove_dir(get_state_path(&conf.file_path)?)?;
             }
 
             println!("Gone through everything you wanted, great job!");
@@ -279,12 +281,12 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
-            if consts::progress_exists(&conf.file_path) {
+            if progress_exists(&conf.file_path) {
                 eprintln!(
                     "Removing state file from: {}",
-                    consts::get_state_path(&conf.file_path)?
+                    get_state_path(&conf.file_path)?
                 );
-                fs::remove_dir(consts::get_state_path(&conf.file_path)?)?;
+                fs::remove_dir(get_state_path(&conf.file_path)?)?;
             }
 
             Ok(())
