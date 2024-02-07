@@ -9,7 +9,7 @@ use crate::*;
 pub fn rm(path: &str) -> Result<(), Box<dyn Error>> {
     if progress_exists(path) {
         eprintln!("Removing state file from: {}", get_progress_path(path)?);
-        fs::remove_dir(get_progress_path(path)?)?;
+        fs::remove_file(get_progress_path(path)?)?;
     }
     Ok(())
 }
