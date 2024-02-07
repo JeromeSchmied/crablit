@@ -246,6 +246,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 println!("swapping terms and definitions of some cards");
                 randomly_swap_cards(&mut v);
             }
+
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 if !conf.no_shuffle {
@@ -266,6 +267,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
+
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 eprintln!("shuffling");
@@ -275,7 +277,6 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
-
             state::rm(&conf.file_path)?;
 
             Ok(())
