@@ -8,6 +8,7 @@ use std::{
     fmt::Debug,
     fs::{self, File},
     io::Write,
+    path::PathBuf,
     process::exit,
 };
 
@@ -80,7 +81,10 @@ impl Mode {
 // }
 
 /// Initializing deck of either `cards`, or `verbs`
-pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
+pub fn init<T: Learn + Debug + Clone>(
+    path: &PathBuf,
+    delim: char,
+) -> Result<Vec<T>, Box<dyn Error>> {
     let contents = fs::read_to_string(path)?;
     let mut r: Vec<T> = Vec::new();
     // iterating over the lines of file to store them in a vector
@@ -148,7 +152,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
                 writeln!(ofile, "{}", content)?;
 
-                eprintln!("Saved file to {}{}.", SPACER, ofile_path);
+                eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
 
                 if !question(&[elem.clone()], conf)?.is_empty() {
                     r.push(elem.clone());

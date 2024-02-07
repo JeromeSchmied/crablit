@@ -2,7 +2,7 @@
 //! arguments and determining properties of a file containing vocab data.
 use crate::*;
 use clap::Parser;
-use std::{collections::HashMap, error::Error, fs};
+use std::{collections::HashMap, error::Error, fs, path::PathBuf};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -46,12 +46,12 @@ impl Config {
         let conf = Config::parse();
 
         let state_file_path = state::get_progress_path(&conf.file_path)?;
-        println!("searching for path at: {}", state_file_path);
+        println!("searching for path at: {:?}", state_file_path);
         let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path) {
             let state_file_path = state::get_progress_path(&conf.file_path)?;
 
             eprintln!(
-                "Opening file from previously saved state: \"{}\"",
+                "Opening file from previously saved state: \"{:?}\"",
                 &state_file_path
             );
 
@@ -92,11 +92,11 @@ impl Config {
     }
 
     /// Path for statefile of filepath got, or if doesn't exist, self
-    pub fn file_path(&self) -> String {
+    pub fn file_path(&self) -> PathBuf {
         if state::progress_exists(&self.file_path) && !self.no_state {
             state::get_progress_path(&self.file_path).expect("Coudln't get progress path")
         } else {
-            self.file_path.clone()
+            self.file_path.clone().into()
         }
     }
 }
