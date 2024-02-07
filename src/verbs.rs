@@ -115,8 +115,8 @@ impl Learn for Verb {
 
     fn to_str(&self, delim: char) -> String {
         format!(
-            "{}{delim}{}{delim}{}{delim}{}",
-            self.inf, self.dri, self.pra, self.per
+            "{}{delim}{}{delim}{}{delim}{}{delim}{}",
+            self.inf, self.dri, self.pra, self.per, self.trm
         )
     }
 }

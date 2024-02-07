@@ -263,7 +263,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::Verb => {
-            let mut v: Vec<Verb> = init(&conf.file_path, delim)?;
+            let mut v: Vec<Verb> = init(&conf.file_path(), delim)?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
