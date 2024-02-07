@@ -283,7 +283,7 @@ fn deserialize<T: Learn>(v: &[T], delim: char) -> Result<String, Box<dyn Error>>
     // v.iter().map(|item| item.to_str(delim)).collect()
     let mut r = String::new();
     for item in v {
-        r.push_str(&item.to_str(delim));
+        r.push_str(&format!("{}\n", item.to_str(delim)));
     }
     Ok(r)
 }
