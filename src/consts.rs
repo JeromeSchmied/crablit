@@ -11,6 +11,23 @@ fn data_dir() -> String {
     )
 }
 
+/// Returns the existence of path got in state dir
+pub fn progress_exists(path: &str) -> bool {
+    //     match std::fs::create_dir(self::data_dir() + path) {
+    //         Err(err) => {
+    //             if err.kind() == std::io::ErrorKind::NotFound {
+    //                 false
+    //             } else if err.kind() == std::io::ErrorKind::AlreadyExists {
+    //                 true
+    //             } else {
+    //                 todo!("Couldn't determine progress state")
+    //             }
+    //         }
+    //         _ => todo!("Couldn't determine progress state"),
+    //     }
+    fs::read_to_string(self::data_dir() + path).is_ok()
+}
+
 /// Path for statefile of filepath got
 pub fn get_state_path(path: &str) -> Result<String, Box<dyn Error>> {
     let pwd = std::env::current_dir()?;

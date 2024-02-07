@@ -153,6 +153,10 @@ pub fn question<T: Learn + Debug + Clone>(
                 }
             }
 
+            ":wq" => {
+                todo!()
+            }
+
             ":typo" => {
                 // ask to type before correcting
                 println!("{}{:?}", Msg::Typo.val(), r.pop());
@@ -249,6 +253,14 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
 
+            if consts::progress_exists(&conf.file_path) {
+                eprintln!(
+                    "Removing state file from: {}",
+                    consts::get_state_path(&conf.file_path)?
+                );
+                fs::remove_dir(consts::get_state_path(&conf.file_path)?)?;
+            }
+
             println!("Gone through everything you wanted, great job!");
 
             Ok(())
@@ -267,6 +279,13 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
+            if consts::progress_exists(&conf.file_path) {
+                eprintln!(
+                    "Removing state file from: {}",
+                    consts::get_state_path(&conf.file_path)?
+                );
+                fs::remove_dir(consts::get_state_path(&conf.file_path)?)?;
+            }
 
             Ok(())
         }
