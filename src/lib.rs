@@ -1,5 +1,4 @@
 //! # Library for vocabulary learning, used in `crablit`.
-// dirs::data_dir()
 use crate::{consts::*, verbs::Verb};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};

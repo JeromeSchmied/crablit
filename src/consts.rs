@@ -1,17 +1,34 @@
 //! # Code containing expressions used in `crablit` regularly.
 use super::*;
 
-/// State home
-pub const STATE_HOME: &str = "/home/jeromos/.local/state/crablit/";
+fn data_dir() -> String {
+    format!(
+        "{}/crablit/",
+        dirs::data_dir()
+            .expect("Couldn't find data_dir")
+            .to_str()
+            .unwrap(),
+    )
+}
 
 /// Path for statefile of filepath got
 pub fn get_state_path(path: &str) -> Result<String, Box<dyn Error>> {
     let pwd = std::env::current_dir()?;
     let pwd = pwd.to_str().expect("Couldn't get working dir.");
 
-    let current_file_path = &format!("{}/{}", pwd, path).replace('/', "_");
+    // try to create data_dir, if exists, don't do anything
+    if let Err(err) = std::fs::create_dir(self::data_dir()) {
+        if err.kind() == std::io::ErrorKind::NotFound {
+            std::fs::create_dir_all(self::data_dir())?;
+        } else if err.kind() == std::io::ErrorKind::AlreadyExists {
+        } else {
+            return Err(Box::new(err));
+        }
+    }
 
-    Ok(format!("{}{}", STATE_HOME, current_file_path))
+    let current_file_path = &format!("{}/{}", pwd, path).replace('/', "%");
+
+    Ok(format!("{}{}", self::data_dir(), current_file_path))
 }
 
 /// space before any output
