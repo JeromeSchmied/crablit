@@ -16,13 +16,15 @@ pub fn rm(path: &str) -> Result<(), Box<dyn Error>> {
 }
 
 fn data_dir() -> PathBuf {
-    PathBuf::from(format!(
-        "{}/crablit/",
+    [
         dirs::data_dir()
             .expect("Couldn't find data_dir")
             .to_str()
             .unwrap(),
-    ))
+        "crablit",
+    ]
+    .iter()
+    .collect()
 }
 
 /// Returns the existence of path got in state dir
@@ -52,7 +54,7 @@ pub fn get_progress_path(path: &str) -> Result<PathBuf, Box<std::io::Error>> {
 
     Ok(PathBuf::from(format!(
         "{}{}",
-        self::data_dir().to_str().unwrap(),
+        self::data_dir().display(),
         current_file_path
     )))
 }
