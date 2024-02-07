@@ -53,14 +53,9 @@ pub fn get_progress_path(path: &str) -> Result<PathBuf, Box<std::io::Error>> {
         .replace('\\', "%");
 
     eprintln!("datadir: {:?}", self::data_dir());
-    eprintln!(
-        "returning: {:?}",
-        PathBuf::from(format!(
-            "{}{}",
-            self::data_dir().display(),
-            current_file_path
-        ))
-    );
+    let mut pb = self::data_dir();
+    pb.push(current_file_path);
+    eprintln!("returning: {:?}", pb);
     Ok([self::data_dir(), current_file_path.into()]
         .iter()
         .collect())
