@@ -1,9 +1,8 @@
 //! # In this module, you can find code that helps in collecting cli
 //! arguments and determining properties of a file containing vocab data.
+use crate::*;
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs};
-
-use crate::state::{get_progress_path, progress_exists};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -46,10 +45,10 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let state_file_path = get_progress_path(&conf.file_path)?;
+        let state_file_path = state::get_progress_path(&conf.file_path)?;
         println!("searching for path at: {}", state_file_path);
-        let content = if !conf.no_state && progress_exists(&conf.file_path) {
-            let state_file_path = get_progress_path(&conf.file_path)?;
+        let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path) {
+            let state_file_path = state::get_progress_path(&conf.file_path)?;
 
             eprintln!(
                 "Opening file from previously saved state: \"{}\"",
@@ -94,8 +93,8 @@ impl Config {
 
     /// Path for statefile of filepath got, or if doesn't exist, self
     pub fn file_path(&self) -> String {
-        if progress_exists(&self.file_path) && !self.no_state {
-            get_progress_path(&self.file_path).expect("Coudln't get progress path")
+        if state::progress_exists(&self.file_path) && !self.no_state {
+            state::get_progress_path(&self.file_path).expect("Coudln't get progress path")
         } else {
             self.file_path.clone()
         }
