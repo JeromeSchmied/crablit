@@ -29,10 +29,14 @@ pub struct Config {
     pub delim: String,
 
     /// Don't shuffle card order
-    #[arg(short, long, default_value_t = false)]
+    #[arg(long, default_value_t = false)]
     pub no_shuffle: bool,
 
-    /// Don't actually start learning deck, only check if it's correct
+    /// Don't load previous state
+    #[arg(long, default_value_t = false)]
+    pub no_state: bool,
+
+    /// Only check file syntax don't actually start learning deck
     #[arg(short = 'c', long = "check", default_value_t = false)]
     pub only_check: bool,
 }
@@ -42,27 +46,23 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        // let pwd = std::env::current_dir()?;
-        // let pwd = pwd.to_str().expect("Couldn't get working dir.");
+        let (content, fpath) = if !conf.no_state && consts::progress_exists(&conf.file_path) {
+            let state_file_path = consts::get_state_path(&conf.file_path)?;
 
-        // let current_file_path = &format!("{}/{}", pwd, &conf.file_path).replace('/', "_");
-
-        let state_file_path = consts::get_state_path(&conf.file_path)?;
-
-        eprintln!("Searching for state at: \"{}\"", &state_file_path);
-        let (content, fpath) = if let Ok(state_file) = fs::read_to_string(&state_file_path) {
+            eprintln!("Searching for state at: \"{}\"", &state_file_path);
             eprintln!(
                 "Opening file from previously saved state: \"{}\"",
                 &state_file_path
             );
+
+            let state_file = fs::read_to_string(&state_file_path)?;
             println!("state file content:\n{:?}\n", state_file);
-            (state_file, &state_file_path)
+            (state_file, state_file_path.to_string())
         } else {
             eprintln!("Trying to open {}", &conf.file_path);
             let content = fs::read_to_string(&conf.file_path)?;
-            (content, &conf.file_path)
+            (content, conf.file_path)
         };
-        // let content = fs::read_to_string(&config.file_path)?;
 
         let delim = if conf.delim != "None" {
             eprintln!("got delimiter as arg");
@@ -87,6 +87,7 @@ impl Config {
             mode,
             delim: delim.to_string(),
             only_check: conf.only_check,
+            no_state: conf.no_state,
         })
     }
 }
