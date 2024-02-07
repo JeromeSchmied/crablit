@@ -18,7 +18,7 @@
 -   [x] `clap` <- done, usage seen from tplay, flcard
 -   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
--   [ ] save progress
+-   [x] save progress
 -   [ ] levelled knowledge
 -   [ ] starring words that need learning, high level
 -   [ ] use a printer String, always delete old questions
@@ -63,7 +63,8 @@
 
 -   [x] clean main.rs
 -   [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
--   [ ] tests: being cross-platform, `lib` tests
+-   [x] basic tests: being cross-platform, `lib` tests
+-   [ ] tests: assert_cmd
 -   [ ] being stupid-proof == no bugs
 -   [ ] non-spagethi code with
 
@@ -88,7 +89,7 @@
     -   [ ] languages
     -   [ ] other great stuff
 -   [ ] community
--   [ ] gui interface
+-   [ ] gui interface: dioxus?
     -   [ ] webapp for learning
     -   [ ] desktop apps
     -   [ ] mobile
