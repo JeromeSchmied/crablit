@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::{consts::*, state::*, verbs::Verb};
+use crate::{consts::*, verbs::Verb};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
@@ -137,7 +137,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 // let state_file_path =
                 //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
 
-                let ofile_path = get_progress_path(&conf.file_path)?;
+                let ofile_path = state::get_progress_path(&conf.file_path)?;
                 let mut ofile = File::create(&ofile_path)?;
 
                 writeln!(ofile, "# [crablit]")?;
@@ -255,7 +255,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
 
-            rm(&conf.file_path)?;
+            state::rm(&conf.file_path)?;
 
             println!("Gone through everything you wanted, great job!");
 
@@ -276,7 +276,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             }
             println!("Gone through everything you wanted, great job!");
 
-            rm(&conf.file_path)?;
+            state::rm(&conf.file_path)?;
 
             Ok(())
         }
