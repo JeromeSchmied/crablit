@@ -46,7 +46,9 @@ pub fn get_progress_path(path: &str) -> Result<PathBuf, Box<std::io::Error>> {
             return Err(Box::new(err));
         }
     }
-    let current_file_path = &format!("{}/{}", pwd, path).replace('/', "%");
+    let current_file_path = &format!("{}/{}", pwd, path)
+        .replace('/', "%")
+        .replace('\\', "%");
 
     Ok(PathBuf::from(format!(
         "{}{}",
