@@ -25,15 +25,9 @@ pub fn rm(path: &str) -> Result<(), Box<dyn Error>> {
 // }
 
 fn data_dir() -> PathBuf {
-    [
-        dirs::data_dir()
-            .expect("Couldn't find data_dir")
-            .to_str()
-            .unwrap(),
-        "crablit",
-    ]
-    .iter()
-    .collect()
+    dirs::data_dir()
+        .expect("couldn't find data dir")
+        .join("crablit")
 }
 
 /// Returns the existence of path got in state dir
@@ -61,7 +55,6 @@ pub fn get_progress_path(path: &str) -> Result<PathBuf, Box<std::io::Error>> {
         .replace('/', "%")
         .replace('\\', "%");
 
-    eprintln!("returning: {:?}", self::data_dir().join(current_file_path));
     Ok(self::data_dir().join(current_file_path))
 }
 
