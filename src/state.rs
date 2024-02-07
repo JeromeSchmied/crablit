@@ -15,6 +15,15 @@ pub fn rm(path: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+// #[cfg(windows)]
+// fn get_sep() -> char {
+//     '\\'
+// }
+// #[cfg(not(windows))]
+// fn get_sep() -> char {
+//     '/'
+// }
+
 fn data_dir() -> PathBuf {
     [
         dirs::data_dir()
@@ -52,13 +61,8 @@ pub fn get_progress_path(path: &str) -> Result<PathBuf, Box<std::io::Error>> {
         .replace('/', "%")
         .replace('\\', "%");
 
-    eprintln!("datadir: {:?}", self::data_dir());
-    let mut pb = self::data_dir();
-    pb.push(current_file_path);
-    eprintln!("returning: {:?}", pb);
-    Ok([self::data_dir(), current_file_path.into()]
-        .iter()
-        .collect())
+    eprintln!("returning: {:?}", self::data_dir().join(current_file_path));
+    Ok(self::data_dir().join(current_file_path))
 }
 
 // pub fn get_path(path: &str) -> Result<String, Box<dyn Error>> {
