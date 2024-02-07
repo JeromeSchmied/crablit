@@ -137,7 +137,7 @@ pub fn question<T: Learn + Debug + Clone>(
                 // let state_file_path =
                 //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
 
-                let ofile_path = get_state_path(&conf.file_path)?;
+                let ofile_path = get_progress_path(&conf.file_path)?;
                 let mut ofile = File::create(&ofile_path)?;
 
                 writeln!(ofile, "# [crablit]")?;
@@ -237,7 +237,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     let delim = conf.delim.chars().next().unwrap();
     match Mode::new(&conf.mode) {
         Mode::Card => {
-            let mut v = init(&conf.file_path, delim)?;
+            let mut v = init(&conf.file_path(), delim)?;
             if conf.card_swap {
                 println!("swapping terms and definitions of each card");
                 swap_cards(&mut v);
@@ -255,13 +255,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
 
-            if progress_exists(&conf.file_path) {
-                eprintln!(
-                    "Removing state file from: {}",
-                    get_state_path(&conf.file_path)?
-                );
-                fs::remove_dir(get_state_path(&conf.file_path)?)?;
-            }
+            rm(&conf.file_path)?;
 
             println!("Gone through everything you wanted, great job!");
 
@@ -281,18 +275,13 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
-            if progress_exists(&conf.file_path) {
-                eprintln!(
-                    "Removing state file from: {}",
-                    get_state_path(&conf.file_path)?
-                );
-                fs::remove_dir(get_state_path(&conf.file_path)?)?;
-            }
+
+            rm(&conf.file_path)?;
 
             Ok(())
         }
         Mode::VerbConv => {
-            let v: Vec<Verb> = init(&conf.file_path, delim)?;
+            let v: Vec<Verb> = init(&conf.file_path(), delim)?;
             verbs::deser_to_conv(&v, conf)?;
 
             Ok(())

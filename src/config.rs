@@ -3,7 +3,7 @@
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs};
 
-use crate::state::{get_state_path, progress_exists};
+use crate::state::{get_progress_path, progress_exists};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -46,10 +46,11 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let (content, fpath) = if !conf.no_state && progress_exists(&conf.file_path) {
-            let state_file_path = get_state_path(&conf.file_path)?;
+        let state_file_path = get_progress_path(&conf.file_path)?;
+        println!("searching for path at: {}", state_file_path);
+        let content = if !conf.no_state && progress_exists(&conf.file_path) {
+            let state_file_path = get_progress_path(&conf.file_path)?;
 
-            eprintln!("Searching for state at: \"{}\"", &state_file_path);
             eprintln!(
                 "Opening file from previously saved state: \"{}\"",
                 &state_file_path
@@ -57,11 +58,11 @@ impl Config {
 
             let state_file = fs::read_to_string(&state_file_path)?;
             println!("state file content:\n{:?}\n", state_file);
-            (state_file, state_file_path.to_string())
+            state_file
         } else {
             eprintln!("Trying to open {}", &conf.file_path);
-            let content = fs::read_to_string(&conf.file_path)?;
-            (content, conf.file_path)
+
+            fs::read_to_string(&conf.file_path)?
         };
 
         let delim = if conf.delim != "None" {
@@ -80,7 +81,7 @@ impl Config {
 
         eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
         Ok(Config {
-            file_path: fpath.to_string(),
+            file_path: conf.file_path,
             card_swap: conf.card_swap,
             ask_both: conf.ask_both,
             no_shuffle: conf.no_shuffle,
@@ -89,6 +90,15 @@ impl Config {
             only_check: conf.only_check,
             no_state: conf.no_state,
         })
+    }
+
+    /// Path for statefile of filepath got, or if doesn't exist, self
+    pub fn file_path(&self) -> String {
+        if progress_exists(&self.file_path) && !self.no_state {
+            get_progress_path(&self.file_path).expect("Coudln't get progress path")
+        } else {
+            self.file_path.clone()
+        }
     }
 }
 
