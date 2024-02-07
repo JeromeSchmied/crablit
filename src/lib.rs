@@ -1,6 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-// dirs::data_dir()
-use crate::{consts::*, verbs::Verbs};
+use crate::{consts::*, verbs::Verb};
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
@@ -8,6 +7,7 @@ use std::{
     error::Error,
     fmt::Debug,
     fs::{self, File},
+    io::Write,
     process::exit,
 };
 
@@ -17,6 +17,8 @@ pub mod cards;
 pub mod config;
 /// commonly used expressions(text), colored strings
 pub mod consts;
+/// Module for saving state: progress
+pub mod state;
 /// Module for learning Deck of Verbs
 pub mod verbs;
 
@@ -28,7 +30,8 @@ pub trait Learn {
     fn wrong(&self) -> String;
     fn flashcard(&self) -> String;
     fn hint(&self);
-    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String>;
+    fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
+    fn to_str(&self, delim: char) -> String;
 }
 
 #[derive(Debug, PartialEq)]
@@ -85,7 +88,7 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
         if line.trim().starts_with('#') || line.is_empty() {
             continue;
         }
-        r.push(*Learn::new_from_line(line, delim)?);
+        r.push(*Learn::serialize(line, delim)?);
     }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
@@ -93,7 +96,10 @@ pub fn init<T: Learn + Debug + Clone>(path: &str, delim: char) -> Result<Vec<T>,
 }
 
 /// Start learning the vector, return the remainders
-pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Error>> {
+pub fn question<T: Learn + Debug + Clone>(
+    v: &[T],
+    conf: &config::Config,
+) -> Result<Vec<T>, Box<dyn Error>> {
     // let mut printer = String::new();
     if v.len() != 1 {
         println!("\n\nYou have {} words to learn, let's start!", v.len());
@@ -112,41 +118,80 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
             .expect("couldn't add to history");
         let guess = guess.trim();
 
-        if guess == elem.correct() {
-            println!("{} {}\n", Exp::Knew.val(), &Exp::KnewIt.val());
-        } else if guess == ":skip" {
-            println!("{}", elem.skip());
-            continue;
-        } else if guess == ":revise" {
-            if r.len() == 1 {
-                println!("Type revise again!");
-            } else if r.is_empty() {
-                println!("Nothing to revise, you might to type it again to make it work...");
-            } else {
-                println!("{}", Exp::Revise.val());
-            }
-            break;
-        } else if guess == ":typo" {
-            // ask to type before correcting
-            println!("{}{:?}", Exp::Typo.val(), r.pop());
-            if !question(&[elem.clone()])?.is_empty() {
-                r.push(elem.clone());
-            }
-        } else if guess == ":q" || guess == "quit" || guess == "exit" {
-            println!("{}", Exp::Exit.val());
-            exit(0);
-        } else if guess == ":hint" || guess == ":h" {
-            elem.hint();
+        match guess {
+            s if s == elem.correct() => println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val()),
 
-            if !question(&[elem.clone()])?.is_empty() {
-                r.push(elem.clone());
+            ":q" | "quit" | "exit" => {
+                println!("{}", Msg::Exit.val());
+                exit(0);
             }
-        //treat them as flashcarding
-        // } else if guess.is_empty() {
-        //     println!("{} {}\n\n\n", Exp::val(&Exp::Flash), elem.flashcard(),);
-        } else {
-            r.push(elem.clone());
-            println!("{}", elem.wrong());
+
+            ":h" | ":hint" => {
+                elem.hint();
+                if !question(&[elem.clone()], conf)?.is_empty() {
+                    r.push(elem.clone());
+                }
+            }
+
+            ":w" | ":write" | ":save" => {
+                // let state_file_path =
+                //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
+
+                let ofile_path = state::get_progress_path(&conf.file_path)?;
+                let mut ofile = File::create(&ofile_path)?;
+
+                writeln!(ofile, "# [crablit]")?;
+                writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
+                writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
+
+                println!("r: {:?}", r);
+                let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
+                writeln!(ofile, "{}", content)?;
+
+                eprintln!("Saved file to {}{}.", SPACER, ofile_path);
+
+                if !question(&[elem.clone()], conf)?.is_empty() {
+                    r.push(elem.clone());
+                }
+            }
+
+            ":wq" => {
+                todo!()
+            }
+
+            ":typo" => {
+                // ask to type before correcting
+                println!("{}{:?}", Msg::Typo.val(), r.pop());
+                if !question(&[elem.clone()], conf)?.is_empty() {
+                    r.push(elem.clone());
+                }
+            }
+
+            ":skip" => {
+                println!("{}", elem.skip());
+                continue;
+            }
+
+            ":revise" => {
+                if r.len() == 1 {
+                    println!("Type revise again!");
+                } else if r.is_empty() {
+                    println!("Nothing to revise, you might to type it again to make it work...");
+                } else {
+                    println!("{}", Msg::Revise.val());
+                }
+                break;
+            }
+
+            ":flash" => {
+                //     println!("{} {}\n\n\n", &Msg::Flash.val(), elem.flashcard(),);
+                todo!();
+            }
+
+            _ => {
+                r.push(elem.clone());
+                println!("{}", elem.wrong());
+            }
         }
     }
     if r.len() > 1 {
@@ -159,7 +204,7 @@ pub fn question<T: Learn + Debug + Clone>(v: &[T]) -> Result<Vec<T>, Box<dyn Err
 fn hint(s: &str) -> String {
     let mut result = String::new();
     let mut prt = s.chars();
-    result = format!("{}{} ", result, Exp::Hint.val());
+    result = format!("{}{} ", result, Msg::Hint.val());
     let n = s.chars().count() / 2;
     (0..n).for_each(|_| result = format!("{}{}", result, prt.next().unwrap()));
     result = format!(
@@ -172,12 +217,12 @@ fn hint(s: &str) -> String {
 }
 
 /// Swap definition and term of deck of cards
-fn swap_cards(cards: &mut [cards::Cards]) {
+fn swap_cards(cards: &mut [cards::Card]) {
     cards.iter_mut().for_each(|card| card.swap());
 }
 
 /// Randomly swap definition and term of deck of cards
-fn randomly_swap_cards(cards: &mut [cards::Cards]) {
+fn randomly_swap_cards(cards: &mut [cards::Card]) {
     let mut rng = WyRand::new();
     cards.iter_mut().for_each(|card| {
         let swap: bool = rng.generate();
@@ -188,100 +233,101 @@ fn randomly_swap_cards(cards: &mut [cards::Cards]) {
 }
 
 /// Executing program core
-pub fn run(config: &config::Config) -> Result<(), Box<dyn Error>> {
-    let delim = config.delim.chars().next().unwrap();
-    match Mode::new(&config.mode) {
+pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
+    let delim = conf.delim.chars().next().unwrap();
+    match Mode::new(&conf.mode) {
         Mode::Card => {
-            let mut v = init(&config.file_path, delim)?;
-            if config.card_swap {
+            let mut v = init(&conf.file_path(), delim)?;
+            if conf.card_swap {
                 println!("swapping terms and definitions of each card");
                 swap_cards(&mut v);
             }
-            if config.ask_both {
+            if conf.ask_both {
                 println!("swapping terms and definitions of some cards");
                 randomly_swap_cards(&mut v);
             }
+
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                if !config.no_shuffle {
+                if !conf.no_shuffle {
                     eprintln!("shuffling");
                     rng.shuffle(&mut v);
                 }
-                v = question(&v)?;
+                v = question(&v, conf)?;
             }
 
+            state::rm(&conf.file_path)?;
+
             println!("Gone through everything you wanted, great job!");
+
             Ok(())
         }
         Mode::Verb => {
-            let mut v: Vec<Verbs> = init(&config.file_path, delim)?;
+            let mut v: Vec<Verb> = init(&conf.file_path(), delim)?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
+
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 eprintln!("shuffling");
-                if !config.no_shuffle {
+                if !conf.no_shuffle {
                     rng.shuffle(&mut v);
                 }
-                v = question(&v)?;
+                v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
+            state::rm(&conf.file_path)?;
+
             Ok(())
         }
         Mode::VerbConv => {
-            let v: Vec<Verbs> = init(&config.file_path, delim)?;
-            let ofile_name = &format!(
-                "{}_as_cards.csv",
-                config
-                    .file_path
-                    .split('/')
-                    .last()
-                    .unwrap()
-                    .split('.')
-                    .next()
-                    .unwrap()
-            );
-            println!(
-                "\n\nConverting verbs to cards, from file: {:?} to file: {}",
-                config.file_path,
-                ofile_name.bright_blue()
-            );
-            verbs::conv(&v, ofile_name, ';')?;
+            let v: Vec<Verb> = init(&conf.file_path(), delim)?;
+            verbs::deser_to_conv(&v, conf)?;
+
             Ok(())
         }
     }
 }
 
+fn deserialize<T: Learn>(v: &[T], delim: char) -> Result<String, Box<dyn Error>> {
+    // v.iter().map(|item| item.to_str(delim)).collect()
+    let mut r = String::new();
+    for item in v {
+        r.push_str(&format!("{}\n", item.to_str(delim)));
+    }
+    Ok(r)
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::cards::Cards;
+    use crate::cards::Card;
 
     use super::*;
 
     #[test]
     fn swap_works() {
-        let mut cards = vec![Cards::new("term", "definition")];
+        let mut cards = vec![Card::new("term", "definition")];
 
         swap_cards(&mut cards);
-        assert_eq!(cards, vec![Cards::new("definition", "term")]);
+        assert_eq!(cards, vec![Card::new("definition", "term")]);
     }
 
     #[test]
     fn hint_not_odd() {
         let get_hint = String::from("1234");
-        assert_eq!(format!("{} 12__", Exp::Hint.val()), hint(&get_hint));
+        assert_eq!(format!("{} 12__", Msg::Hint.val()), hint(&get_hint));
     }
     #[test]
     fn hint_odd() {
         let get_hint = String::from("12345");
-        assert_eq!(format!("{} 12___", Exp::Hint.val()), hint(&get_hint));
+        assert_eq!(format!("{} 12___", Msg::Hint.val()), hint(&get_hint));
     }
     #[test]
     fn hint_non_ascii() {
         let get_hint = String::from("aáéűúőóüöíä|Ä");
         assert_eq!(
-            format!("{} aáéűúő_______", Exp::Hint.val()),
+            format!("{} aáéűúő_______", Msg::Hint.val()),
             hint(&get_hint)
         );
     }

@@ -1,5 +1,6 @@
 //! # In this module, you can find code that helps in collecting cli
 //! arguments and determining properties of a file containing vocab data.
+use crate::*;
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs};
 
@@ -11,7 +12,7 @@ pub struct Config {
     pub file_path: String,
 
     /// Swap terms and definitions of cards
-    #[arg(short, long, default_value_t = false)]
+    #[arg(short = 's', long, default_value_t = false)]
     pub card_swap: bool,
 
     /// Sometimes ask the term, sometimes definition of cards
@@ -27,41 +28,76 @@ pub struct Config {
     pub delim: String,
 
     /// Don't shuffle card order
-    #[arg(short, long, default_value_t = false)]
+    #[arg(long, default_value_t = false)]
     pub no_shuffle: bool,
+
+    /// Don't load previous state
+    #[arg(long, default_value_t = false)]
+    pub no_state: bool,
+
+    /// Only check file syntax don't actually start learning deck
+    #[arg(short = 'c', long = "check", default_value_t = false)]
+    pub only_check: bool,
 }
 
 impl Config {
     /// Fixing properties by opening file that contains vocab data.
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
-        let config = Config::parse();
+        let conf = Config::parse();
 
-        eprintln!("Trying to open {}", &config.file_path);
-        let content = fs::read_to_string(&config.file_path)?;
+        let state_file_path = state::get_progress_path(&conf.file_path)?;
+        println!("searching for path at: {}", state_file_path);
+        let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path) {
+            let state_file_path = state::get_progress_path(&conf.file_path)?;
 
-        let delim = if config.delim != "None" {
+            eprintln!(
+                "Opening file from previously saved state: \"{}\"",
+                &state_file_path
+            );
+
+            let state_file = fs::read_to_string(&state_file_path)?;
+            println!("state file content:\n{:?}\n", state_file);
+            state_file
+        } else {
+            eprintln!("Trying to open {}", &conf.file_path);
+
+            fs::read_to_string(&conf.file_path)?
+        };
+
+        let delim = if conf.delim != "None" {
             eprintln!("got delimiter as arg");
-            config.delim.chars().next().unwrap()
+            conf.delim.chars().next().unwrap()
         } else {
             get_delim(&content)?
         };
 
-        let mode = if config.mode != "None" {
+        let mode = if conf.mode != "None" {
             eprintln!("got mode as arg");
-            config.mode
+            conf.mode
         } else {
             get_mode(&content, &delim)?
         };
 
         eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
         Ok(Config {
-            file_path: config.file_path.clone(),
-            card_swap: config.card_swap,
-            ask_both: config.ask_both,
-            no_shuffle: config.no_shuffle,
+            file_path: conf.file_path,
+            card_swap: conf.card_swap,
+            ask_both: conf.ask_both,
+            no_shuffle: conf.no_shuffle,
             mode,
             delim: delim.to_string(),
+            only_check: conf.only_check,
+            no_state: conf.no_state,
         })
+    }
+
+    /// Path for statefile of filepath got, or if doesn't exist, self
+    pub fn file_path(&self) -> String {
+        if state::progress_exists(&self.file_path) && !self.no_state {
+            state::get_progress_path(&self.file_path).expect("Coudln't get progress path")
+        } else {
+            self.file_path.clone()
+        }
     }
 }
 

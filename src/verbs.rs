@@ -1,19 +1,19 @@
 //! # This module includes code specific to learning verbforms.
-use crate::*;
+use crate::{config::Config, *};
 use std::io::Write;
 
 #[derive(Debug, Clone)]
 /// Structure the store each Verb's data
-pub struct Verbs {
+pub struct Verb {
     inf: String,
     dri: String,
     pra: String,
     per: String,
     trm: String,
 }
-impl Verbs {
+impl Verb {
     fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
-        Verbs {
+        Verb {
             inf: inf.to_owned(),
             dri: dri.to_owned(),
             pra: pra.to_owned(),
@@ -42,9 +42,9 @@ impl Verbs {
     }
 }
 
-impl Learn for Verbs {
+impl Learn for Verb {
     fn show(&self) -> String {
-        format!("\n\n{} {}", Exp::Quest.val(), self.trm.bright_blue())
+        format!("\n\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -54,17 +54,17 @@ impl Learn for Verbs {
     fn skip(&self) -> String {
         format!(
             "{} {:?}",
-            Exp::Skip.val(),
-            Verbs::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
+            Msg::Skip.val(),
+            Verb::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
         )
     }
 
     fn wrong(&self) -> String {
         format!(
             "{} {} {}",
-            Exp::Wrong.val(),
+            Msg::Wrong.val(),
             self.print_em(),
-            Exp::WrongIt.val()
+            Msg::WrongIt.val()
         )
     }
 
@@ -72,7 +72,7 @@ impl Learn for Verbs {
         println!("{}", crate::hint(&self.inf));
     }
 
-    fn new_from_line(line: &str, delim: char) -> Result<Box<Self>, String> {
+    fn serialize(line: &str, delim: char) -> Result<Box<Self>, String> {
         let mut words = line.split(delim);
 
         let inf = words.next().unwrap_or("").trim();
@@ -99,34 +99,57 @@ impl Learn for Verbs {
             ))
         } else {
             // making a Verbs of the values
-            Ok(Box::new(Verbs::new(inf, dri, pra, per, trm)))
+            Ok(Box::new(Verb::new(inf, dri, pra, per, trm)))
         }
     }
 
     fn flashcard(&self) -> String {
         let s = format!("{}, {}, {}, {}", &self.inf, &self.dri, &self.pra, &self.per);
-        let mut r = String::new();
-        for _ in 0..s.len() + 4 {
-            r.push('─');
-        }
+        let r = "─".repeat(s.len() + 4);
         format!("{}\n{}", s, r.bright_purple().bold())
+    }
+
+    // fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
+    //     todo!()
+    // }
+
+    fn to_str(&self, delim: char) -> String {
+        format!(
+            "{}{delim}{}{delim}{}{delim}{}{delim}{}",
+            self.inf, self.dri, self.pra, self.per, self.trm
+        )
     }
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn conv(verbs: &[Verbs], ofile: &str, delim: char) -> Result<(), Box<dyn Error>> {
-    let mut output = File::create(ofile)?;
-    // writeln!(output, "[crablit]").expect("Not succesful.");
-    // writeln!(output, "[mode: cards]").expect("Not succesful.");
-    // writeln!(output, "[delim: {delim}]").expect("Not succesful.");
-    // writeln!(output).expect("Couldn't write to file.");
+pub fn deser_to_conv(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
+    let ofile_name = &format!(
+        "{}_as_cards.csv",
+        conf.file_path
+            .split('/')
+            .last()
+            .unwrap()
+            .split('.')
+            .next()
+            .unwrap()
+    );
 
-    // let has_header = true;
-    // if has_header {}
+    println!(
+        "\n\nConverting verbs to cards, from file: {:?} to file: {}",
+        conf.file_path,
+        ofile_name.bright_blue()
+    );
+    let mut outfile = File::create(ofile_name)?;
+
+    writeln!(outfile, "# [crablit]")?;
+    writeln!(outfile, "# mode = \"cards\"")?;
+    writeln!(outfile, "# delim = \'{}\'\n\n", conf.delim)?;
 
     for line in verbs {
-        writeln!(output, "{}{delim}{}", line.trm, line.inf)?;
+        writeln!(outfile, "{}{}{}", line.trm, conf.delim, line.inf)?;
     }
+
     println!("Converting from verbs to cards done");
+
     Ok(())
 }
