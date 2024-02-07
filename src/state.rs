@@ -52,11 +52,9 @@ pub fn get_progress_path(path: &str) -> Result<PathBuf, Box<std::io::Error>> {
         .replace('/', "%")
         .replace('\\', "%");
 
-    Ok(PathBuf::from(format!(
-        "{}{}",
-        self::data_dir().display(),
-        current_file_path
-    )))
+    Ok([self::data_dir(), current_file_path.into()]
+        .iter()
+        .collect())
 }
 
 // pub fn get_path(path: &str) -> Result<String, Box<dyn Error>> {
