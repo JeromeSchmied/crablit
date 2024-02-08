@@ -127,7 +127,7 @@ cargo run -- examples/18_eng_deu.txt
 -   If you mistyped it, type: `:typo`.
 -   To skip: `:skip`.
 -   To quit: `quit` or `exit` or `:q`.
--   To save progress: `:w` or `:write` or `:save`, to continue, you can open the file just like before
+-   To save progress: `:w` or `:write` or `:save`, to continue, you can open the file just like before. It's not yet stable on Windows.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
 -   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 
