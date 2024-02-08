@@ -20,7 +20,7 @@
 -   [Usage](#usage)
 -   [How it works](#how-it-works)
 -   [Notes](#notes)
--   [Alternatives:](#alternatives)
+-   [Alternatives](#alternatives)
 <!--toc:end-->
 
 ## Features
@@ -143,7 +143,7 @@ cargo install --path .
 -   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or [email](mailto:iitsnotme214@proton.me).
 -   To help with development, see [todos](TODO.md).
 
-## Alternatives:
+## Alternatives
 
 -   [speki](https://crates.io/crates/speki): pretty great, but only flashcards, huge download size, tui, rust, unmaintained?
 -   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust, unmaintained?
