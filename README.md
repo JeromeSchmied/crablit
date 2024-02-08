@@ -86,7 +86,7 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 
 ## Installing
 
-0. **_Easiest, recommended:_** Go to releases page and see instructions build by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
+0. **_Easiest, recommended:_** Go to releases page and see instructions built by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
 
 or:
 -   [Install Rust](https://www.rust-lang.org/tools/install), in case you don't have it.
