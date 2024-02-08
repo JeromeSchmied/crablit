@@ -18,10 +18,12 @@
 -   [x] `clap` <- done, usage seen from tplay, flcard
 -   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
--   [ ] save progress
+-   [x] save progress <- done using dirs crate, fs::read,write
+-   [ ] make progress saving stable
+-   [ ] autocompletion of commands: `:<command>`
 -   [ ] levelled knowledge
 -   [ ] starring words that need learning, high level
--   [ ] use a printer String, always delete old questions
+-   [ ] use a printer String, always delete old questions: pretty-print
 -   [ ] flashcards
 -   [ ] find duplicates and deal with 'em
 
@@ -37,14 +39,14 @@
     -   [x] swapping term and definition fully or partially
     -   [x] help
     -   [x] shuffling
-    -   [ ] verbosity
+    -   [ ] verbosity: clap-verbosity-flag
     -   [ ] other great stuff
 -   [ ] fetching definitions from
 
     -   [ ] anki decks
     -   [ ] quizlet decks
     -   [ ] knowt decks
-    -   [ ] [chatgpt](https://chat.openai.com) because everyone is crazy about it
+    -   [ ] [chatgpt](https://chat.openai.com) just because everyone is crazy about it
     -   [ ] [Dudenswissensnetz](https://duden.de)
     -   [ ] [verbformen](https://verbformen.de)
     -   [ ] [oxford english dictionary](https://oed.com/dictionary)
@@ -63,7 +65,8 @@
 
 -   [x] clean main.rs
 -   [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
--   [ ] tests: being cross-platform, `lib` tests
+-   [x] basic tests: being cross-platform, `lib` tests
+-   [ ] tests: assert_cmd
 -   [ ] being stupid-proof == no bugs
 -   [ ] non-spagethi code with
 
@@ -74,9 +77,9 @@
     -   [x] `Result`s
     -   [ ] all kinds of crazy stuff
 
--   [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative
+-   [x] [github repo](https://github.com/JeromeSchmied/crablit), or some github alternative
 -   [x] [crates](https://crates.io)
--   [ ] website: crablit.com/crablit.io/crab.lit
+-   [ ] website: crablit.com or crablit.io or crab.lit
 -   [ ] being able to share decks
 -   [ ] being able to create flashcard decks in app
 -   [ ] clean API
@@ -88,7 +91,7 @@
     -   [ ] languages
     -   [ ] other great stuff
 -   [ ] community
--   [ ] gui interface
+-   [ ] gui interface: dioxus?
     -   [ ] webapp for learning
     -   [ ] desktop apps
     -   [ ] mobile

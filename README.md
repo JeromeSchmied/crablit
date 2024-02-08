@@ -12,6 +12,17 @@
 >
 > Crablit is still in beta, functionality is not tested thoroughly.
 
+<!--toc:start-->
+
+-   [Features](#features)
+-   [Creating files to learn](#creating-files-to-learn)
+-   [Installing](#installing)
+-   [Usage](#usage)
+-   [How it works](#how-it-works)
+-   [Notes](#notes)
+-   [Alternatives](#alternatives)
+<!--toc:end-->
+
 ## Features
 
 -   _open-source_, MIT licensed
@@ -25,7 +36,7 @@
     -   Simple `.txt`, `.csv` or `.tsv` file.
     -   Card: `<term><delimiter><definition>`. eg: `"to learn;lernen"`.
     -   File of Cards with the same delimiter in every line.
-    -   Supported delimiters are: `";", "|", "    "(tab), "=", ":"`.
+    -   Supported delimiters are: `';', '|', '    '(tab), '=', ':'`.
     -   Lines starting with `#` are considered to be comments.
     -   Extra newlines, indent cause no problem.
     -   Extra spaces around delimiter cause no problem, such as: `hooray | booyah!`.
@@ -73,49 +84,48 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 <!-- # or you can install latest development version with -->
 <!-- cargo install --git https://github.com/jeromeschmied/crablit -->
 
-## Installing:
+## Installing
 
--   [Install Rust](https://www.rust-lang.org/tools/install), if you don't have it.
+-   [Install Rust](https://www.rust-lang.org/tools/install), in case you don't have it.
 -   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
 
 1. From [crates.io](https://crates.io/crates/crablit): **_easiest, recommended!_**
 
 ```shell
-# get binary
 cargo install crablit
-# run it with desired file containing deck of cards
-crablit my_vocab_file.tsv
 ```
 
-2. Install source from github:
+2. Download source from github:
 
 ```shell
 # if on windows: curl.exe
 curl -L "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
+# go to the directory where it's been cloned
 cd crablit-main
-# running goes like this, with example file:
-cargo run -- examples/18_eng_deu.txt
+# install it
+cargo install --path .
 ```
 
-3. Or you may install it with [git](https://git-scm.com/downloads), and clone the source with it:
+3. Or you may download source with [git](https://git-scm.com/downloads):
 
 ```shell
 # once you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/crablit.git
 # go to the directory where it's been cloned
 cd crablit
-# running goes like this, with example file:
-cargo run -- examples/18_eng_deu.txt
+# install it
+cargo install --path .
 ```
 
 ## Usage
 
--   Run `crablit --help` to see options.
+-   Run `crablit --help` to see help.
 -   Type the definition of the questioned word/phrase.
 -   To see hint: `:hint` or `:h`.
 -   If you mistyped it, type: `:typo`.
 -   To skip: `:skip`.
 -   To quit: `quit` or `exit` or `:q`.
+-   To save progress: `:w` or `:write` or `:save`, to continue, you can open the file just like before. It's not yet stable on Windows.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
 -   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 
@@ -132,16 +142,16 @@ cargo run -- examples/18_eng_deu.txt
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
 -   Flashcards, TUI, GUI, Website are coming, but it takes time.
--   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit), or [email](mailto:iITsnot.me214@proton.me).
+-   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or [email](mailto:iitsnotme214@proton.me).
 -   To help with development, see [todos](TODO.md).
 
-## Alternatives:
+## Alternatives
 
--   [speki](https://crates.io/crates/speki): only flashcards, huge download size, tui, rust, unmaintained?
+-   [speki](https://crates.io/crates/speki): pretty great, but only flashcards, huge download size, tui, rust, unmaintained?
 -   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust, unmaintained?
 -   [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust, unmaintained?
 -   [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
 -   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust, unmaintained?
 
-[1]: examples/img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
+[1]: examples/img/v0.1.5_cards.png "Image of using crablit in Alacritty terminal on Arch GNU/Linux"
