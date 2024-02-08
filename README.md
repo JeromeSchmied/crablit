@@ -8,9 +8,12 @@
 [![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/issues)
 [![GitHub top language](https://img.shields.io/github/languages/top/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/)
 
+> ## IMPORTANT!
+>
+> Crablit is still in beta, functionality is not tested thoroughly.
+
 <!--toc:start-->
 
--   [IMPORTANT!](#important)
 -   [Features](#features)
 -   [Creating files to learn](#creating-files-to-learn)
 -   [Installing:](#installing)
@@ -19,10 +22,6 @@
 -   [Notes](#notes)
 -   [Alternatives:](#alternatives)
 <!--toc:end-->
-
-> ## IMPORTANT!
->
-> Crablit is still in beta, functionality is not tested thoroughly.
 
 ## Features
 
