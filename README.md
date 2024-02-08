@@ -92,31 +92,27 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 1. From [crates.io](https://crates.io/crates/crablit): **_easiest, recommended!_**
 
 ```shell
-# get binary
 cargo install crablit
-# run it with desired file containing deck of cards
-crablit my_vocab_file.tsv
 ```
 
-2. Install source from github:
+2. Download source from github:
 
 ```shell
 # if on windows: curl.exe
 curl -L "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
 cd crablit-main
-# running goes like this, with example file:
-cargo run -- examples/18_eng_deu.txt
+# install it
+cargo install --path .
 ```
 
-3. Or you may install it with [git](https://git-scm.com/downloads), and clone the source with it:
+3. Or you may download it with [git](https://git-scm.com/downloads), and clone the source with it:
 
 ```shell
 # once you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/crablit.git
 # go to the directory where it's been cloned
 cd crablit
-# running goes like this, with example file:
-cargo run -- examples/18_eng_deu.txt
+cargo install --path .
 ```
 
 ## Usage
