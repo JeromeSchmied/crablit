@@ -1,5 +1,13 @@
 # [Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.
 
+[![Crates.io Version](https://img.shields.io/crates/v/crablit)](https://crates.io/crates/crablit)
+[![Crates.io License](https://img.shields.io/crates/l/crablit)](https://choosealicense.com/licenses/mit/)
+[![dependency status](https://deps.rs/crate/crablit/0.1.5/status.svg)](https://deps.rs/crate/crablit/0.1.5)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)](https://github.com/jeromeschmied/crablit/actions)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/commits)
+[![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/issues)
+[![GitHub top language](https://img.shields.io/github/languages/top/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/)
+
 <!--toc:start-->
 
 -   [IMPORTANT!](#important)
@@ -11,14 +19,6 @@
 -   [Notes](#notes)
 -   [Alternatives:](#alternatives)
 <!--toc:end-->
-
-[![Crates.io Version](https://img.shields.io/crates/v/crablit)](https://crates.io/crates/crablit)
-[![Crates.io License](https://img.shields.io/crates/l/crablit)](https://choosealicense.com/licenses/mit/)
-[![dependency status](https://deps.rs/crate/crablit/0.1.5/status.svg)](https://deps.rs/crate/crablit/0.1.5)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)](https://github.com/jeromeschmied/crablit/actions)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/commits)
-[![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/issues)
-[![GitHub top language](https://img.shields.io/github/languages/top/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/)
 
 > ## IMPORTANT!
 >
