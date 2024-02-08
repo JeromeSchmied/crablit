@@ -140,16 +140,16 @@ cargo install --path .
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
 -   Flashcards, TUI, GUI, Website are coming, but it takes time.
--   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit), or [email](mailto:iITsnot.me214@proton.me).
+-   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or [email](mailto:iitsnotme214@proton.me).
 -   To help with development, see [todos](TODO.md).
 
 ## Alternatives:
 
--   [speki](https://crates.io/crates/speki): only flashcards, huge download size, tui, rust, unmaintained?
+-   [speki](https://crates.io/crates/speki): pretty great, but only flashcards, huge download size, tui, rust, unmaintained?
 -   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust, unmaintained?
 -   [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust, unmaintained?
 -   [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
 -   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust, unmaintained?
 
-[1]: examples/img/v0.1.5_cards.png "Image of using crablit in alacritty terminal on Arch GNU/Linux"
+[1]: examples/img/v0.1.5_cards.png "Image of using crablit in Alacritty terminal on Arch GNU/Linux"
