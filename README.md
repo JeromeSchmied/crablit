@@ -1,15 +1,15 @@
 # [Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.
 
 <!--toc:start-->
-- [[Crablit](https://github.com/JeromeSchmied/crablit): Learning app inspired by [anki](https://ankiweb.net), [quizlet](https://quizlet.com) and [knowt](https://knowt.com), but in the terminal.](#crablithttpsgithubcomjeromeschmiedcrablit-learning-app-inspired-by-ankihttpsankiwebnet-quizlethttpsquizletcom-and-knowthttpsknowtcom-but-in-the-terminal)
-  - [IMPORTANT!](#important)
-  - [Features](#features)
-  - [Creating files to learn](#creating-files-to-learn)
-  - [Installing:](#installing)
-  - [Usage](#usage)
-  - [How it works](#how-it-works)
-  - [Notes](#notes)
-  - [Alternatives:](#alternatives)
+
+-   [IMPORTANT!](#important)
+-   [Features](#features)
+-   [Creating files to learn](#creating-files-to-learn)
+-   [Installing:](#installing)
+-   [Usage](#usage)
+-   [How it works](#how-it-works)
+-   [Notes](#notes)
+-   [Alternatives:](#alternatives)
 <!--toc:end-->
 
 [![Crates.io Version](https://img.shields.io/crates/v/crablit)](https://crates.io/crates/crablit)
