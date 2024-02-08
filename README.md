@@ -95,7 +95,9 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 cargo install crablit
 ```
 
-2. Download source from github:
+2. Go to releases page and see instructions build by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
+
+3. Download source from github:
 
 ```shell
 # if on windows: curl.exe
