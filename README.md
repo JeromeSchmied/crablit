@@ -86,7 +86,7 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 
 ## Installing
 
--   [Install Rust](https://www.rust-lang.org/tools/install), if you don't have it.
+-   [Install Rust](https://www.rust-lang.org/tools/install), in case you don't have it.
 -   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
 
 1. From [crates.io](https://crates.io/crates/crablit): **_easiest, recommended!_**
@@ -100,24 +100,26 @@ cargo install crablit
 ```shell
 # if on windows: curl.exe
 curl -L "https://github.com/JeromeSchmied/crablit/archive/main.tar.gz" | tar -xzf -
+# go to the directory where it's been cloned
 cd crablit-main
 # install it
 cargo install --path .
 ```
 
-3. Or you may download it with [git](https://git-scm.com/downloads), and clone the source with it:
+3. Or you may download source with [git](https://git-scm.com/downloads):
 
 ```shell
 # once you have git, clone the repo to have it locally
 git clone --depth=1 https://github.com/JeromeSchmied/crablit.git
 # go to the directory where it's been cloned
 cd crablit
+# install it
 cargo install --path .
 ```
 
 ## Usage
 
--   Run `crablit --help` to see options.
+-   Run `crablit --help` to see help.
 -   Type the definition of the questioned word/phrase.
 -   To see hint: `:hint` or `:h`.
 -   If you mistyped it, type: `:typo`.
