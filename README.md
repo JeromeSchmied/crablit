@@ -86,6 +86,8 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 
 ## Installing
 
+0. Go to releases page and see instructions build by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
+
 -   [Install Rust](https://www.rust-lang.org/tools/install), in case you don't have it.
 -   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
 
@@ -94,8 +96,6 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 ```shell
 cargo install crablit
 ```
-
-2. Go to releases page and see instructions build by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
 
 3. Download source from github:
 
