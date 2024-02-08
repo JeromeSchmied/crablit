@@ -16,7 +16,7 @@
 
 -   [Features](#features)
 -   [Creating files to learn](#creating-files-to-learn)
--   [Installing:](#installing)
+-   [Installing](#installing)
 -   [Usage](#usage)
 -   [How it works](#how-it-works)
 -   [Notes](#notes)
@@ -84,7 +84,7 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 <!-- # or you can install latest development version with -->
 <!-- cargo install --git https://github.com/jeromeschmied/crablit -->
 
-## Installing:
+## Installing
 
 -   [Install Rust](https://www.rust-lang.org/tools/install), if you don't have it.
 -   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
