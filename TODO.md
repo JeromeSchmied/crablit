@@ -39,14 +39,14 @@
     -   [x] swapping term and definition fully or partially
     -   [x] help
     -   [x] shuffling
-    -   [ ] verbosity
+    -   [ ] verbosity: clap-verbosity-flag
     -   [ ] other great stuff
 -   [ ] fetching definitions from
 
     -   [ ] anki decks
     -   [ ] quizlet decks
     -   [ ] knowt decks
-    -   [ ] [chatgpt](https://chat.openai.com) because everyone is crazy about it
+    -   [ ] [chatgpt](https://chat.openai.com) just because everyone is crazy about it
     -   [ ] [Dudenswissensnetz](https://duden.de)
     -   [ ] [verbformen](https://verbformen.de)
     -   [ ] [oxford english dictionary](https://oed.com/dictionary)
@@ -77,9 +77,9 @@
     -   [x] `Result`s
     -   [ ] all kinds of crazy stuff
 
--   [x] [github](https://github.com/JeromeSchmied/crablit) repo, or some github alternative
+-   [x] [github repo](https://github.com/JeromeSchmied/crablit), or some github alternative
 -   [x] [crates](https://crates.io)
--   [ ] website: crablit.com/crablit.io/crab.lit
+-   [ ] website: crablit.com or crablit.io or crab.lit
 -   [ ] being able to share decks
 -   [ ] being able to create flashcard decks in app
 -   [ ] clean API
