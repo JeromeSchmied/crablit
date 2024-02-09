@@ -154,11 +154,11 @@ fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
         .map(|line| sum += line.split(*delim).count())
         .count();
 
-    let avg = (sum as f32 / n as f32).ceil();
+    let avg = (sum as f32 / n as f32).ceil() as u8;
     eprintln!("sum: {sum}, n: {n}, avg: {avg}");
-    if avg == 2. {
+    if avg == 2 {
         Ok("cards".to_string())
-    } else if avg > 2. && avg < 7. {
+    } else if avg > 2 && avg < 7 {
         Ok("verbs".to_string())
     } else {
         Err("couldn't determine mode of deck")
