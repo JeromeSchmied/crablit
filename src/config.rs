@@ -29,15 +29,15 @@ pub struct Config {
 
     /// Don't shuffle card order
     #[arg(long, default_value_t = false)]
-    pub no_shuffle: bool,
+    no_shuffle: bool,
 
     /// Don't load previous state
     #[arg(long, default_value_t = false)]
-    pub no_state: bool,
+    no_state: bool,
 
     /// Only check file syntax don't actually start learning deck
     #[arg(short = 'c', long = "check", default_value_t = false)]
-    pub only_check: bool,
+    only_check: bool,
 }
 
 impl Config {
@@ -100,12 +100,27 @@ impl Config {
         }
     }
 
-    /// Return original file_path as PathBuf
+    /// Get original file_path as PathBuf
     pub fn file_path_orig(&self) -> PathBuf {
         self.file_path.clone().into()
     }
 
-    /// Return delimiter as a character
+    /// Get no_state
+    pub fn no_state(&self) -> bool {
+        self.no_state
+    }
+
+    /// Get no_shuffle
+    pub fn no_shuffle(&self) -> bool {
+        self.no_shuffle
+    }
+
+    /// Get only_check
+    pub fn only_check(&self) -> bool {
+        self.only_check
+    }
+
+    /// Get delimiter as a character
     pub fn delim(&self) -> char {
         self.delim.chars().next().unwrap()
     }

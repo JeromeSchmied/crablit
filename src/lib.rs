@@ -245,7 +245,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 
             while !v.is_empty() {
                 let mut rng = WyRand::new();
-                if !conf.no_shuffle {
+                if !conf.no_shuffle() {
                     eprintln!("shuffling");
                     rng.shuffle(&mut v);
                 }
@@ -267,7 +267,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             while !v.is_empty() {
                 let mut rng = WyRand::new();
                 eprintln!("shuffling");
-                if !conf.no_shuffle {
+                if !conf.no_shuffle() {
                     rng.shuffle(&mut v);
                 }
                 v = question(&v, conf)?;
