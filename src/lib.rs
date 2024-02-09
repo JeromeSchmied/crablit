@@ -109,11 +109,7 @@ where
     let mut rl = DefaultEditor::new()?;
 
     for elem in v {
-        println!("{}", elem.show());
-        // print!("{}> ", consts::SPACER);
-        // io::stdout().flush()?;
-
-        let msg = &format!("{}> ", consts::SPACER);
+        let msg = &format!("{}\n{}> ", elem.show(), consts::SPACER);
         let guess = rl.readline(msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
