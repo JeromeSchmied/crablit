@@ -124,15 +124,13 @@ where
 
                 ":h" | ":hint" => {
                     elem.hint();
+
                     if !question(&[elem.clone()], conf)?.is_empty() {
                         r.push(elem.clone());
                     }
                 }
 
                 ":w" | ":write" | ":save" => {
-                    // let state_file_path =
-                    //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
-
                     let ofile_path = state::get_progress_path(&conf.file_path)?;
                     let mut ofile = File::create(&ofile_path)?;
 
@@ -205,18 +203,14 @@ where
 
 /// Show hint from the string got
 fn hint(s: &str) -> String {
-    let mut result = String::new();
-    let mut prt = s.chars();
-    result = format!("{}{} ", result, Msg::Hint.val());
     let n = s.chars().count() / 2;
-    (0..n).for_each(|_| result = format!("{}{}", result, prt.next().unwrap()));
-    result = format!(
-        "{}{ch:_>widht$}",
-        result,
-        ch = '_',
-        widht = s.chars().count() - n
-    );
-    result
+    [
+        Msg::Hint.val().to_string(),
+        " ".into(),
+        s.chars().take(n).collect(),
+        s.chars().skip(n).map(|_| '_').collect(),
+    ]
+    .concat()
 }
 
 /// Swap definition and term of deck of cards
