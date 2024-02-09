@@ -96,38 +96,6 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
     Ok(r)
 }
 
-trait Deck {
-    fn quit(&self);
-    fn hint(&self);
-    fn typo(&self);
-    fn skip(&self);
-}
-
-impl<T> Deck for &[T]
-where
-    T: Learn + Debug + Clone,
-{
-    fn quit(&self) {
-        println!("{}", Msg::Exit.val());
-        exit(0);
-    }
-
-    fn hint(&self) {
-        // elem.hint();
-        // if !question(&[elem.clone()], conf)?.is_empty() {
-        //     r.push(elem.clone());
-        // }
-    }
-
-    fn typo(&self) {
-        todo!()
-    }
-
-    fn skip(&self) {
-        todo!()
-    }
-}
-
 /// Start learning the vector, return the remainders
 pub fn question<T>(v: &[T], conf: &config::Config) -> Result<Vec<T>, Box<dyn Error>>
 where
