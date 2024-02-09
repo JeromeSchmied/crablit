@@ -96,6 +96,38 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
     Ok(r)
 }
 
+trait Deck {
+    fn quit(&self);
+    fn hint(&self);
+    fn typo(&self);
+    fn skip(&self);
+}
+
+impl<T> Deck for &[T]
+where
+    T: Learn + Debug + Clone,
+{
+    fn quit(&self) {
+        println!("{}", Msg::Exit.val());
+        exit(0);
+    }
+
+    fn hint(&self) {
+        // elem.hint();
+        // if !question(&[elem.clone()], conf)?.is_empty() {
+        //     r.push(elem.clone());
+        // }
+    }
+
+    fn typo(&self) {
+        todo!()
+    }
+
+    fn skip(&self) {
+        todo!()
+    }
+}
+
 /// Start learning the vector, return the remainders
 pub fn question<T>(v: &[T], conf: &config::Config) -> Result<Vec<T>, Box<dyn Error>>
 where
@@ -114,80 +146,87 @@ where
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
 
-        match guess {
-            s if s == elem.correct() => println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val()),
+        // is command
+        if guess.starts_with(':') {
+            match guess {
+                ":q" | ":quit" | ":exit" => {
+                    println!("{}", Msg::Exit.val());
+                    exit(0);
+                }
 
-            ":q" | "quit" | "exit" => {
-                println!("{}", Msg::Exit.val());
-                exit(0);
-            }
+                ":h" | ":hint" => {
+                    elem.hint();
+                    if !question(&[elem.clone()], conf)?.is_empty() {
+                        r.push(elem.clone());
+                    }
+                }
 
-            ":h" | ":hint" => {
-                elem.hint();
-                if !question(&[elem.clone()], conf)?.is_empty() {
-                    r.push(elem.clone());
+                ":w" | ":write" | ":save" => {
+                    // let state_file_path =
+                    //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
+
+                    let ofile_path = state::get_progress_path(&conf.file_path)?;
+                    let mut ofile = File::create(&ofile_path)?;
+
+                    writeln!(ofile, "# [crablit]")?;
+                    writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
+                    writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
+
+                    println!("r: {:?}", r);
+                    let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
+                    writeln!(ofile, "{}", content)?;
+
+                    eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
+
+                    if !question(&[elem.clone()], conf)?.is_empty() {
+                        r.push(elem.clone());
+                    }
+                }
+
+                ":wq" => {
+                    todo!()
+                }
+
+                ":typo" => {
+                    // ask to type before correcting
+                    println!("{}{:?}", Msg::Typo.val(), r.pop());
+                    if !question(&[elem.clone()], conf)?.is_empty() {
+                        r.push(elem.clone());
+                    }
+                }
+
+                ":skip" => {
+                    println!("{}", elem.skip());
+                    continue;
+                }
+
+                ":revise" => {
+                    if r.len() == 1 {
+                        println!("Type revise again!");
+                    } else if r.is_empty() {
+                        println!(
+                            "Nothing to revise, you might to type it again to make it work..."
+                        );
+                    } else {
+                        println!("{}", Msg::Revise.val());
+                    }
+                    break;
+                }
+
+                ":flash" => {
+                    //     println!("{} {}\n\n\n", &Msg::Flash.val(), elem.flashcard(),);
+                    todo!();
+                }
+
+                c => {
+                    return Err(c.into());
                 }
             }
-
-            ":w" | ":write" | ":save" => {
-                // let state_file_path =
-                //     &format!("{}{}", STATE_HOME, &conf.file_path.replace('/', "_"));
-
-                let ofile_path = state::get_progress_path(&conf.file_path)?;
-                let mut ofile = File::create(&ofile_path)?;
-
-                writeln!(ofile, "# [crablit]")?;
-                writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
-                writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
-
-                println!("r: {:?}", r);
-                let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
-                writeln!(ofile, "{}", content)?;
-
-                eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
-
-                if !question(&[elem.clone()], conf)?.is_empty() {
-                    r.push(elem.clone());
-                }
-            }
-
-            ":wq" => {
-                todo!()
-            }
-
-            ":typo" => {
-                // ask to type before correcting
-                println!("{}{:?}", Msg::Typo.val(), r.pop());
-                if !question(&[elem.clone()], conf)?.is_empty() {
-                    r.push(elem.clone());
-                }
-            }
-
-            ":skip" => {
-                println!("{}", elem.skip());
-                continue;
-            }
-
-            ":revise" => {
-                if r.len() == 1 {
-                    println!("Type revise again!");
-                } else if r.is_empty() {
-                    println!("Nothing to revise, you might to type it again to make it work...");
-                } else {
-                    println!("{}", Msg::Revise.val());
-                }
-                break;
-            }
-
-            ":flash" => {
-                //     println!("{} {}\n\n\n", &Msg::Flash.val(), elem.flashcard(),);
-                todo!();
-            }
-
-            _ => {
-                r.push(elem.clone());
-                println!("{}", elem.wrong());
-            }
+        } else if guess == elem.correct() {
+            println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val())
+        } else {
+            r.push(elem.clone());
+            println!("{}", elem.wrong());
         }
     }
     if r.len() > 1 {
