@@ -66,6 +66,14 @@ impl Mode {
             panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'verbs2cards'!");
         }
     }
+
+    pub fn disp(&self) -> String {
+        match self {
+            Mode::Card => "cards".into(),
+            Mode::Verb => "verbs".into(),
+            Mode::VerbConv => "convert".into(),
+        }
+    }
 }
 
 // enum Kards {
@@ -135,7 +143,7 @@ where
                     let mut ofile = File::create(&ofile_path)?;
 
                     writeln!(ofile, "# [crablit]")?;
-                    writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
+                    writeln!(ofile, "# mode = \"{}\"", conf.mode().disp())?;
                     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
                     println!("r: {:?}", r);
@@ -231,14 +239,14 @@ fn randomly_swap_cards(cards: &mut [cards::Card]) {
 
 /// Executing program core
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
-    match Mode::from(&conf.mode) {
+    match conf.mode() {
         Mode::Card => {
             let mut v = init(&conf.file_path(), conf.delim())?;
-            if conf.card_swap {
+            if conf.card_swap() {
                 println!("swapping terms and definitions of each card");
                 swap_cards(&mut v);
             }
-            if conf.ask_both {
+            if conf.ask_both() {
                 println!("swapping terms and definitions of some cards");
                 randomly_swap_cards(&mut v);
             }

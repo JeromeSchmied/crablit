@@ -13,15 +13,15 @@ pub struct Config {
 
     /// Swap terms and definitions of cards
     #[arg(short = 's', long, default_value_t = false)]
-    pub card_swap: bool,
+    card_swap: bool,
 
     /// Sometimes ask the term, sometimes definition of cards
     #[arg(short, long, default_value_t = false)]
-    pub ask_both: bool,
+    ask_both: bool,
 
     /// Mode: either cards, verbs or verbs2cards
     #[arg(short, long, default_value = "None")]
-    pub mode: String,
+    mode: String,
 
     /// Delimiter used in file to seperate terms and definitions
     #[arg(short, long, default_value = "None")]
@@ -118,6 +118,21 @@ impl Config {
     /// Get only_check
     pub fn only_check(&self) -> bool {
         self.only_check
+    }
+
+    /// Get ask_both
+    pub fn ask_both(&self) -> bool {
+        self.ask_both
+    }
+
+    /// Get card_swap
+    pub fn card_swap(&self) -> bool {
+        self.card_swap
+    }
+
+    /// Get mode as `Mode`
+    pub fn mode(&self) -> Mode {
+        Mode::from(&self.mode)
     }
 
     /// Get delimiter as a character
