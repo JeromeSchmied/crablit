@@ -134,10 +134,10 @@ pub fn deser_to_conv(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>
 
     writeln!(outfile, "# [crablit]")?;
     writeln!(outfile, "# mode = \"cards\"")?;
-    writeln!(outfile, "# delim = \'{}\'\n\n", conf.delim)?;
+    writeln!(outfile, "# delim = \'{}\'\n\n", conf.delim())?;
 
     for line in verbs {
-        writeln!(outfile, "{}{}{}", line.trm, conf.delim, line.inf)?;
+        writeln!(outfile, "{}{}{}", line.trm, conf.delim(), line.inf)?;
     }
 
     println!("Converting from verbs to cards done");

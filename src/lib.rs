@@ -136,10 +136,10 @@ where
 
                     writeln!(ofile, "# [crablit]")?;
                     writeln!(ofile, "# mode = \"{}\"", conf.mode)?;
-                    writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
+                    writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
                     println!("r: {:?}", r);
-                    let content = deserialize(&r, conf.delim.chars().next().unwrap());
+                    let content = deserialize(&r, conf.delim());
                     writeln!(ofile, "{}", content)?;
 
                     eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
@@ -231,10 +231,9 @@ fn randomly_swap_cards(cards: &mut [cards::Card]) {
 
 /// Executing program core
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
-    let delim = conf.delim.chars().next().unwrap();
     match Mode::new(&conf.mode) {
         Mode::Card => {
-            let mut v = init(&conf.file_path(), delim)?;
+            let mut v = init(&conf.file_path(), conf.delim())?;
             if conf.card_swap {
                 println!("swapping terms and definitions of each card");
                 swap_cards(&mut v);
@@ -260,7 +259,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::Verb => {
-            let mut v: Vec<Verb> = init(&conf.file_path(), delim)?;
+            let mut v: Vec<Verb> = init(&conf.file_path(), conf.delim())?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
@@ -279,7 +278,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Mode::VerbConv => {
-            let v: Vec<Verb> = init(&conf.file_path(), delim)?;
+            let v: Vec<Verb> = init(&conf.file_path(), conf.delim())?;
             verbs::deser_to_conv(&v, conf)?;
 
             Ok(())

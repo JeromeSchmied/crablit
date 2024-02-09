@@ -100,7 +100,7 @@ impl Config {
         }
     }
 
-    pub fn delim_ch(&self) -> char {
+    pub fn delim(&self) -> char {
         self.delim.chars().next().unwrap()
     }
 }
