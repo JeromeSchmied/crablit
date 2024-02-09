@@ -1,6 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::expressions::*;
-use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
 use std::{

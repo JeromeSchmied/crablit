@@ -1,5 +1,6 @@
 //! # This module includes code specific to learning verbforms.
 use crate::{config::Config, *};
+use colored::Colorize;
 use std::io::Write;
 
 #[derive(Debug, Clone)]

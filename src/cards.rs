@@ -1,5 +1,7 @@
 //! # This module includes code specific to learning expressions.
-use crate::*;
+use crate::{Learn, Msg};
+use colored::Colorize;
+use std::error::Error;
 use std::mem::swap;
 
 #[derive(Debug, Clone, PartialEq)]
