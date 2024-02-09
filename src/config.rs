@@ -25,7 +25,7 @@ pub struct Config {
 
     /// Delimiter used in file to seperate terms and definitions
     #[arg(short, long, default_value = "None")]
-    pub delim: String,
+    delim: String,
 
     /// Don't shuffle card order
     #[arg(long, default_value_t = false)]
@@ -99,6 +99,10 @@ impl Config {
             self.file_path.clone().into()
         }
     }
+
+    pub fn delim_ch(&self) -> char {
+        self.delim.chars().next().unwrap()
+    }
 }
 
 /// Get mode from content
@@ -126,7 +130,7 @@ fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
 }
 
 /// Get delimiter from content
-fn get_delim(content: &str) -> Result<char, String> {
+fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
     const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
 
     if let Ok(delim) = get_prop(content, "delim") {
@@ -152,20 +156,21 @@ fn get_delim(content: &str) -> Result<char, String> {
         Err(format!(
             "Couldn't determine delimiter, should be one of: {:?}",
             DELIMS
-        ))
+        )
+        .into())
     } else {
         Ok(*delims_counts.iter().max_by_key(|x| x.1).unwrap().0)
     }
 }
 
 /// Get property from content
-fn get_prop(content: &str, prop: &str) -> Result<String, String> {
+fn get_prop(content: &str, prop: &str) -> Result<String, Box<dyn Error>> {
     if content.contains("[crablit]") {
         eprintln!("text contains [crablit]!");
         let prop = &format!("{} = ", prop);
         if !content.contains(prop) {
             eprintln!("Coudln't find \"{prop}\"");
-            return Err(format!("Coudln't find \"{prop}\""));
+            return Err(format!("Coudln't find \"{prop}\"").into());
         }
         Ok(content
             .lines()
@@ -176,9 +181,9 @@ fn get_prop(content: &str, prop: &str) -> Result<String, String> {
             .unwrap()
             .trim()
             .trim_matches(|c| c == '"' || c == '\'')
-            .to_string())
+            .into())
     } else {
-        Err(format!("Coudln't find {}", prop))
+        Err(format!("Coudln't find {}", prop).into())
     }
 }
 
@@ -197,7 +202,7 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(Ok(':'), get_delim(content));
+        assert_eq!(':', get_delim(content).unwrap());
     }
     #[test]
     fn get_delim_correct() {

@@ -24,7 +24,7 @@ impl Card {
 }
 
 impl Learn for Card {
-    fn show(&self) -> String {
+    fn disp(&self) -> String {
         format!("\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
@@ -79,7 +79,7 @@ impl Learn for Card {
         format!("{}\n{}", s, r.bright_purple().bold())
     }
 
-    fn to_str(&self, delim: char) -> String {
+    fn deser(&self, delim: char) -> String {
         format!("{}{}{}", self.trm, delim, self.def)
     }
 }

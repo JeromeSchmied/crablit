@@ -43,7 +43,7 @@ impl Verb {
 }
 
 impl Learn for Verb {
-    fn show(&self) -> String {
+    fn disp(&self) -> String {
         format!("\n\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
@@ -113,7 +113,7 @@ impl Learn for Verb {
     //     todo!()
     // }
 
-    fn to_str(&self, delim: char) -> String {
+    fn deser(&self, delim: char) -> String {
         format!(
             "{}{delim}{}{delim}{}{delim}{}{delim}{}",
             self.inf, self.dri, self.pra, self.per, self.trm

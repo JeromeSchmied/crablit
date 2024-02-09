@@ -25,14 +25,14 @@ pub mod verbs;
 
 /// The trait for learning either `Cards` of `Verbs`
 pub trait Learn {
-    fn show(&self) -> String;
+    fn disp(&self) -> String;
     fn correct(&self) -> String;
     fn skip(&self) -> String;
     fn wrong(&self) -> String;
     fn flashcard(&self) -> String;
     fn hint(&self);
     fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
-    fn to_str(&self, delim: char) -> String;
+    fn deser(&self, delim: char) -> String;
 }
 
 #[derive(Debug, PartialEq)]
@@ -109,7 +109,7 @@ where
     let mut rl = DefaultEditor::new()?;
 
     for elem in v {
-        let msg = &format!("{}\n{}> ", elem.show(), consts::SPACER);
+        let msg = &format!("{}\n{}> ", elem.disp(), consts::SPACER);
         let guess = rl.readline(msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
@@ -139,7 +139,7 @@ where
                     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim)?;
 
                     println!("r: {:?}", r);
-                    let content = deserialize(&r, conf.delim.chars().next().unwrap())?;
+                    let content = deserialize(&r, conf.delim.chars().next().unwrap());
                     writeln!(ofile, "{}", content)?;
 
                     eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
@@ -287,13 +287,10 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     }
 }
 
-fn deserialize<T: Learn>(v: &[T], delim: char) -> Result<String, Box<dyn Error>> {
-    // v.iter().map(|item| item.to_str(delim)).collect()
-    let mut r = String::new();
-    for item in v {
-        r.push_str(&format!("{}\n", item.to_str(delim)));
-    }
-    Ok(r)
+/// make item writable to file
+fn deserialize<T: Learn>(v: &[T], delim: char) -> String {
+    v.iter()
+        .fold(String::new(), |r, item| r + &item.deser(delim) + "\n")
 }
 
 #[cfg(test)]
