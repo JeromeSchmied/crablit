@@ -12,12 +12,33 @@ pub struct Card {
     // lev: u32,
 }
 impl Card {
+    /// Creates new instance of a `Card`
+    ///
+    /// # usage
+    ///
+    /// ```
+    /// use crablit::cards;
+    ///
+    /// let card = cards::Card::new("dog", "Hunde");
+    /// ```
     pub fn new(term: &str, def: &str) -> Self {
         Self {
             trm: term.to_string(),
             def: def.to_string(),
         }
     }
+    /// Swaps term and definition
+    ///
+    /// # usage
+    ///
+    /// ```
+    /// use crablit::cards;
+    ///
+    /// let mut swapd = cards::Card::new("ask", "answer");
+    /// swapd.swap();
+    ///
+    /// assert_ne!(cards::Card::new("ask", "answer"), swapd);
+    /// ```
     pub fn swap(&mut self) {
         swap(&mut self.trm, &mut self.def);
     }
@@ -25,7 +46,7 @@ impl Card {
 
 impl Learn for Card {
     fn disp(&self) -> String {
-        format!("\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
+        format!("{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -66,13 +87,6 @@ impl Learn for Card {
         }
     }
 
-    // fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
-    //     for card in v {
-    //         // format!("{}{}{}", card)
-    //     }
-    //     todo!()
-    // }
-
     fn flashcard(&self) -> String {
         let s = &self.def;
         let r = "─".repeat(s.len() + 4);
@@ -81,5 +95,49 @@ impl Learn for Card {
 
     fn deser(&self, delim: char) -> String {
         format!("{}{}{}", self.trm, delim, self.def)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new() {
+        let trm = "tarmak is hot";
+        let def = "hot asphalt";
+
+        assert_eq!(
+            Card {
+                trm: trm.to_string(),
+                def: def.to_string()
+            },
+            Card::new(trm, def)
+        )
+    }
+
+    #[test]
+    fn swap() {
+        let mut swapd = Card::new("ask", "answer");
+        swapd.swap();
+
+        assert_ne!(Card::new("ask", "answer"), swapd);
+        assert_eq!(
+            Card {
+                trm: "answer".into(),
+                def: "ask".into()
+            },
+            swapd
+        );
+    }
+
+    #[test]
+    fn disp() {
+        let card = Card::new("term", "def");
+
+        assert_eq!(
+            card.disp(),
+            format!("{} {}", Msg::Quest.val(), "term".bright_blue())
+        );
     }
 }

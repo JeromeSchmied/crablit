@@ -126,7 +126,7 @@ where
     let mut rl = DefaultEditor::new()?;
 
     for elem in v {
-        let msg = &format!("{}\n{}> ", elem.disp(), consts::SPACER);
+        let msg = &format!("\n{}\n{}> ", elem.disp(), consts::SPACER);
         let guess = rl.readline(msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
