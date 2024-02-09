@@ -75,7 +75,7 @@ impl Config {
             eprintln!("got mode as arg");
             conf.mode
         } else {
-            get_mode(&content, &delim)?
+            get_mode(&content, &delim)?.disp()
         };
 
         eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
@@ -142,9 +142,9 @@ impl Config {
 }
 
 /// Get mode from content
-fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
+fn get_mode(content: &str, delim: &char) -> Result<Mode, &'static str> {
     if let Ok(mode) = get_prop(content, "mode") {
-        return Ok(mode);
+        return Ok(Mode::from(&mode));
     }
     // get avg count of splits
     let mut sum = 0;
@@ -157,9 +157,9 @@ fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
     let avg = (sum as f32 / n as f32).ceil() as u8;
     eprintln!("sum: {sum}, n: {n}, avg: {avg}");
     if avg == 2 {
-        Ok("cards".to_string())
+        Ok(Mode::Card)
     } else if avg > 2 && avg < 7 {
-        Ok("verbs".to_string())
+        Ok(Mode::Verb)
     } else {
         Err("couldn't determine mode of deck")
     }
@@ -268,13 +268,13 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(get_mode(content, &':'), Ok("cards".to_string()));
+        assert_eq!(get_mode(content, &':'), Ok(Mode::Card));
     }
 
     #[test]
     fn get_mode_correct_simple() {
         let content = "term ; condition";
-        assert_eq!(get_mode(content, &';'), Ok("cards".to_string()));
+        assert_eq!(get_mode(content, &';'), Ok(Mode::Card));
     }
 
     #[test]
@@ -287,7 +287,7 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(get_mode(content, &':'), Ok("cards".to_string()));
+        assert_eq!(get_mode(content, &':'), Ok(Mode::Card));
     }
 
     //     #[test]

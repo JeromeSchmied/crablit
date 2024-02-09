@@ -48,7 +48,7 @@ impl Mode {
     /// ```
     /// use crablit::Mode;
     ///
-    /// let mode = Mode::new("verbs");
+    /// let mode = Mode::from("verbs");
     ///
     /// assert_eq!(mode, Mode::Verb);
     /// ```
