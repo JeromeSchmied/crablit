@@ -81,8 +81,6 @@ impl Learn for Verb {
         let per = words.next().unwrap_or("").trim();
         let trm = words.next().unwrap_or("").trim();
 
-        let _other = words.next().unwrap_or("NNNNNN").trim();
-
         if inf.is_empty() || dri.is_empty() || pra.is_empty() || per.is_empty() || trm.is_empty() {
             Err(format!(
                 "A line should look like this: \n\t\"{}{}{}{}{}{}{}{}{}\".\nInstead looks like this: \n\t\"{}\".",
@@ -109,10 +107,6 @@ impl Learn for Verb {
         format!("{}\n{}", s, r.bright_purple().bold())
     }
 
-    // fn deserialize<T: Learn>(&self, v: &[T]) -> Result<String, Box<dyn Error>> {
-    //     todo!()
-    // }
-
     fn deser(&self, delim: char) -> String {
         format!(
             "{}{delim}{}{delim}{}{delim}{}{delim}{}",
@@ -123,21 +117,21 @@ impl Learn for Verb {
 
 /// Function to convert a Deck from Verbs to Cards
 pub fn deser_to_conv(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
-    let pb: PathBuf = PathBuf::from(&conf.file_path);
-    let of_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
+    let pb = PathBuf::from(&conf.file_path_orig());
+    let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
     println!(
         "\n\nConverting verbs to cards, from file: {:?} to file: {}",
-        conf.file_path,
-        of_name.bright_blue()
+        conf.file_path_orig(),
+        outf_name.bright_blue()
     );
-    let mut outfile = File::create(of_name)?;
+    let mut out_f = File::create(outf_name)?;
 
-    writeln!(outfile, "# [crablit]")?;
-    writeln!(outfile, "# mode = \"cards\"")?;
-    writeln!(outfile, "# delim = \'{}\'\n\n", conf.delim())?;
+    writeln!(out_f, "# [crablit]")?;
+    writeln!(out_f, "# mode = \"cards\"")?;
+    writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
 
     for line in verbs {
-        writeln!(outfile, "{}{}{}", line.trm, conf.delim(), line.inf)?;
+        writeln!(out_f, "{}{}{}", line.trm, conf.delim(), line.inf)?;
     }
 
     println!("Converting from verbs to cards done");

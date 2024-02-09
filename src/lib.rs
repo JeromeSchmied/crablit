@@ -131,7 +131,7 @@ where
                 }
 
                 ":w" | ":write" | ":save" => {
-                    let ofile_path = state::get_progress_path(&conf.file_path)?;
+                    let ofile_path = state::get_progress_path(&conf.file_path_orig())?;
                     let mut ofile = File::create(&ofile_path)?;
 
                     writeln!(ofile, "# [crablit]")?;
@@ -252,7 +252,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
 
-            state::rm(&conf.file_path)?;
+            state::rm(&conf.file_path_orig())?;
 
             println!("Gone through everything you wanted, great job!");
 
@@ -273,7 +273,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 v = question(&v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
-            state::rm(&conf.file_path)?;
+            state::rm(&conf.file_path_orig())?;
 
             Ok(())
         }

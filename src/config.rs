@@ -9,7 +9,7 @@ use std::{collections::HashMap, error::Error, fs, path::PathBuf};
 pub struct Config {
     /// Path of the file to learn
     #[arg(required = true)]
-    pub file_path: String,
+    file_path: String,
 
     /// Swap terms and definitions of cards
     #[arg(short = 's', long, default_value_t = false)]
@@ -45,10 +45,10 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let state_file_path = state::get_progress_path(&conf.file_path)?;
+        let state_file_path = state::get_progress_path(&conf.file_path_orig())?;
         println!("searching for path at: {:?}", state_file_path);
-        let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path) {
-            let state_file_path = state::get_progress_path(&conf.file_path)?;
+        let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path_orig()) {
+            let state_file_path = state::get_progress_path(&conf.file_path_orig())?;
 
             eprintln!(
                 "Opening file from previously saved state: \"{:?}\"",
@@ -93,13 +93,19 @@ impl Config {
 
     /// Path for statefile of filepath got, or if doesn't exist, self
     pub fn file_path(&self) -> PathBuf {
-        if state::progress_exists(&self.file_path) && !self.no_state {
-            state::get_progress_path(&self.file_path).expect("Coudln't get progress path")
+        if state::progress_exists(&self.file_path_orig()) && !self.no_state {
+            state::get_progress_path(&self.file_path_orig()).expect("Coudln't get progress path")
         } else {
             self.file_path.clone().into()
         }
     }
 
+    /// Return original file_path as PathBuf
+    pub fn file_path_orig(&self) -> PathBuf {
+        self.file_path.clone().into()
+    }
+
+    /// Return delimiter as a character
     pub fn delim(&self) -> char {
         self.delim.chars().next().unwrap()
     }
