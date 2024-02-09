@@ -115,8 +115,7 @@ where
 
         let msg = &format!("{}> ", consts::SPACER);
         let guess = rl.readline(msg)?;
-        rl.add_history_entry(&guess)
-            .expect("couldn't add to history");
+        rl.add_history_entry(&guess)?;
         let guess = guess.trim();
 
         match guess {
