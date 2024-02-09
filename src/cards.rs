@@ -49,7 +49,7 @@ impl Learn for Card {
         println!("{}", crate::hint(&self.def));
     }
 
-    fn serialize(line: &str, delim: char) -> Result<Box<Self>, String> {
+    fn ser(line: &str, delim: char) -> Result<Box<Self>, String> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 {
             Err(format!(

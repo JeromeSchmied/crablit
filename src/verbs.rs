@@ -72,7 +72,7 @@ impl Learn for Verb {
         println!("{}", crate::hint(&self.inf));
     }
 
-    fn serialize(line: &str, delim: char) -> Result<Box<Self>, String> {
+    fn ser(line: &str, delim: char) -> Result<Box<Self>, String> {
         let mut words = line.split(delim);
 
         let inf = words.next().unwrap_or("").trim();

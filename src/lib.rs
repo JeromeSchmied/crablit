@@ -31,7 +31,7 @@ pub trait Learn {
     fn wrong(&self) -> String;
     fn flashcard(&self) -> String;
     fn hint(&self);
-    fn serialize(line: &str, delim: char) -> Result<Box<Self>, String>;
+    fn ser(line: &str, delim: char) -> Result<Box<Self>, String>;
     fn deser(&self, delim: char) -> String;
 }
 
@@ -53,8 +53,8 @@ impl Mode {
     /// assert_eq!(mode, Mode::Verb);
     /// ```
     /// # panics
-    /// if mode is neither verbs, cards, or verbs2cards
-    pub fn new(mode: &str) -> Self {
+    /// if mode is neither verbs, cards, or conv
+    pub fn from(mode: &str) -> Self {
         let s = &mode.to_lowercase();
         if s == "verbs" || s == "verb" {
             Self::Verb
@@ -89,7 +89,7 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
         if line.trim().starts_with('#') || line.is_empty() {
             continue;
         }
-        r.push(*Learn::serialize(line, delim)?);
+        r.push(*Learn::ser(line, delim)?);
     }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
@@ -231,7 +231,7 @@ fn randomly_swap_cards(cards: &mut [cards::Card]) {
 
 /// Executing program core
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
-    match Mode::new(&conf.mode) {
+    match Mode::from(&conf.mode) {
         Mode::Card => {
             let mut v = init(&conf.file_path(), conf.delim())?;
             if conf.card_swap {
@@ -328,22 +328,22 @@ mod tests {
     #[test]
     #[should_panic]
     fn incorrect_mode() {
-        Mode::new("mode");
+        Mode::from("mode");
     }
     #[test]
     fn correct_mode_cards() {
-        assert_eq!(Mode::Card, Mode::new("cards"));
+        assert_eq!(Mode::Card, Mode::from("cards"));
     }
 
     #[test]
     fn mode_new_simple() {
         let mode = "verbs";
-        assert_eq!(Mode::Verb, Mode::new(mode));
+        assert_eq!(Mode::Verb, Mode::from(mode));
     }
     #[test]
     fn mode_new_in_config() {
         let mode = "verbs2cards";
-        assert_eq!(Mode::VerbConv, Mode::new(mode));
+        assert_eq!(Mode::VerbConv, Mode::from(mode));
     }
 
     // init()
