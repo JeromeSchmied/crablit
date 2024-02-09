@@ -46,7 +46,7 @@ impl Learn for Card {
     }
 
     fn hint(&self) {
-        println!("{}", crate::hint(&self.def));
+        println!("{} {}", Msg::Hint.val(), crate::hint(&self.def));
     }
 
     fn ser(line: &str, delim: char) -> Result<Box<Self>, String> {

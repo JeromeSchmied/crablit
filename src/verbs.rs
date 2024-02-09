@@ -69,7 +69,7 @@ impl Learn for Verb {
     }
 
     fn hint(&self) {
-        println!("{}", crate::hint(&self.inf));
+        println!("{} {}", Msg::Hint.val(), crate::hint(&self.inf));
     }
 
     fn ser(line: &str, delim: char) -> Result<Box<Self>, String> {

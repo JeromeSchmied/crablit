@@ -67,6 +67,15 @@ impl Mode {
         }
     }
 
+    /// Creates conviniently displayable String
+    /// # usage
+    /// ```
+    /// use crablit::Mode;
+    ///
+    /// let mode = Mode::from("convert");
+    ///
+    /// assert_eq!("convert", mode.disp())
+    /// ```
     pub fn disp(&self) -> String {
         match self {
             Mode::Card => "cards".into(),
@@ -210,12 +219,22 @@ where
 }
 
 /// Show hint from the string got
-fn hint(s: &str) -> String {
+/// # usage
+/// ```
+/// use crablit::hint;
+///
+/// let dunno_want_hint = "This is a very-very hard-to-guess sentence.";
+///
+/// assert_eq!("This is a very-very h______________________", hint(dunno_want_hint));
+///
+/// let easy = "012345";
+///
+/// assert_eq!("012___", hint(easy));
+/// ```
+pub fn hint(s: &str) -> String {
     let n = s.chars().count() / 2;
     [
-        Msg::Hint.val().to_string(),
-        " ".into(),
-        s.chars().take(n).collect(),
+        s.chars().take(n).collect::<String>(),
         s.chars().skip(n).map(|_| '_').collect(),
     ]
     .concat()
@@ -294,7 +313,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     }
 }
 
-/// make item writable to file
+/// Make item writable to file
 fn deserialize<T: Learn>(v: &[T], delim: char) -> String {
     v.iter()
         .fold(String::new(), |r, item| r + &item.deser(delim) + "\n")
@@ -302,9 +321,8 @@ fn deserialize<T: Learn>(v: &[T], delim: char) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::cards::Card;
-
     use super::*;
+    use crate::cards::Card;
 
     #[test]
     fn swap_works() {
@@ -317,20 +335,17 @@ mod tests {
     #[test]
     fn hint_not_odd() {
         let get_hint = String::from("1234");
-        assert_eq!(format!("{} 12__", Msg::Hint.val()), hint(&get_hint));
+        assert_eq!("12__", hint(&get_hint));
     }
     #[test]
     fn hint_odd() {
         let get_hint = String::from("12345");
-        assert_eq!(format!("{} 12___", Msg::Hint.val()), hint(&get_hint));
+        assert_eq!("12___", hint(&get_hint));
     }
     #[test]
     fn hint_non_ascii() {
         let get_hint = String::from("aáéűúőóüöíä|Ä");
-        assert_eq!(
-            format!("{} aáéűúő_______", Msg::Hint.val()),
-            hint(&get_hint)
-        );
+        assert_eq!("aáéűúő_______", hint(&get_hint));
     }
 
     #[test]
