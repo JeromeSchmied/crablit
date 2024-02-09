@@ -43,7 +43,7 @@ impl Verb {
 }
 
 impl Learn for Verb {
-    fn disp(&self) -> String {
+    fn question(&self) -> String {
         format!("\n\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
@@ -72,7 +72,7 @@ impl Learn for Verb {
         println!("{} {}", Msg::Hint.val(), crate::hint(&self.inf));
     }
 
-    fn ser(line: &str, delim: char) -> Result<Box<Self>, String> {
+    fn ser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
         let mut words = line.split(delim);
 
         let inf = words.next().unwrap_or("").trim();
@@ -94,7 +94,7 @@ impl Learn for Verb {
                 delim.to_string().red().bold(),
                 "<term>".blue().italic(),
                 line,
-            ))
+            ).into())
         } else {
             // making a Verbs of the values
             Ok(Box::new(Verb::new(inf, dri, pra, per, trm)))
@@ -116,7 +116,7 @@ impl Learn for Verb {
 }
 
 /// Function to convert a Deck from Verbs to Cards
-pub fn deser_to_conv(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
+pub fn deser_to_card(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
     let pb = PathBuf::from(&conf.file_path_orig());
     let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
     println!(

@@ -17,9 +17,9 @@ impl Card {
     /// # usage
     ///
     /// ```
-    /// use crablit::cards;
+    /// use crablit::Card;
     ///
-    /// let card = cards::Card::new("dog", "Hunde");
+    /// let card = Card::new("dog", "Hunde");
     /// ```
     pub fn new(term: &str, def: &str) -> Self {
         Self {
@@ -45,7 +45,7 @@ impl Card {
 }
 
 impl Learn for Card {
-    fn disp(&self) -> String {
+    fn question(&self) -> String {
         format!("{} {}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
@@ -70,7 +70,7 @@ impl Learn for Card {
         println!("{} {}", Msg::Hint.val(), crate::hint(&self.def));
     }
 
-    fn ser(line: &str, delim: char) -> Result<Box<Self>, String> {
+    fn ser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 {
             Err(format!(
@@ -79,7 +79,8 @@ impl Learn for Card {
                 delim.to_string().red().bold(),
                 "<definition>".yellow().italic(),
                 line,
-            ))
+            )
+            .into())
         } else {
             let trm = words.next().unwrap().trim();
             let def = words.next().unwrap().trim();
@@ -136,7 +137,7 @@ mod tests {
         let card = Card::new("term", "def");
 
         assert_eq!(
-            card.disp(),
+            card.question(),
             format!("{} {}", Msg::Quest.val(), "term".bright_blue())
         );
     }

@@ -157,9 +157,9 @@ fn get_mode(content: &str, delim: &char) -> Result<Mode, &'static str> {
     let avg = (sum as f32 / n as f32).ceil() as u8;
     eprintln!("sum: {sum}, n: {n}, avg: {avg}");
     if avg == 2 {
-        Ok(Mode::Card)
+        Ok(Mode::Cards)
     } else if avg > 2 && avg < 7 {
-        Ok(Mode::Verb)
+        Ok(Mode::Verbs)
     } else {
         Err("couldn't determine mode of deck")
     }
@@ -268,13 +268,13 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(get_mode(content, &':'), Ok(Mode::Card));
+        assert_eq!(get_mode(content, &':'), Ok(Mode::Cards));
     }
 
     #[test]
     fn get_mode_correct_simple() {
         let content = "term ; condition";
-        assert_eq!(get_mode(content, &';'), Ok(Mode::Card));
+        assert_eq!(get_mode(content, &';'), Ok(Mode::Cards));
     }
 
     #[test]
@@ -287,7 +287,7 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(get_mode(content, &':'), Ok(Mode::Card));
+        assert_eq!(get_mode(content, &':'), Ok(Mode::Cards));
     }
 
     //     #[test]

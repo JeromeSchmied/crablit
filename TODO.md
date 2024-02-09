@@ -55,7 +55,7 @@
 
 -   [ ] write docs, man
 -   [x] being able to determine every property itself <- kinda?
--   [ ] everything knowt or quizlet has
+-   [ ] everything actually useful knowt or quizlet has
 -   [x] being able to learn verbs with their forms from tables
 -   [ ] fuzzy matching words
 -   [ ] tests: like in school

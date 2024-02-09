@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::{consts::*, verbs::Verb};
+use crate::expressions::*;
 use colored::{ColoredString, Colorize};
 use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
@@ -17,29 +17,43 @@ pub mod cards;
 /// Module for parsing cli arguments
 pub mod config;
 /// commonly used expressions(text), colored strings
-pub mod consts;
+pub mod expressions;
 /// Module for saving state: progress
 pub mod state;
 /// Module for learning Deck of Verbs
 pub mod verbs;
 
+pub use cards::Card;
+pub use verbs::Verb;
+
 /// The trait for learning either `Cards` of `Verbs`
 pub trait Learn {
-    fn disp(&self) -> String;
+    /// Show as a term, waiting to be answered.
+    fn question(&self) -> String;
+    /// Show solution of term.
     fn correct(&self) -> String;
+    /// Display message when skipping item.
     fn skip(&self) -> String;
+    /// Display message when input of term is not correct.
     fn wrong(&self) -> String;
+    /// TODO: Display flashcard.
     fn flashcard(&self) -> String;
+    /// Show hint of term.
     fn hint(&self);
-    fn ser(line: &str, delim: char) -> Result<Box<Self>, String>;
+    /// Serialize: create instance of `Self` from a line from file containing vocab data.
+    fn ser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
+    /// Deserialize: create a line of vocab data to be written to file from `self`
     fn deser(&self, delim: char) -> String;
 }
 
 #[derive(Debug, PartialEq)]
 /// Type of Deck
 pub enum Mode {
-    Card,
-    Verb,
+    /// Basic term-definition
+    Cards,
+    /// More complex: for learning verbforms
+    Verbs,
+    /// Convert from `Verbs` to `Cards`. term as term, infinitive as definition.
     VerbConv,
 }
 impl Mode {
@@ -50,16 +64,16 @@ impl Mode {
     ///
     /// let mode = Mode::from("verbs");
     ///
-    /// assert_eq!(mode, Mode::Verb);
+    /// assert_eq!(mode, Mode::Verbs);
     /// ```
     /// # panics
     /// if mode is neither verbs, cards, or conv
     pub fn from(mode: &str) -> Self {
         let s = &mode.to_lowercase();
         if s == "verbs" || s == "verb" {
-            Self::Verb
+            Self::Verbs
         } else if s == "cards" || s == "card" {
-            Self::Card
+            Self::Cards
         } else if s == "conv" || s == "convert" || s == "verb_conv" || s == "verbs2cards" {
             Self::VerbConv
         } else {
@@ -78,8 +92,8 @@ impl Mode {
     /// ```
     pub fn disp(&self) -> String {
         match self {
-            Mode::Card => "cards".into(),
-            Mode::Verb => "verbs".into(),
+            Mode::Cards => "cards".into(),
+            Mode::Verbs => "verbs".into(),
             Mode::VerbConv => "convert".into(),
         }
     }
@@ -126,7 +140,7 @@ where
     let mut rl = DefaultEditor::new()?;
 
     for elem in v {
-        let msg = &format!("\n{}\n{}> ", elem.disp(), consts::SPACER);
+        let msg = &format!("\n{}\n{}> ", elem.question(), expressions::SPACER);
         let guess = rl.readline(msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
@@ -259,7 +273,7 @@ fn randomly_swap_cards(cards: &mut [cards::Card]) {
 /// Executing program core
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     match conf.mode() {
-        Mode::Card => {
+        Mode::Cards => {
             let mut v = init(&conf.file_path(), conf.delim())?;
             if conf.card_swap() {
                 println!("swapping terms and definitions of each card");
@@ -285,7 +299,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 
             Ok(())
         }
-        Mode::Verb => {
+        Mode::Verbs => {
             let mut v: Vec<Verb> = init(&conf.file_path(), conf.delim())?;
             println!(
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
@@ -306,7 +320,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
         }
         Mode::VerbConv => {
             let v: Vec<Verb> = init(&conf.file_path(), conf.delim())?;
-            verbs::deser_to_conv(&v, conf)?;
+            verbs::deser_to_card(&v, conf)?;
 
             Ok(())
         }
@@ -355,13 +369,13 @@ mod tests {
     }
     #[test]
     fn correct_mode_cards() {
-        assert_eq!(Mode::Card, Mode::from("cards"));
+        assert_eq!(Mode::Cards, Mode::from("cards"));
     }
 
     #[test]
     fn mode_new_simple() {
         let mode = "verbs";
-        assert_eq!(Mode::Verb, Mode::from(mode));
+        assert_eq!(Mode::Verbs, Mode::from(mode));
     }
     #[test]
     fn mode_new_in_config() {
