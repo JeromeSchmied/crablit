@@ -135,7 +135,7 @@ dependencies = [
 
 [[package]]
 name = "crablit"
-version = "0.1.6"
+version = "0.1.6-git"
 dependencies = [
  "clap",
  "colored",

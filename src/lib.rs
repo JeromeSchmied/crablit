@@ -81,10 +81,7 @@ impl Mode {
 // }
 
 /// Initializing deck of either `cards`, or `verbs`
-pub fn init<T: Learn + Debug + Clone>(
-    path: &PathBuf,
-    delim: char,
-) -> Result<Vec<T>, Box<dyn Error>> {
+pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
     let contents = fs::read_to_string(path)?;
     let mut r: Vec<T> = Vec::new();
     // iterating over the lines of file to store them in a vector
@@ -100,10 +97,10 @@ pub fn init<T: Learn + Debug + Clone>(
 }
 
 /// Start learning the vector, return the remainders
-pub fn question<T: Learn + Debug + Clone>(
-    v: &[T],
-    conf: &config::Config,
-) -> Result<Vec<T>, Box<dyn Error>> {
+pub fn question<T>(v: &[T], conf: &config::Config) -> Result<Vec<T>, Box<dyn Error>>
+where
+    T: Learn + Debug + Clone,
+{
     // let mut printer = String::new();
     if v.len() != 1 {
         println!("\n\nYou have {} words to learn, let's start!", v.len());
