@@ -12,6 +12,8 @@
 >
 > Crablit is still in beta, functionality is not tested thoroughly.
 
+## Table of Contents (ToC)
+
 <!--toc:start-->
 
 -   [Features](#features)
@@ -89,6 +91,7 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 0. **_Easiest, recommended:_** Go to releases page and see instructions built by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
 
 or:
+
 -   [Install Rust](https://www.rust-lang.org/tools/install), in case you don't have it.
 -   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
 

@@ -15,7 +15,7 @@ use std::{
 pub mod cards;
 /// Module for parsing cli arguments
 pub mod config;
-/// commonly used expressions(text), colored strings
+/// Commonly used expressions(text), colored strings
 pub mod expressions;
 /// Module for saving state: progress
 pub mod state;
