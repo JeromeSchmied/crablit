@@ -175,7 +175,7 @@ where
                     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
                     println!("r: {:?}", r);
-                    let content = deserialize(&r, conf.delim());
+                    let content = serialize(&r, conf.delim());
                     writeln!(ofile, "{}", content)?;
 
                     eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
@@ -351,7 +351,7 @@ pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
 }
 
 /// Make item writable to file
-fn deserialize<T: Learn>(v: &[T], delim: char) -> String {
+fn serialize<T: Learn>(v: &[T], delim: char) -> String {
     v.iter()
         .fold(String::new(), |r, item| r + &item.ser(delim) + "\n")
 }
