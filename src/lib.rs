@@ -41,9 +41,9 @@ pub trait Learn {
     /// Show hint of term.
     fn hint(&self);
     /// Serialize: create instance of `Self` from a line from file containing vocab data.
-    fn ser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
+    fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
     /// Deserialize: create a line of vocab data to be written to file from `self`
-    fn deser(&self, delim: char) -> String;
+    fn ser(&self, delim: char) -> String;
 }
 
 #[derive(Debug, PartialEq)]
@@ -123,7 +123,7 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
         if line.trim().starts_with('#') || line.is_empty() {
             continue;
         }
-        r.push(*Learn::ser(line, delim)?);
+        r.push(*Learn::deser(line, delim)?);
     }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
@@ -353,7 +353,7 @@ pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
 /// Make item writable to file
 fn deserialize<T: Learn>(v: &[T], delim: char) -> String {
     v.iter()
-        .fold(String::new(), |r, item| r + &item.deser(delim) + "\n")
+        .fold(String::new(), |r, item| r + &item.ser(delim) + "\n")
 }
 
 #[cfg(test)]

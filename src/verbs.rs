@@ -73,7 +73,7 @@ impl Learn for Verb {
         println!("{} {}", Msg::Hint.val(), crate::hint(&self.inf));
     }
 
-    fn ser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
+    fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
         let mut words = line.split(delim);
 
         let inf = words.next().unwrap_or("").trim();
@@ -108,7 +108,7 @@ impl Learn for Verb {
         format!("{}\n{}", s, r.bright_purple().bold())
     }
 
-    fn deser(&self, delim: char) -> String {
+    fn ser(&self, delim: char) -> String {
         format!(
             "{}{delim}{}{delim}{}{delim}{}{delim}{}",
             self.inf, self.dri, self.pra, self.per, self.trm

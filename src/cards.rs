@@ -72,7 +72,7 @@ impl Learn for Card {
         println!("{} {}", Msg::Hint.val(), crate::hint(&self.def));
     }
 
-    fn ser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
+    fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 {
             Err(format!(
@@ -96,7 +96,7 @@ impl Learn for Card {
         format!("{}\n{}", s, r.bright_purple().bold())
     }
 
-    fn deser(&self, delim: char) -> String {
+    fn ser(&self, delim: char) -> String {
         format!("{}{}{}", self.trm, delim, self.def)
     }
 }
