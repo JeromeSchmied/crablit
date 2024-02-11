@@ -19,12 +19,12 @@
 -   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
 -   [x] save progress <- done using dirs crate, fs::read,write
--   [ ] make progress saving stable
 -   [ ] autocompletion of commands: `:<command>`
 -   [ ] levelled knowledge
 -   [ ] starring words that need learning, high level
 -   [ ] use a printer String, always delete old questions: pretty-print
 -   [ ] flashcards
+-   [ ] multifile learning
 -   [ ] find duplicates and deal with 'em
 
 ## nice-to-haves

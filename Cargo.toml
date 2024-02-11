@@ -61,3 +61,6 @@ targets = [
 ]
 # Publish jobs to run in CI
 pr-run-mode = "plan"
+
+[dev-dependencies]
+assert_cmd = "2.0.13"

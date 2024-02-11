@@ -1,5 +1,4 @@
-//! # In this module, you can find code that helps in collecting cli
-//! arguments and determining properties of a file containing vocab data.
+//! # In this module, you can find code that helps in collecting cli arguments and determining properties of a file containing vocab data.
 use crate::*;
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs, path::PathBuf};
@@ -47,7 +46,7 @@ impl Config {
 
         let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
         println!("searching for path at: {:?}", state_file_path);
-        let content = if !conf.no_state && crate::state::prog_exists(&conf.file_path_orig()) {
+        let content = if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
             let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
 
             eprintln!(
