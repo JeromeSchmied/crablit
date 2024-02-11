@@ -96,7 +96,7 @@ where
     let content = serialize(wrongs, conf.delim());
     writeln!(ofile, "{}", content)?;
 
-    eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
+    eprintln!("Saved file to {}{:?}.\n\n", SPACER.repeat(2), ofile_path);
 
     Ok(())
 }

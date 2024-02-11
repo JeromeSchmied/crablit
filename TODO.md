@@ -19,19 +19,22 @@
 -   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
 -   [x] save progress <- done using dirs crate, fs::read,write
--   [ ] autocompletion of commands: `:<command>`
 -   [ ] levelled knowledge
--   [ ] starring words that need learning, high level
--   [ ] use a printer String, always delete old questions: pretty-print
 -   [ ] flashcards
 -   [ ] multifile learning
+
+## maybe needed
+
 -   [ ] find duplicates and deal with 'em
+-   [ ] if hint typed more than once, show more help
+-   [ ] use a printer String, always delete old questions: pretty-print
+-   [ ] starring words that need learning, high level
+-   [ ] filtering what to learn, like unusual verbforms
 
 ## nice-to-haves
 
--   [ ] if hint typed more than once, show more help
+-   [ ] autocompletion of commands: `:<command>`
 -   [ ] [tui](https://crates.io/crates/ratatui)
--   [ ] filtering what to learn, like unusual verbforms
 -   [ ] taking cli arguments: [clap](https://crates.io/crates/clap)
     -   [x] file name
     -   [x] delimiter
@@ -66,8 +69,7 @@
 -   [x] clean main.rs
 -   [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
 -   [x] basic tests: being cross-platform, `lib` tests
--   [ ] tests: assert_cmd
--   [ ] being stupid-proof == no bugs
+-   [ ] tests: e.g.: assert_cmd
 -   [ ] non-spagethi code with
 
     -   [x] `mod`s
@@ -81,7 +83,7 @@
 -   [x] [crates](https://crates.io)
 -   [ ] website: crablit.com or crablit.io or crab.lit
 -   [ ] being able to share decks
--   [ ] being able to create flashcard decks in app
+-   [ ] being able to create decks in app
 -   [ ] clean API
 -   [ ] template files for creating great flashcards with
     -   [x] delimiter

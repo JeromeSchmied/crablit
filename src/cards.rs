@@ -48,7 +48,7 @@ impl Card {
 
 impl Learn for Card {
     fn question(&self) -> String {
-        format!("{} {}", Msg::Quest.val(), self.trm.bright_blue())
+        format!("{}{}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -56,20 +56,20 @@ impl Learn for Card {
     }
 
     fn skip(&self) -> String {
-        format!("{} {:?}", Msg::Skip.val(), Card::new(&self.trm, &self.def))
+        format!("{}{:?}", Msg::Skip.val(), self)
     }
 
     fn wrong(&self) -> String {
         format!(
-            "{} {} {}\n",
+            "{}{}{}\n",
             Msg::Wrong.val(),
             self.def.yellow().underline(),
             Msg::WrongIt.val()
         )
     }
 
-    fn hint(&self) {
-        println!("{} {}", Msg::Hint.val(), crate::hint(&self.def));
+    fn hint(&self) -> String {
+        format!("{}{}", Msg::Hint.val(), crate::hint(&self.def))
     }
 
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {

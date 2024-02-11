@@ -1,0 +1,8 @@
+# example file that can be parsed by crablit
+
+soup ; Suppe
+fast ; schnell
+alpaca ; das Alpaka
+proud ; stolz
+to pour ; gießen
+# I don't know what to write next. ; Ich weiß nicht was...

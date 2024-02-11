@@ -45,7 +45,7 @@ impl Verb {
 
 impl Learn for Verb {
     fn question(&self) -> String {
-        format!("\n\n{} {}", Msg::Quest.val(), self.trm.bright_blue())
+        format!("\n\n{}{}", Msg::Quest.val(), self.trm.bright_blue())
     }
 
     fn correct(&self) -> String {
@@ -54,7 +54,7 @@ impl Learn for Verb {
 
     fn skip(&self) -> String {
         format!(
-            "{} {:?}",
+            "{}{:?}",
             Msg::Skip.val(),
             Verb::new(&self.inf, &self.dri, &self.pra, &self.per, &self.trm),
         )
@@ -62,15 +62,15 @@ impl Learn for Verb {
 
     fn wrong(&self) -> String {
         format!(
-            "{} {} {}",
+            "{}{}{}",
             Msg::Wrong.val(),
             self.print_em(),
             Msg::WrongIt.val()
         )
     }
 
-    fn hint(&self) {
-        println!("{} {}", Msg::Hint.val(), crate::hint(&self.inf));
+    fn hint(&self) -> String {
+        format!("{}{}", Msg::Hint.val(), crate::hint(&self.inf))
     }
 
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {

@@ -32,18 +32,20 @@ impl Msg {
     /// get value for expression
     pub fn val(&self) -> ColoredString {
         match *self {
-            Msg::Quest => format!("{}?", SPACER).bright_yellow().bold(),
-            Msg::Knew => format!("{}%", SPACER).bright_green().bold(),
-            Msg::KnewIt => "Yes, that's right!".bright_green(),
-            Msg::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
+            Msg::Quest => format!("{}? ", SPACER).bright_yellow().bold(),
+            Msg::Knew => format!("{}% ", SPACER).bright_green().bold(),
+            Msg::KnewIt => "Yes, that's right!\n".bright_green(),
+            Msg::Skip => format!("{}Skipping: ", SPACER.repeat(2)).bright_magenta(),
             // Msg::Revise => {
             //     format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
             // }
-            Msg::Typo => format!("{}Corrected: ", SPACER).bright_magenta().italic(),
+            Msg::Typo => format!("{}Corrected: ", SPACER.repeat(2))
+                .bright_magenta()
+                .italic(),
             Msg::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
-            Msg::Hint => format!("{}#", SPACER).cyan().bold(),
-            Msg::Wrong => format!("{}~", SPACER).bright_red().bold(),
-            Msg::WrongIt => "<-is the right answer.".bright_red().italic(),
+            Msg::Hint => format!("{}# ", SPACER).cyan().bold(),
+            Msg::Wrong => format!("{}~ ", SPACER).bright_red().bold(),
+            Msg::WrongIt => " <-is the right answer.\n".bright_red().italic(),
             // Exp::Flash => format!("{}=", SPACER).bright_cyan().bold(),
         }
     }

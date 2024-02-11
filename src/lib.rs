@@ -1,5 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::expressions::*;
+use colored::Colorize;
 use rustyline::DefaultEditor;
 use std::{
     error::Error,
@@ -38,7 +39,7 @@ pub trait Learn {
     /// TODO: Display flashcard.
     fn flashcard(&self) -> String;
     /// Show hint of term.
-    fn hint(&self);
+    fn hint(&self) -> String;
     /// Serialize: create instance of `Self` from a line from file containing vocab data.
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
     /// Deserialize: create a line of vocab data to be written to file from `self`
@@ -135,7 +136,7 @@ where
     T: Learn + Debug + Clone,
 {
     // let mut printer = String::new();
-    println!("\n\nYou have {} words to learn, let's start!", v.len());
+    println!("\n\nYou have {} words to learn, let's start!\n\n", v.len());
     // results vector
     let mut r: Vec<T> = Vec::new();
 
@@ -145,15 +146,15 @@ where
     while i < v.len() {
         let item = &v[i];
         // display prompt
-        // let last_hr = rl.history().iter().last();
-        // println!("last history element: {:?}", last_hr);
-        // let msg = if last_hr.is_some_and(|he| he.starts_with(':') || last_hr.is_none()) {
-        //     format!("\n{}> ", expressions::SPACER)
-        // } else {
-        //     format!("\n{}\n{}> ", item.question(), expressions::SPACER)
-        // };
+        let last_hr = rl.history().iter().last();
+        // eprintln!("last history element: {:?}", last_hr);
+        let msg = if last_hr.is_some_and(|he| he.starts_with(":h")) {
+            format!("{}> ", expressions::SPACER)
+        } else {
+            format!("{}\n{}> ", item.question(), expressions::SPACER)
+        };
 
-        let msg = format!("\n{}\n{}> ", item.question(), expressions::SPACER);
+        // let msg = format!("\n{}\n{}> ", item.question(), expressions::SPACER);
         let guess = rl.readline(&msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
@@ -167,7 +168,7 @@ where
                 }
 
                 ":h" | ":help" | ":hint" => {
-                    item.hint();
+                    println!("{}", item.hint());
                 }
 
                 ":w" | ":write" | ":save" => {
@@ -175,16 +176,20 @@ where
                 }
 
                 ":wq" => {
-                    todo!()
+                    state::save_prog(&r, conf)?;
+                    println!("{}", Msg::Exit.val());
+                    exit(0);
                 }
 
                 ":typo" => {
-                    // ask to type before correcting?
-                    println!("{}{:?}", Msg::Typo.val(), r.pop());
+                    // ask to type again before correcting?
+                    println!("{}{:?}\n\n", Msg::Typo.val(), r.pop());
+                    // rl.readline(&msg)?;
                 }
 
                 ":skip" => {
-                    println!("{}", item.skip());
+                    println!("{}\n\n", item.skip());
+                    i += 1;
                     continue;
                 }
 
@@ -198,7 +203,8 @@ where
                 }
 
                 uc => {
-                    return Err(["unknown command: ", uc].concat().into());
+                    // return Err(["unknown command: ", uc].concat().into());
+                    println!("{} {}\n", "Unknown command:".red(), uc);
                 }
             }
         } else if guess == item.correct() {
