@@ -1,52 +1,73 @@
 //! # Code containing expressions used in `crablit` regularly.
-use colored::{ColoredString, Colorize};
+use colored::Colorize;
 
 /// space before any output
 pub const SPACER: &str = "    ";
 /// commonly used expressions(text), colored strings
-pub(crate) enum Msg {
+pub enum Msg {
     /// Question(mark)
-    Quest,
-    /// Knew it mark
+    Quest(String),
+    /// Knew it
     Knew,
-    /// Knew it text
-    KnewIt,
     /// skipping the following:
-    Skip,
+    Skip(String),
     /// goin' to the ones not guessed correctly
     Revise,
     /// Correct the following:
-    Typo,
+    Typo(String),
     /// Stop executing the program
     Exit,
     /// show hint
-    Hint,
+    Hint(String),
     /// didn't know mark
-    Wrong,
-    /// didn't know text
-    WrongIt,
+    Wrong(String),
     /// flashcard
     Flash,
+    /// still this much to go
+    Togo(usize, usize),
 }
 impl Msg {
     /// get value for expression
-    pub fn val(&self) -> ColoredString {
-        match *self {
-            Self::Quest => format!("{}? ", SPACER).bright_yellow().bold(),
-            Self::Knew => format!("{}% ", SPACER).bright_green().bold(),
-            Self::KnewIt => "Yes, that's right!\n".bright_green(),
-            Self::Skip => format!("{}Skipping: ", SPACER.repeat(2)).bright_magenta(),
+    pub fn val(&self) -> String {
+        match self {
+            Self::Quest(s) => format!("{}{} {s}", SPACER, "?".bright_yellow().bold()),
+            Self::Knew => format!(
+                "{}{} {}",
+                SPACER,
+                "$".bright_green().bold(),
+                "Yes, that's right!\n".bright_green()
+            ),
+            Self::Skip(s) => format!("{}{} {s}", SPACER.repeat(2), "Skipping:".bright_magenta()),
             Self::Revise => {
-                format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
+                format!(
+                    "{}{}",
+                    SPACER,
+                    "Going to the ones not guessed correctly...".bright_magenta()
+                )
             }
-            Self::Typo => format!("{}Corrected: ", SPACER.repeat(2))
-                .bright_magenta()
-                .italic(),
-            Self::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
-            Self::Hint => format!("{}# ", SPACER).cyan().bold(),
-            Self::Wrong => format!("{}~ ", SPACER).bright_red().bold(),
-            Self::WrongIt => " <-is the right answer.\n".bright_red().italic(),
-            Self::Flash => format!("{}=", SPACER).bright_cyan().bold(),
+            Self::Typo(s) => format!(
+                "{}{} {s}",
+                SPACER.repeat(2),
+                "Corrected:".bright_magenta().italic(),
+            ),
+            Self::Exit => format!("\n{}{}", SPACER, "Exiting...".bright_magenta().italic()),
+            Self::Hint(s) => format!("{}{} {}", SPACER, "#".cyan().bold(), s),
+            Self::Wrong(s) => format!(
+                "{}{} {s} {}\n\n",
+                SPACER,
+                "~".bright_red().bold(),
+                "<-is the right answer.".bright_red().italic()
+            ),
+            Self::Flash => format!("{}{} ", SPACER, "=".bright_cyan().bold()),
+            Self::Togo(sum, i) => {
+                format!(
+                    "{}{} {}% {} more to go",
+                    SPACER,
+                    "!".bold().bright_purple(),
+                    i / sum,
+                    sum - i
+                )
+            }
         }
     }
 }

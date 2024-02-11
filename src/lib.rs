@@ -43,7 +43,7 @@ pub trait Learn {
     /// Serialize: create instance of `Self` from a line from file containing vocab data.
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
     /// Deserialize: create a line of vocab data to be written to file from `self`
-    fn ser(&self, delim: char) -> String;
+    fn ser(&self, delim: &str) -> String;
 }
 
 #[derive(Debug, PartialEq)]
@@ -148,7 +148,7 @@ where
         // display prompt
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
-        let msg = if last_hr.is_some_and(|he| he.starts_with(":h")) {
+        let msg = if last_hr.is_some_and(|he| he.starts_with(":h") || he == ":typo") {
             format!("{}> ", expressions::SPACER)
         } else {
             format!("{}\n{}> ", item.question(), expressions::SPACER)
@@ -183,7 +183,11 @@ where
 
                 ":typo" => {
                     // ask to type again before correcting?
-                    println!("{}{:?}\n\n", Msg::Typo.val(), r.pop());
+                    if let Some(skipping) = r.pop() {
+                        println!("{}", Msg::Typo(skipping.ser(" = ")).val());
+                    } else {
+                        println!("{}", Msg::Typo("None".to_string()).val())
+                    }
                     // rl.readline(&msg)?;
                 }
 
@@ -199,9 +203,13 @@ where
                 }
 
                 ":f" | ":flash" => {
-                    println!("{} {}\n\n\n", &Msg::Flash.val(), item.flashcard(),);
+                    println!("{}{}\n\n\n", &Msg::Flash.val(), item.flashcard(),);
                     i += 1;
                     // todo!();
+                }
+
+                ":n" | ":num" | ":togo" => {
+                    println!("{}\n\n", &Msg::Togo(v.len(), i + 1).val());
                 }
 
                 uc => {
@@ -210,7 +218,7 @@ where
                 }
             }
         } else if guess == item.correct() {
-            println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val());
+            println!("{}\n", Msg::Knew.val());
             i += 1;
         } else {
             r.push(item.clone());

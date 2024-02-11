@@ -76,8 +76,9 @@ pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
 /// assert_eq!(r, serialize(&deck, ';'));
 /// ```
 pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
-    v.iter()
-        .fold(String::new(), |r, item| r + &item.ser(delim) + "\n")
+    v.iter().fold(String::new(), |r, item| {
+        r + &item.ser(&delim.to_string()) + "\n"
+    })
 }
 
 /// Save progress to `data_dir`/crablit/`current_file`

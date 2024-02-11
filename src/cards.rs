@@ -48,7 +48,7 @@ impl Card {
 
 impl Learn for Card {
     fn question(&self) -> String {
-        format!("{}{}", Msg::Quest.val(), self.trm.bright_blue())
+        Msg::Quest(format!("{}", self.trm.bright_blue())).val()
     }
 
     fn correct(&self) -> String {
@@ -56,20 +56,22 @@ impl Learn for Card {
     }
 
     fn skip(&self) -> String {
-        format!("{}{:?}", Msg::Skip.val(), self)
+        Msg::Skip(self.ser(" = ")).val()
+        // format!("{}{:?}", Msg::Skip.val(), self)
     }
 
     fn wrong(&self) -> String {
-        format!(
-            "{}{}{}\n",
-            Msg::Wrong.val(),
-            self.def.yellow().underline(),
-            Msg::WrongIt.val()
-        )
+        Msg::Wrong(self.def.yellow().underline().to_string()).val()
+        // format!(
+        //     "{}{}{}\n",
+        //     Msg::Wrong.val(),
+        //     self.def.yellow().underline(),
+        //     Msg::WrongIt.val()
+        // )
     }
 
     fn hint(&self) -> String {
-        format!("{}{}", Msg::Hint.val(), crate::hint(&self.def))
+        Msg::Hint(crate::hint(&self.def)).val()
     }
 
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
@@ -96,7 +98,7 @@ impl Learn for Card {
         format!("{}\n{}{}", s, SPACER, r.bright_purple().bold())
     }
 
-    fn ser(&self, delim: char) -> String {
+    fn ser(&self, delim: &str) -> String {
         format!("{}{}{}", self.trm, delim, self.def)
     }
 }
@@ -140,7 +142,7 @@ mod tests {
 
         assert_eq!(
             card.question(),
-            format!("{}{}", Msg::Quest.val(), "term".bright_blue())
+            Msg::Quest("term".bright_blue().to_string()).val()
         );
     }
 }
