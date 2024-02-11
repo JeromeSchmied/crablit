@@ -346,7 +346,27 @@ pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
 }
 
 /// Make item writable to file
-fn serialize<T: Learn>(v: &[T], delim: char) -> String {
+///
+/// # usage
+/// ```
+/// use crablit::Verb;
+///
+/// let deck = vec![
+///     Verb::new("inf1", "dri1", "pra1", "per1", "trm1"),
+///     Verb::new("inf2", "dri2", "pra2", "per2", "trm2"),
+///     Verb::new("inf3", "dri3", "pra3", "per3", "trm3"),
+///     Verb::new("inf4", "dri4", "pra4", "per4", "trm4"),
+/// ];
+///
+/// let r = "\
+/// inf1;dri1;pra1;per1;trm1
+/// inf2;dri2;pra2;per2;trm2
+/// inf3;dri3;pra3;per3;trm3
+/// inf4;dri4;pra4;per4;trm4\n";
+///
+/// assert_eq!(r, crablit::serialize(&deck, ';'));
+/// ```
+pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
     v.iter()
         .fold(String::new(), |r, item| r + &item.ser(delim) + "\n")
 }
