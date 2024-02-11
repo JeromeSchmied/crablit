@@ -1,6 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::expressions::*;
-use nanorand::{Rng, WyRand};
 use rustyline::DefaultEditor;
 use std::{
     error::Error,
@@ -252,10 +251,9 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             }
 
             while !v.is_empty() {
-                let mut rng = WyRand::new();
                 if !conf.no_shuffle() {
                     eprintln!("shuffling");
-                    rng.shuffle(&mut v);
+                    fastrand::shuffle(&mut v);
                 }
                 v = question(&v, conf)?;
             }
@@ -273,10 +271,9 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             );
 
             while !v.is_empty() {
-                let mut rng = WyRand::new();
                 eprintln!("shuffling");
                 if !conf.no_shuffle() {
-                    rng.shuffle(&mut v);
+                    fastrand::shuffle(&mut v);
                 }
                 v = question(&v, conf)?;
             }
@@ -341,10 +338,8 @@ pub fn swap_cards(cards: &mut [cards::Card]) {
 /// crablit::randomly_swap_cards(&mut deck);
 /// ```
 pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
-    let mut rng = WyRand::new();
     cards.iter_mut().for_each(|card| {
-        let swap: bool = rng.generate();
-        if swap {
+        if fastrand::bool() {
             card.swap()
         }
     });

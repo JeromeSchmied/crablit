@@ -186,7 +186,7 @@ fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
         }
     }
     for delim in &delims_counts {
-        println!("{}: {}", delim.0, delim.1);
+        println!("'{}': {}", delim.0, delim.1);
     }
     if delims_counts.is_empty() {
         Err(format!(
