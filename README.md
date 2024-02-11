@@ -134,7 +134,8 @@ cargo install --path .
 -   To save progress: `:w` or `:write` or `:save`, to continue, you can open the file just like before. It's not yet stable on Windows.
 -   To save, then quit: `:wq`.
 -   To go to the ones not guessed correctly and ignore the other ones: `:revise`.
--   To test beta flashcard-like stuff: `:f` or `:flash`;
+-   To see flashcard-like stuff: `:f` or `:flash`. Yet untested.
+-   To check status: `:n`, `:num` or `:togo`.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
 -   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 
