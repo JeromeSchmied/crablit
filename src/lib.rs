@@ -36,7 +36,7 @@ pub trait Learn {
     fn skip(&self) -> Msg;
     /// Display message when input of term is not correct.
     fn wrong(&self) -> Msg;
-    /// TODO: Display flashcard.
+    /// Display flashcard.
     fn flashcard(&self) -> Msg;
     /// Show hint of term.
     fn hint(&self) -> Msg;

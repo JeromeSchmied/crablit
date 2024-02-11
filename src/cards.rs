@@ -131,6 +131,6 @@ mod tests {
     fn disp() {
         let card = Card::new("term", "def");
 
-        assert_eq!(card.question(), Msg::Quest("term".to_string()).val());
+        assert_eq!(card.question().val(), Msg::Quest("term".to_string()).val());
     }
 }
