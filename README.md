@@ -127,7 +127,7 @@ cargo install --path .
 
 -   Run `crablit --help` to see help.
 -   Type the definition of the questioned word/phrase.
--   To see hint: `:hint` or `:h`.
+-   To see hint: `:help`, `:hint` or `:h`.
 -   If you mistyped it, type: `:typo`.
 -   To skip: `:skip`.
 -   To quit: `quit` or `exit` or `:q`.

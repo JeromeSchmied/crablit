@@ -157,7 +157,7 @@ where
                     exit(0);
                 }
 
-                ":h" | ":hint" => {
+                ":h" | ":help" | ":hint" => {
                     elem.hint();
 
                     if !question(&[elem.clone()], conf)?.is_empty() {
@@ -178,8 +178,9 @@ where
                 }
 
                 ":typo" => {
-                    // ask to type before correcting
+                    // ask to type before correcting?
                     println!("{}{:?}", Msg::Typo.val(), r.pop());
+
                     if !question(&[elem.clone()], conf)?.is_empty() {
                         r.push(elem.clone());
                     }
@@ -190,19 +191,18 @@ where
                     continue;
                 }
 
-                ":revise" => {
-                    if r.len() == 1 {
-                        println!("Type revise again!");
-                    } else if r.is_empty() {
-                        println!(
-                            "Nothing to revise, you might to type it again to make it work..."
-                        );
-                    } else {
-                        println!("{}", Msg::Revise.val());
-                    }
-                    break;
-                }
-
+                // ":revise" => {
+                //     if r.len() == 1 {
+                //         println!("Type revise again!");
+                //     } else if r.is_empty() {
+                //         println!(
+                //             "Nothing to revise, you might to type it again to make it work..."
+                //         );
+                //     } else {
+                //         println!("{}", Msg::Revise.val());
+                //     }
+                //     break;
+                // }
                 ":flash" => {
                     //     println!("{} {}\n\n\n", &Msg::Flash.val(), elem.flashcard(),);
                     todo!();

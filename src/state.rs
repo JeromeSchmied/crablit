@@ -19,6 +19,7 @@ pub fn rm(path: &Path) -> Result<(), Box<dyn Error>> {
 //     '/'
 // }
 
+/// Returns data_dir of current file using `dirs` crate
 fn data_dir() -> PathBuf {
     dirs::data_dir()
         .expect("couldn't find data dir")
