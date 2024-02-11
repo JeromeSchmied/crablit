@@ -354,7 +354,7 @@ fn serialize<T: Learn>(v: &[T], delim: char) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::cards::Card;
+    use crate::Card;
 
     #[test]
     #[should_panic]
@@ -398,6 +398,28 @@ mod tests {
 
         swap_cards(&mut cards);
         assert_eq!(cards, vec![Card::new("definition", "term")]);
+    }
+
+    #[test]
+    fn serialize_cards() {
+        let deck = vec![
+            Card::new("term1", "def1"),
+            Card::new("term2", "def2"),
+            Card::new("term3", "def3"),
+            Card::new("term4", "def4"),
+            Card::new("term5", "def5"),
+            Card::new("term6", "def6"),
+            Card::new("term7", "def7"),
+        ];
+        let r = "\
+term1;def1
+term2;def2
+term3;def3
+term4;def4
+term5;def5
+term6;def6
+term7;def7\n";
+        assert_eq!(r, crate::serialize(&deck, ';'));
     }
 
     // init()
