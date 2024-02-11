@@ -1,15 +1,6 @@
 use crate::*;
 use std::path::{Path, PathBuf};
 
-/// Delete progress if exists
-pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
-    if prog_exists(path) {
-        eprintln!("Removing state file from: {:?}", get_prog_path(path)?);
-        fs::remove_file(get_prog_path(path)?)?;
-    }
-    Ok(())
-}
-
 // #[cfg(windows)]
 // fn get_sep() -> char {
 //     '\\'
@@ -24,12 +15,6 @@ fn data_dir() -> PathBuf {
     dirs::data_dir()
         .expect("couldn't find data dir")
         .join("crablit")
-}
-
-/// Returns the existence of path got in state dir
-pub fn prog_exists(path: &Path) -> bool {
-    let path = get_prog_path(path).unwrap();
-    fs::read_to_string(path).is_ok()
 }
 
 /// Returns the progress path, if doesn't exist, creates it's path, but not the file itself
@@ -51,6 +36,21 @@ pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
         .replace('\\', "%");
 
     Ok(self::data_dir().join(current_file_path))
+}
+
+/// Returns the existence of path got in state dir
+pub fn prog_exists(path: &Path) -> bool {
+    let path = get_prog_path(path).unwrap();
+    fs::read_to_string(path).is_ok()
+}
+
+/// Delete progress if exists
+pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
+    if prog_exists(path) {
+        eprintln!("Removing state file from: {:?}", get_prog_path(path)?);
+        fs::remove_file(get_prog_path(path)?)?;
+    }
+    Ok(())
 }
 
 /// Make item writable to file
@@ -153,7 +153,50 @@ inf7;dri7;pra7;per7;trm7\n";
         data_dir();
     }
 
-    // rm
-    // progress_exists
     // get_prog_path
+    #[test]
+    fn get_progress_path() {
+        assert!(get_prog_path(Path::new("test_prog_path.txt")).is_ok());
+    }
+
+    // // save_prog
+    // #[test]
+    // fn save_progress_cards() {
+    //     let deck = vec![
+    //         Card::new("term1", "def1"),
+    //         Card::new("term2", "def2"),
+    //         Card::new("term3", "def3"),
+    //         Card::new("term4", "def4"),
+    //         Card::new("term5", "def5"),
+    //         Card::new("term6", "def6"),
+    //         Card::new("term7", "def7"),
+    //     ];
+    //     // save_prog(&deck, ';');
+    // }
+
+    // prog_exists
+    #[test]
+    fn progress_exists() {
+        let orig_path = Path::new("test_prog_exists.txt");
+        let state_path = state::get_prog_path(orig_path).unwrap();
+
+        let mut ofile = File::create(state_path).unwrap();
+        writeln!(ofile, "is there anybody in there?").unwrap();
+
+        assert!(prog_exists(orig_path));
+        assert_eq!(Some(()), rm_prog(orig_path).ok());
+    }
+
+    // rm_prog
+    #[test]
+    fn remove_progress() {
+        let orig_path = Path::new("test_rm_prog.txt");
+        let state_path = state::get_prog_path(orig_path).unwrap();
+
+        let mut ofile = File::create(state_path).unwrap();
+        writeln!(ofile, "is there anybody in there?").unwrap();
+
+        assert!(prog_exists(orig_path));
+        assert_eq!(Some(()), rm_prog(orig_path).ok());
+    }
 }
