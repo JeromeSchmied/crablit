@@ -142,17 +142,19 @@ where
     let mut r: Vec<T> = Vec::new();
     let mut rl = DefaultEditor::new()?;
 
-    for elem in v {
+    let mut i = 0;
+    while i < v.len() {
+        let item = &v[i];
         // display prompt
         // let last_hr = rl.history().iter().last();
         // println!("last history element: {:?}", last_hr);
         // let msg = if last_hr.is_some_and(|he| he.starts_with(':') || last_hr.is_none()) {
         //     format!("\n{}> ", expressions::SPACER)
         // } else {
-        //     format!("\n{}\n{}> ", elem.question(), expressions::SPACER)
+        //     format!("\n{}\n{}> ", item.question(), expressions::SPACER)
         // };
 
-        let msg = format!("\n{}\n{}> ", elem.question(), expressions::SPACER);
+        let msg = format!("\n{}\n{}> ", item.question(), expressions::SPACER);
         let guess = rl.readline(&msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
@@ -166,18 +168,18 @@ where
                 }
 
                 ":h" | ":help" | ":hint" => {
-                    elem.hint();
+                    item.hint();
 
-                    if !question(&[elem.clone()], conf)?.is_empty() {
-                        r.push(elem.clone());
+                    if !question(&[item.clone()], conf)?.is_empty() {
+                        r.push(item.clone());
                     }
                 }
 
                 ":w" | ":write" | ":save" => {
                     state::save_prog(&r, conf)?;
 
-                    if !question(&[elem.clone()], conf)?.is_empty() {
-                        r.push(elem.clone());
+                    if !question(&[item.clone()], conf)?.is_empty() {
+                        r.push(item.clone());
                     }
                 }
 
@@ -189,13 +191,13 @@ where
                     // ask to type before correcting?
                     println!("{}{:?}", Msg::Typo.val(), r.pop());
 
-                    if !question(&[elem.clone()], conf)?.is_empty() {
-                        r.push(elem.clone());
+                    if !question(&[item.clone()], conf)?.is_empty() {
+                        r.push(item.clone());
                     }
                 }
 
                 ":skip" => {
-                    println!("{}", elem.skip());
+                    println!("{}", item.skip());
                     continue;
                 }
 
@@ -212,7 +214,7 @@ where
                 //     break;
                 // }
                 ":flash" => {
-                    //     println!("{} {}\n\n\n", &Msg::Flash.val(), elem.flashcard(),);
+                    //     println!("{} {}\n\n\n", &Msg::Flash.val(), item.flashcard(),);
                     todo!();
                 }
 
@@ -220,12 +222,13 @@ where
                     return Err(unknown_command.into());
                 }
             }
-        } else if guess == elem.correct() {
+        } else if guess == item.correct() {
             println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val())
         } else {
-            r.push(elem.clone());
-            println!("{}", elem.wrong());
+            r.push(item.clone());
+            println!("{}", item.wrong());
         }
+        i += 1;
     }
     if r.len() > 1 {
         println!("\n\n{} remaining cards are {:#?}", r.len(), r);
