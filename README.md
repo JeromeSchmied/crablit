@@ -133,6 +133,8 @@ cargo install --path .
 -   To quit: `quit` or `exit` or `:q`.
 -   To save progress: `:w` or `:write` or `:save`, to continue, you can open the file just like before. It's not yet stable on Windows.
 -   To save, then quit: `:wq`.
+-   To go to the ones not guessed correctly and ignore the other ones: `:revise`.
+-   To test beta flashcard-like stuff: `:f` or `:flash`;
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
 -   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 
@@ -149,7 +151,7 @@ cargo install --path .
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
 -   Flashcards, TUI, GUI, Website are coming, but it takes time.
--   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or [email](mailto:iitsnotme214@proton.me).
+-   Any bugs, questions, feature requests shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or by [email](mailto:iitsnotme214@proton.me).
 -   To help with development, see [todos](TODO.md).
 
 ## Alternatives

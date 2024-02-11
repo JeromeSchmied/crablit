@@ -1,5 +1,5 @@
 //! # This module includes code specific to learning expressions.
-use crate::{Learn, Msg};
+use crate::*;
 use colored::Colorize;
 use std::error::Error;
 use std::mem::swap;
@@ -93,7 +93,7 @@ impl Learn for Card {
     fn flashcard(&self) -> String {
         let s = &self.def;
         let r = "─".repeat(s.len() + 4);
-        format!("{}\n{}", s, r.bright_purple().bold())
+        format!("{}\n{}{}", s, SPACER, r.bright_purple().bold())
     }
 
     fn ser(&self, delim: char) -> String {
@@ -140,7 +140,7 @@ mod tests {
 
         assert_eq!(
             card.question(),
-            format!("{} {}", Msg::Quest.val(), "term".bright_blue())
+            format!("{}{}", Msg::Quest.val(), "term".bright_blue())
         );
     }
 }

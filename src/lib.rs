@@ -193,13 +193,15 @@ where
                     continue;
                 }
 
-                // ":revise" => {
-                //     println!("{}", Msg::Revise.val());
-                //     break;
-                // }
-                ":flash" => {
-                    //     println!("{} {}\n\n\n", &Msg::Flash.val(), item.flashcard(),);
-                    todo!();
+                ":revise" => {
+                    println!("{}", Msg::Revise.val());
+                    break;
+                }
+
+                ":f" | ":flash" => {
+                    println!("{} {}\n\n\n", &Msg::Flash.val(), item.flashcard(),);
+                    i += 1;
+                    // todo!();
                 }
 
                 uc => {

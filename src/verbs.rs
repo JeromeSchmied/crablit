@@ -105,7 +105,7 @@ impl Learn for Verb {
     fn flashcard(&self) -> String {
         let s = format!("{}, {}, {}, {}", &self.inf, &self.dri, &self.pra, &self.per);
         let r = "─".repeat(s.len() + 4);
-        format!("{}\n{}", s, r.bright_purple().bold())
+        format!("{}\n{}{}", s, SPACER, r.bright_purple().bold())
     }
 
     fn ser(&self, delim: char) -> String {
