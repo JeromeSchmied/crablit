@@ -144,8 +144,16 @@ where
 
     for elem in v {
         // display prompt
-        let msg = &format!("\n{}\n{}> ", elem.question(), expressions::SPACER);
-        let guess = rl.readline(msg)?;
+        // let last_hr = rl.history().iter().last();
+        // println!("last history element: {:?}", last_hr);
+        // let msg = if last_hr.is_some_and(|he| he.starts_with(':') || last_hr.is_none()) {
+        //     format!("\n{}> ", expressions::SPACER)
+        // } else {
+        //     format!("\n{}\n{}> ", elem.question(), expressions::SPACER)
+        // };
+
+        let msg = format!("\n{}\n{}> ", elem.question(), expressions::SPACER);
+        let guess = rl.readline(&msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
 

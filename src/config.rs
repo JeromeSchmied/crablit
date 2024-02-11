@@ -1,5 +1,6 @@
 //! # In this module, you can find code that helps in collecting cli arguments and determining properties of a file containing vocab data.
 use crate::*;
+// use assert_cmd::Command;
 use clap::Parser;
 use std::{collections::HashMap, error::Error, fs, path::PathBuf};
 
@@ -288,6 +289,12 @@ no command : ;;;;;;
 ";
         assert_eq!(get_mode(content, &':'), Ok(Mode::Cards));
     }
+
+    // #[test]
+    // fn configg() {
+    //     let mut command = Command::cargo_bin("crablit").unwrap();
+    //     command.arg("test.txt");
+    // }
 
     //     #[test]
     //     fn basic_correct_cards() {
