@@ -13,7 +13,7 @@ pub struct Verb {
     trm: String,
 }
 impl Verb {
-    fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
+    pub fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
         Verb {
             inf: inf.to_owned(),
             dri: dri.to_owned(),
