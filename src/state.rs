@@ -2,10 +2,10 @@ use crate::*;
 use std::path::{Path, PathBuf};
 
 /// Delete progress if exists
-pub fn rm(path: &Path) -> Result<(), Box<dyn Error>> {
-    if progress_exists(path) {
-        eprintln!("Removing state file from: {:?}", get_progress_path(path)?);
-        fs::remove_file(get_progress_path(path)?)?;
+pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
+    if prog_exists(path) {
+        eprintln!("Removing state file from: {:?}", get_prog_path(path)?);
+        fs::remove_file(get_prog_path(path)?)?;
     }
     Ok(())
 }
@@ -27,13 +27,13 @@ fn data_dir() -> PathBuf {
 }
 
 /// Returns the existence of path got in state dir
-pub fn progress_exists(path: &Path) -> bool {
-    let path = get_progress_path(path).unwrap();
+pub fn prog_exists(path: &Path) -> bool {
+    let path = get_prog_path(path).unwrap();
     fs::read_to_string(path).is_ok()
 }
 
 /// Returns the progress path, if doesn't exist, creates it's path, but not the file itself
-pub fn get_progress_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
+pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
     let pwd = std::env::current_dir()?;
     let pwd = pwd.to_str().expect("Couldn't get working dir.");
 
@@ -85,7 +85,7 @@ pub fn save_prog<T>(wrongs: &[T], conf: &config::Config) -> Result<(), Box<dyn E
 where
     T: Learn + std::fmt::Debug,
 {
-    let ofile_path = state::get_progress_path(&conf.file_path_orig())?;
+    let ofile_path = state::get_prog_path(&conf.file_path_orig())?;
     let mut ofile = File::create(&ofile_path)?;
 
     writeln!(ofile, "# [crablit]")?;
@@ -152,4 +152,8 @@ inf7;dri7;pra7;per7;trm7\n";
     fn get_data_dir() {
         data_dir();
     }
+
+    // rm
+    // progress_exists
+    // get_prog_path
 }

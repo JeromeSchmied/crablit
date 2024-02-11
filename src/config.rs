@@ -45,10 +45,10 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let state_file_path = state::get_progress_path(&conf.file_path_orig())?;
+        let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
         println!("searching for path at: {:?}", state_file_path);
-        let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path_orig()) {
-            let state_file_path = state::get_progress_path(&conf.file_path_orig())?;
+        let content = if !conf.no_state && crate::state::prog_exists(&conf.file_path_orig()) {
+            let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
 
             eprintln!(
                 "Opening file from previously saved state: \"{:?}\"",
@@ -93,8 +93,8 @@ impl Config {
 
     /// Path for statefile of filepath got, or if doesn't exist, self
     pub fn file_path(&self) -> PathBuf {
-        if state::progress_exists(&self.file_path_orig()) && !self.no_state {
-            state::get_progress_path(&self.file_path_orig()).expect("Coudln't get progress path")
+        if state::prog_exists(&self.file_path_orig()) && !self.no_state {
+            state::get_prog_path(&self.file_path_orig()).expect("Coudln't get progress path")
         } else {
             self.file_path.clone().into()
         }
