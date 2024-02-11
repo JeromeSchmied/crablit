@@ -374,6 +374,8 @@ mod tests {
     fn mode_new_conv() {
         let mode = "verbs2cards";
         assert_eq!(Mode::VerbsToCards, Mode::from(mode));
+        let mode = "convert";
+        assert_eq!(Mode::VerbsToCards, Mode::from(mode));
     }
 
     #[test]
