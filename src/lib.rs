@@ -202,15 +202,7 @@ where
                 }
 
                 // ":revise" => {
-                //     if r.len() == 1 {
-                //         println!("Type revise again!");
-                //     } else if r.is_empty() {
-                //         println!(
-                //             "Nothing to revise, you might to type it again to make it work..."
-                //         );
-                //     } else {
-                //         println!("{}", Msg::Revise.val());
-                //     }
+                //     println!("{}", Msg::Revise.val());
                 //     break;
                 // }
                 ":flash" => {
@@ -218,18 +210,18 @@ where
                     todo!();
                 }
 
-                unknown_command => {
-                    return Err(unknown_command.into());
+                uc => {
+                    return Err(["unknown command: ", uc].concat().into());
                 }
             }
-            i -= 1;
         } else if guess == item.correct() {
-            println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val())
+            println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val());
+            i += 1;
         } else {
             r.push(item.clone());
             println!("{}", item.wrong());
+            i += 1;
         }
-        i += 1;
     }
     if r.len() > 1 {
         println!("\n\n{} remaining cards are {:#?}", r.len(), r);
