@@ -147,4 +147,9 @@ inf6;dri6;pra6;per6;trm6
 inf7;dri7;pra7;per7;trm7\n";
         assert_eq!(r, serialize(&deck, ';'));
     }
+
+    #[test]
+    fn get_data_dir() {
+        data_dir();
+    }
 }

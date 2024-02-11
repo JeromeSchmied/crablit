@@ -14,7 +14,7 @@ pub(crate) enum Msg {
     /// skipping the following:
     Skip,
     /// goin' to the ones not guessed correctly
-    Revise,
+    // Revise,
     /// Correct the following:
     Typo,
     /// Stop executing the program
@@ -36,9 +36,9 @@ impl Msg {
             Msg::Knew => format!("{}%", SPACER).bright_green().bold(),
             Msg::KnewIt => "Yes, that's right!".bright_green(),
             Msg::Skip => format!("{}Skipping:", SPACER).bright_magenta(),
-            Msg::Revise => {
-                format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
-            }
+            // Msg::Revise => {
+            //     format!("{}Going to the ones not guessed correctly...", SPACER).bright_magenta()
+            // }
             Msg::Typo => format!("{}Corrected: ", SPACER).bright_magenta().italic(),
             Msg::Exit => format!("\n{}Exiting...", SPACER).bright_magenta().italic(),
             Msg::Hint => format!("{}#", SPACER).cyan().bold(),
