@@ -166,18 +166,7 @@ where
                 }
 
                 ":w" | ":write" | ":save" => {
-                    let ofile_path = state::get_progress_path(&conf.file_path_orig())?;
-                    let mut ofile = File::create(&ofile_path)?;
-
-                    writeln!(ofile, "# [crablit]")?;
-                    writeln!(ofile, "# mode = \"{}\"", conf.mode().disp())?;
-                    writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
-
-                    println!("r: {:?}", r);
-                    let content = serialize(&r, conf.delim());
-                    writeln!(ofile, "{}", content)?;
-
-                    eprintln!("Saved file to {}{:?}.", SPACER, ofile_path);
+                    state::save_prog(&r, conf)?;
 
                     if !question(&[elem.clone()], conf)?.is_empty() {
                         r.push(elem.clone());
@@ -345,32 +334,6 @@ pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
     });
 }
 
-/// Make item writable to file
-///
-/// # usage
-/// ```
-/// use crablit::Verb;
-///
-/// let deck = vec![
-///     Verb::new("inf1", "dri1", "pra1", "per1", "trm1"),
-///     Verb::new("inf2", "dri2", "pra2", "per2", "trm2"),
-///     Verb::new("inf3", "dri3", "pra3", "per3", "trm3"),
-///     Verb::new("inf4", "dri4", "pra4", "per4", "trm4"),
-/// ];
-///
-/// let r = "\
-/// inf1;dri1;pra1;per1;trm1
-/// inf2;dri2;pra2;per2;trm2
-/// inf3;dri3;pra3;per3;trm3
-/// inf4;dri4;pra4;per4;trm4\n";
-///
-/// assert_eq!(r, crablit::serialize(&deck, ';'));
-/// ```
-pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
-    v.iter()
-        .fold(String::new(), |r, item| r + &item.ser(delim) + "\n")
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -419,50 +382,6 @@ mod tests {
 
         swap_cards(&mut cards);
         assert_eq!(cards, vec![Card::new("definition", "term")]);
-    }
-
-    #[test]
-    fn serialize_cards() {
-        let deck = vec![
-            Card::new("term1", "def1"),
-            Card::new("term2", "def2"),
-            Card::new("term3", "def3"),
-            Card::new("term4", "def4"),
-            Card::new("term5", "def5"),
-            Card::new("term6", "def6"),
-            Card::new("term7", "def7"),
-        ];
-        let r = "\
-term1;def1
-term2;def2
-term3;def3
-term4;def4
-term5;def5
-term6;def6
-term7;def7\n";
-        assert_eq!(r, crate::serialize(&deck, ';'));
-    }
-
-    #[test]
-    fn serialize_verbs() {
-        let deck = vec![
-            Verb::new("inf1", "dri1", "pra1", "per1", "trm1"),
-            Verb::new("inf2", "dri2", "pra2", "per2", "trm2"),
-            Verb::new("inf3", "dri3", "pra3", "per3", "trm3"),
-            Verb::new("inf4", "dri4", "pra4", "per4", "trm4"),
-            Verb::new("inf5", "dri5", "pra5", "per5", "trm5"),
-            Verb::new("inf6", "dri6", "pra6", "per6", "trm6"),
-            Verb::new("inf7", "dri7", "pra7", "per7", "trm7"),
-        ];
-        let r = "\
-inf1;dri1;pra1;per1;trm1
-inf2;dri2;pra2;per2;trm2
-inf3;dri3;pra3;per3;trm3
-inf4;dri4;pra4;per4;trm4
-inf5;dri5;pra5;per5;trm5
-inf6;dri6;pra6;per6;trm6
-inf7;dri7;pra7;per7;trm7\n";
-        assert_eq!(r, crate::serialize(&deck, ';'));
     }
 
     // init()
