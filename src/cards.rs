@@ -48,7 +48,7 @@ impl Card {
 
 impl Learn for Card {
     fn question(&self) -> String {
-        Msg::Quest(format!("{}", self.trm.bright_blue())).val()
+        Msg::Quest(self.trm.to_string()).val()
     }
 
     fn correct(&self) -> String {
@@ -93,9 +93,7 @@ impl Learn for Card {
     }
 
     fn flashcard(&self) -> String {
-        let s = &self.def;
-        let r = "─".repeat(s.len() + 4);
-        format!("{}\n{}{}", s, SPACER, r.bright_purple().bold())
+        Msg::Flash(self.def.clone()).val()
     }
 
     fn ser(&self, delim: &str) -> String {
@@ -140,9 +138,6 @@ mod tests {
     fn disp() {
         let card = Card::new("term", "def");
 
-        assert_eq!(
-            card.question(),
-            Msg::Quest("term".bright_blue().to_string()).val()
-        );
+        assert_eq!(card.question(), Msg::Quest("term".to_string()).val());
     }
 }

@@ -148,7 +148,9 @@ where
         // display prompt
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
-        let msg = if last_hr.is_some_and(|he| he.starts_with(":h") || he == ":typo") {
+        let msg = if last_hr.is_some_and(|he| {
+            he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
+        }) {
             format!("{}> ", expressions::SPACER)
         } else {
             format!("{}\n{}> ", item.question(), expressions::SPACER)
@@ -203,13 +205,13 @@ where
                 }
 
                 ":f" | ":flash" => {
-                    println!("{}{}\n\n\n", &Msg::Flash.val(), item.flashcard(),);
+                    println!("{}\n\n\n", item.flashcard(),);
                     i += 1;
                     // todo!();
                 }
 
                 ":n" | ":num" | ":togo" => {
-                    println!("{}\n\n", &Msg::Togo(v.len(), i + 1).val());
+                    println!("{}", &Msg::Togo(v.len(), i).val());
                 }
 
                 uc => {

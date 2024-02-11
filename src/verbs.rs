@@ -32,7 +32,7 @@ impl Verb {
     //         self.per.cyan()
     //     );
     // }
-    fn print_em(&self) -> String {
+    fn print_em_colored(&self) -> String {
         format!(
             "{}, {}, {}, {}",
             self.inf.yellow().underline(),
@@ -45,7 +45,7 @@ impl Verb {
 
 impl Learn for Verb {
     fn question(&self) -> String {
-        Msg::Quest(format!("\n\n{}", self.trm.bright_blue())).val()
+        Msg::Quest(format!("\n\n{}", self.trm)).val()
     }
 
     fn correct(&self) -> String {
@@ -58,7 +58,7 @@ impl Learn for Verb {
     }
 
     fn wrong(&self) -> String {
-        Msg::Wrong(self.print_em()).val()
+        Msg::Wrong(self.print_em_colored()).val()
         // format!(
         //     "{}{}{}",
         //     Msg::Wrong.val(),
@@ -102,9 +102,11 @@ impl Learn for Verb {
     }
 
     fn flashcard(&self) -> String {
-        let s = format!("{}, {}, {}, {}", &self.inf, &self.dri, &self.pra, &self.per);
-        let r = "─".repeat(s.len() + 4);
-        format!("{}\n{}{}", s, SPACER, r.bright_purple().bold())
+        Msg::Flash(format!(
+            "{}, {}, {}, {}",
+            &self.inf, &self.dri, &self.pra, &self.per
+        ))
+        .val()
     }
 
     fn ser(&self, delim: &str) -> String {
