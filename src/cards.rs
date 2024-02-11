@@ -47,31 +47,28 @@ impl Card {
 }
 
 impl Learn for Card {
-    fn question(&self) -> String {
-        Msg::Quest(self.trm.to_string()).val()
+    fn question(&self) -> Msg {
+        Msg::Quest(self.trm.to_string())
     }
 
     fn correct(&self) -> String {
         self.def.to_string()
     }
 
-    fn skip(&self) -> String {
-        Msg::Skip(self.ser(" = ")).val()
-        // format!("{}{:?}", Msg::Skip.val(), self)
+    fn skip(&self) -> Msg {
+        Msg::Skip(self.ser(" = "))
     }
 
-    fn wrong(&self) -> String {
-        Msg::Wrong(self.def.yellow().underline().to_string()).val()
-        // format!(
-        //     "{}{}{}\n",
-        //     Msg::Wrong.val(),
-        //     self.def.yellow().underline(),
-        //     Msg::WrongIt.val()
-        // )
+    fn wrong(&self) -> Msg {
+        Msg::Wrong(self.def.yellow().underline().to_string())
     }
 
-    fn hint(&self) -> String {
-        Msg::Hint(crate::hint(&self.def)).val()
+    fn hint(&self) -> Msg {
+        Msg::Hint(crate::hint(&self.def))
+    }
+
+    fn flashcard(&self) -> Msg {
+        Msg::Flash(self.def.clone())
     }
 
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
@@ -90,10 +87,6 @@ impl Learn for Card {
             let def = words.next().unwrap().trim();
             Ok(Box::new(Card::new(trm, def)))
         }
-    }
-
-    fn flashcard(&self) -> String {
-        Msg::Flash(self.def.clone()).val()
     }
 
     fn ser(&self, delim: &str) -> String {

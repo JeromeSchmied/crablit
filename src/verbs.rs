@@ -22,16 +22,6 @@ impl Verb {
             trm: trm.to_owned(),
         }
     }
-    // fn print_all(&self) {
-    //     println!(
-    //         "{}:\tinf: {}:\tdri: {}\tprä: {}\tperf: {}",
-    //         self.trm.yellow(),
-    //         self.inf.blue(),
-    //         self.dri.magenta(),
-    //         self.pra.green(),
-    //         self.per.cyan()
-    //     );
-    // }
     fn print_em_colored(&self) -> String {
         format!(
             "{}, {}, {}, {}",
@@ -44,32 +34,31 @@ impl Verb {
 }
 
 impl Learn for Verb {
-    fn question(&self) -> String {
-        Msg::Quest(format!("\n\n{}", self.trm)).val()
+    fn question(&self) -> Msg {
+        Msg::Quest(format!("\n\n{}", self.trm))
     }
 
     fn correct(&self) -> String {
         format!("{}, {}, {}, {}", &self.inf, &self.dri, &self.pra, &self.per)
     }
 
-    fn skip(&self) -> String {
-        Msg::Skip(self.ser(" = ")).val()
-        // format!("{}{:?}", Msg::Skip.val(), self)
+    fn skip(&self) -> Msg {
+        Msg::Skip(self.ser(" = "))
     }
 
-    fn wrong(&self) -> String {
-        Msg::Wrong(self.print_em_colored()).val()
-        // format!(
-        //     "{}{}{}",
-        //     Msg::Wrong.val(),
-        //     self.print_em(),
-        //     Msg::WrongIt.val()
-        // )
+    fn wrong(&self) -> Msg {
+        Msg::Wrong(self.print_em_colored())
     }
 
-    fn hint(&self) -> String {
-        Msg::Hint(crate::hint(&self.inf)).val()
-        // format!("{}{}", Msg::Hint.val(), crate::hint(&self.inf))
+    fn hint(&self) -> Msg {
+        Msg::Hint(crate::hint(&self.inf))
+    }
+
+    fn flashcard(&self) -> Msg {
+        Msg::Flash(format!(
+            "{}, {}, {}, {}",
+            &self.inf, &self.dri, &self.pra, &self.per
+        ))
     }
 
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
@@ -99,14 +88,6 @@ impl Learn for Verb {
             // making a Verbs of the values
             Ok(Box::new(Verb::new(inf, dri, pra, per, trm)))
         }
-    }
-
-    fn flashcard(&self) -> String {
-        Msg::Flash(format!(
-            "{}, {}, {}, {}",
-            &self.inf, &self.dri, &self.pra, &self.per
-        ))
-        .val()
     }
 
     fn ser(&self, delim: &str) -> String {

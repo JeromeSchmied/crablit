@@ -29,17 +29,17 @@ pub use verbs::Verb;
 /// The trait for learning either `Cards` of `Verbs`
 pub trait Learn {
     /// Show as a term, waiting to be answered.
-    fn question(&self) -> String;
+    fn question(&self) -> Msg;
     /// Show solution of term.
     fn correct(&self) -> String;
     /// Display message when skipping item.
-    fn skip(&self) -> String;
+    fn skip(&self) -> Msg;
     /// Display message when input of term is not correct.
-    fn wrong(&self) -> String;
+    fn wrong(&self) -> Msg;
     /// TODO: Display flashcard.
-    fn flashcard(&self) -> String;
+    fn flashcard(&self) -> Msg;
     /// Show hint of term.
-    fn hint(&self) -> String;
+    fn hint(&self) -> Msg;
     /// Serialize: create instance of `Self` from a line from file containing vocab data.
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
     /// Deserialize: create a line of vocab data to be written to file from `self`
@@ -153,7 +153,7 @@ where
         }) {
             format!("{}> ", expressions::SPACER)
         } else {
-            format!("{}\n{}> ", item.question(), expressions::SPACER)
+            format!("{}\n{}> ", item.question().val(), expressions::SPACER)
         };
 
         // let msg = format!("\n{}\n{}> ", item.question(), expressions::SPACER);
@@ -170,7 +170,7 @@ where
                 }
 
                 ":h" | ":help" | ":hint" => {
-                    println!("{}", item.hint());
+                    println!("{}", item.hint().val());
                 }
 
                 ":w" | ":write" | ":save" => {
@@ -194,7 +194,7 @@ where
                 }
 
                 ":skip" => {
-                    println!("{}\n\n", item.skip());
+                    println!("{}\n\n", item.skip().val());
                     i += 1;
                     continue;
                 }
@@ -205,7 +205,7 @@ where
                 }
 
                 ":f" | ":flash" => {
-                    println!("{}\n\n\n", item.flashcard(),);
+                    println!("{}\n\n\n", item.flashcard().val(),);
                     i += 1;
                     // todo!();
                 }
@@ -224,7 +224,7 @@ where
             i += 1;
         } else {
             r.push(item.clone());
-            println!("{}", item.wrong());
+            println!("{}", item.wrong().val());
             i += 1;
         }
     }
