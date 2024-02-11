@@ -135,11 +135,10 @@ where
     T: Learn + Debug + Clone,
 {
     // let mut printer = String::new();
-    if v.len() != 1 {
-        println!("\n\nYou have {} words to learn, let's start!", v.len());
-    }
+    println!("\n\nYou have {} words to learn, let's start!", v.len());
     // results vector
     let mut r: Vec<T> = Vec::new();
+
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
@@ -169,18 +168,10 @@ where
 
                 ":h" | ":help" | ":hint" => {
                     item.hint();
-
-                    // if !question(&[item.clone()], conf)?.is_empty() {
-                    //     r.push(item.clone());
-                    // }
                 }
 
                 ":w" | ":write" | ":save" => {
                     state::save_prog(&r, conf)?;
-
-                    // if !question(&[item.clone()], conf)?.is_empty() {
-                    //     r.push(item.clone());
-                    // }
                 }
 
                 ":wq" => {
@@ -190,10 +181,6 @@ where
                 ":typo" => {
                     // ask to type before correcting?
                     println!("{}{:?}", Msg::Typo.val(), r.pop());
-
-                    // if !question(&[item.clone()], conf)?.is_empty() {
-                    //     r.push(item.clone());
-                    // }
                 }
 
                 ":skip" => {
@@ -223,9 +210,7 @@ where
             i += 1;
         }
     }
-    if r.len() > 1 {
-        println!("\n\n{} remaining cards are {:#?}", r.len(), r);
-    }
+    println!("\n\n{} remaining cards are {:#?}", r.len(), r);
     Ok(r)
 }
 
