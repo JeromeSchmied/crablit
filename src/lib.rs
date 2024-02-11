@@ -170,17 +170,17 @@ where
                 ":h" | ":help" | ":hint" => {
                     item.hint();
 
-                    if !question(&[item.clone()], conf)?.is_empty() {
-                        r.push(item.clone());
-                    }
+                    // if !question(&[item.clone()], conf)?.is_empty() {
+                    //     r.push(item.clone());
+                    // }
                 }
 
                 ":w" | ":write" | ":save" => {
                     state::save_prog(&r, conf)?;
 
-                    if !question(&[item.clone()], conf)?.is_empty() {
-                        r.push(item.clone());
-                    }
+                    // if !question(&[item.clone()], conf)?.is_empty() {
+                    //     r.push(item.clone());
+                    // }
                 }
 
                 ":wq" => {
@@ -191,9 +191,9 @@ where
                     // ask to type before correcting?
                     println!("{}{:?}", Msg::Typo.val(), r.pop());
 
-                    if !question(&[item.clone()], conf)?.is_empty() {
-                        r.push(item.clone());
-                    }
+                    // if !question(&[item.clone()], conf)?.is_empty() {
+                    //     r.push(item.clone());
+                    // }
                 }
 
                 ":skip" => {
@@ -222,6 +222,7 @@ where
                     return Err(unknown_command.into());
                 }
             }
+            i -= 1;
         } else if guess == item.correct() {
             println!("{} {}\n", Msg::Knew.val(), &Msg::KnewIt.val())
         } else {
