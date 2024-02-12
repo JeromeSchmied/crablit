@@ -62,10 +62,10 @@ impl Msg {
             ),
             Self::Togo(sum, i) => {
                 format!(
-                    "{}{} at {}{}, {} more to go",
+                    "{}{} at {:.1}{}, {} more to go",
                     SPACER.repeat(2),
                     "!".bold().bright_purple(),
-                    ((*i as f32 / *sum as f32) * 100.).to_string().italic(),
+                    ((*i as f32 / *sum as f32) * 100.),
                     "%".bold().bright_purple(),
                     (sum - i).to_string().italic()
                 )
