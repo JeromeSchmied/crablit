@@ -88,6 +88,8 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 
 ## Installing
 
+### MSRV: Minimum Supported Rust Version is `1.74.1`
+
 0. **_Easiest, recommended:_** Go to releases page and see instructions built by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
 
 or:
@@ -98,7 +100,7 @@ or:
 1. From [crates.io](https://crates.io/crates/crablit):
 
 ```shell
-cargo install crablit
+cargo install crablit --locked
 ```
 
 3. Download source from github:
