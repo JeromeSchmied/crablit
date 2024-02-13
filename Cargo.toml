@@ -18,8 +18,8 @@ readme = "README.md"
 edition = "2021"
 
 [package.metadata.wix]
-upgrade-guid = "DF323B3C-9AF0-40ED-A2E8-E1C5D615772A"
-path-guid = "0B5C924B-9580-4836-92B0-86506605072C"
+upgrade-guid = "62AC77F4-2DE5-4AD3-8A06-513A30143EFB"
+path-guid = "BB57D6D2-0855-4746-8E20-037395B060F6"
 license = false
 eula = false
 
@@ -38,8 +38,6 @@ fastrand = "2.0.1"
 output_vt100 = "0.1.3"
 # for editable input
 rustyline = "13.0.0"
-# testing
-# assert_cmd = "2.0.13"
 
 # The profile that 'cargo dist' will build with
 [profile.dist]
@@ -55,6 +53,8 @@ ci = ["github"]
 # The installers to generate for each app
 installers = ["shell", "powershell", "msi"]
 # Target platforms to build apps for (Rust target-triple syntax)
-targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-unknown-linux-musl", "x86_64-pc-windows-msvc"]
+targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
 # Publish jobs to run in CI
 pr-run-mode = "plan"
+# testing
+# assert_cmd = "2.0.13"
