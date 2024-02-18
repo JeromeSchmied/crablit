@@ -24,6 +24,8 @@ pub mod verbs;
 
 // re-exports
 pub use cards::Card;
+pub use enums::Lok;
+pub use enums::Mode;
 pub use verbs::Verb;
 
 /// The trait for learning either `Cards` of `Verbs`
@@ -276,7 +278,7 @@ pub fn hint(s: &str) -> String {
 /// ```
 /// use crablit::Card;
 ///
-/// let mut deck = vec![Card::new("term1", "def1"), Card::new("term2", "def2"), Card::new("term3", "def3")];
+/// let mut deck = vec![Card::new("term1", "def1", None), Card::new("term2", "def2", None), Card::new("term3", "def3", None)];
 ///
 /// crablit::swap_cards(&mut deck);
 /// ```
@@ -290,7 +292,7 @@ pub fn swap_cards(cards: &mut [cards::Card]) {
 /// ```
 /// use crablit::Card;
 ///
-/// let mut deck = vec![Card::new("term1", "def1"), Card::new("term2", "def2"), Card::new("term3", "def3")];
+/// let mut deck = vec![Card::new("term1", "def1", None), Card::new("term2", "def2", None), Card::new("term3", "def3", None)];
 ///
 /// crablit::randomly_swap_cards(&mut deck);
 /// ```
@@ -346,10 +348,10 @@ mod tests {
 
     #[test]
     fn swap_cards_works() {
-        let mut cards = vec![Card::new("term", "definition")];
+        let mut cards = vec![Card::new("term", "definition", None)];
 
         swap_cards(&mut cards);
-        assert_eq!(cards, vec![Card::new("definition", "term")]);
+        assert_eq!(cards, vec![Card::new("definition", "term", None)]);
     }
 
     // init()

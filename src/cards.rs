@@ -20,13 +20,13 @@ impl Card {
     /// ```
     /// use crablit::Card;
     ///
-    /// let card = Card::new("dog", "Hunde");
+    /// let card = Card::new("dog", "Hunde", None);
     /// ```
-    pub fn new(term: &str, def: &str) -> Self {
+    pub fn new(term: &str, def: &str, lok: Option<&str>) -> Self {
         Self {
             trm: term.to_string(),
             def: def.to_string(),
-            lok: Lok::default(),
+            lok: Lok::new(lok.unwrap_or_default()),
         }
     }
     /// Swaps term and definition
@@ -36,10 +36,10 @@ impl Card {
     /// ```
     /// use crablit::cards;
     ///
-    /// let mut swapd = cards::Card::new("ask", "answer");
+    /// let mut swapd = cards::Card::new("ask", "answer", None);
     /// swapd.swap();
     ///
-    /// assert_ne!(cards::Card::new("ask", "answer"), swapd);
+    /// assert_ne!(cards::Card::new("ask", "answer", None), swapd);
     /// ```
     pub fn swap(&mut self) {
         swap(&mut self.trm, &mut self.def);
@@ -76,7 +76,7 @@ impl Learn for Card {
 
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
         let mut words = line.split(delim);
-        if words.clone().count() != 2 {
+        if words.clone().count() != 2 && words.clone().count() != 3 {
             Err(format!(
                 "A line should look like this:\n\t\"{}{}{}\".\nInstead looks like this:\n\t\"{}\".",
                 "<term>".blue().italic(),
@@ -88,12 +88,18 @@ impl Learn for Card {
         } else {
             let trm = words.next().unwrap().trim();
             let def = words.next().unwrap().trim();
-            Ok(Box::new(Card::new(trm, def)))
+            let lok = words.next();
+            Ok(Box::new(Card::new(trm, def, lok)))
         }
     }
 
     fn ser(&self, delim: &str) -> String {
-        format!("{}{}{}", self.trm, delim, self.def)
+        format!(
+            "{}{delim}{}{delim}{}",
+            self.trm,
+            self.def,
+            self.lok().as_string()
+        )
     }
 
     fn incr(&mut self) {
@@ -119,7 +125,7 @@ mod tests {
         let def = "hot asphalt".to_string();
 
         assert_eq!(
-            Card::new(&trm, &def),
+            Card::new(&trm, &def, None),
             Card {
                 trm,
                 def,
@@ -130,10 +136,10 @@ mod tests {
 
     #[test]
     fn swap() {
-        let mut swapd = Card::new("ask", "answer");
+        let mut swapd = Card::new("ask", "answer", None);
         swapd.swap();
 
-        assert_ne!(Card::new("ask", "answer"), swapd);
+        assert_ne!(Card::new("ask", "answer", None), swapd);
         assert_eq!(
             Card {
                 trm: "answer".into(),
@@ -146,7 +152,7 @@ mod tests {
 
     #[test]
     fn disp() {
-        let card = Card::new("term", "def");
+        let card = Card::new("term", "def", None);
 
         assert_eq!(card.question().val(), Msg::Quest("term".to_string()).val());
     }

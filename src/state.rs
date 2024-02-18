@@ -109,22 +109,22 @@ mod test {
     #[test]
     fn serialize_cards() {
         let deck = vec![
-            Card::new("term1", "def1"),
-            Card::new("term2", "def2"),
-            Card::new("term3", "def3"),
-            Card::new("term4", "def4"),
-            Card::new("term5", "def5"),
-            Card::new("term6", "def6"),
-            Card::new("term7", "def7"),
+            Card::new("term1", "def1", None),
+            Card::new("term2", "def2", None),
+            Card::new("term3", "def3", None),
+            Card::new("term4", "def4", None),
+            Card::new("term5", "def5", None),
+            Card::new("term6", "def6", None),
+            Card::new("term7", "def7", None),
         ];
         let r = "\
-term1;def1
-term2;def2
-term3;def3
-term4;def4
-term5;def5
-term6;def6
-term7;def7\n";
+term1;def1;Nothing
+term2;def2;Nothing
+term3;def3;Nothing
+term4;def4;Nothing
+term5;def5;Nothing
+term6;def6;Nothing
+term7;def7;Nothing\n";
         assert_eq!(r, serialize(&deck, ';'));
     }
     #[test]

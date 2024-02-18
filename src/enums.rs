@@ -136,8 +136,19 @@ pub enum Lok {
     Done,
 }
 impl Lok {
-    pub fn new() -> Self {
-        Self::Nothing
+    pub fn new(s: &str) -> Self {
+        let s = s.trim();
+        if s == "Nothing" || s == "0" {
+            Self::Nothing
+        } else if s == "Something" || s == "1" {
+            Self::Something
+        } else if s == "Almost" || s == "2" {
+            Self::Almost
+        } else if s == "Done" || s == "3" {
+            Self::Done
+        } else {
+            Self::default()
+        }
     }
     pub fn incr(&mut self) {
         *self = match *self {
@@ -166,6 +177,6 @@ impl Lok {
 }
 impl Default for Lok {
     fn default() -> Self {
-        Self::new()
+        Self::Nothing
     }
 }
