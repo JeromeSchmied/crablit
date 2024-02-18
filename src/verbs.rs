@@ -35,7 +35,7 @@ impl Verb {
 
 impl Learn for Verb {
     fn question(&self) -> Msg {
-        Msg::Quest(format!("\n\n{}", self.trm))
+        Msg::Quest(self.trm.clone())
     }
 
     fn correct(&self) -> String {
