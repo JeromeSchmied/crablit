@@ -29,7 +29,8 @@
 
 -   _open-source_, MIT licensed
 -   _Cross-platform_: works on Windows, MacOS, but with GNU/Linux 1st philosophy.
--   _Fast_: initialization of **20000000** cards (574MB) takes about **4.3s** with a maximum of 2.4GB RAM usage.
+-   _Fast_: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.4GB RAM usage.
+-   readline like editing.
 -   Written answers.
 
 ## Creating files to learn
@@ -137,7 +138,7 @@ cargo install --path .
 -   To save, then quit: `:wq`.
 -   To go to the ones not guessed correctly and ignore the other ones: `:revise`.
 -   To see flashcard-like stuff: `:f` or `:flash`. Yet untested.
--   To check status: `:n`, `:num` or `:togo`.
+-   To check status of current iteration: `:n`, `:num` or `:togo`.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
 -   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
 
@@ -148,12 +149,12 @@ cargo install --path .
 -   See [images for more](examples/img)!
 -   It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 -   Stores them in a vector.
--   Asks them until you know all well (currently only till you guess them right once).
+-   Asks them until you know all well: guessed 4 times correctly.
 
 ## Notes
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
--   Flashcards, TUI, GUI, Website are coming, but it takes time.
+-   TUI, GUI, Website are coming, but it takes time.
 -   Any bugs, questions, feature requests shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or by [email](mailto:iitsnotme214@proton.me).
 -   To help with development, see [todos](TODO.md).
 

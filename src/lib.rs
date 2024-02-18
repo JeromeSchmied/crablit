@@ -145,13 +145,15 @@ where
 
                 ":typo" => {
                     // ask to type again before correcting?
-                    if i > 1 {
+                    if i > 0 {
                         if let Some(skipping) = v.get(i - 1) {
                             println!("{}", Msg::Typo(skipping.ser(" = ")).val());
                             v.get_mut(i - 1).unwrap().incr();
                         } else {
                             println!("{}", Msg::Typo("None".to_string()).val())
                         }
+                    } else {
+                        println!("{}", Msg::Typo("None".to_string()).val())
                     }
                     // rl.readline(&msg)?;
                 }
@@ -169,8 +171,8 @@ where
 
                 ":f" | ":flash" => {
                     println!("{}\n\n\n", item.flashcard().val(),);
+                    item.incr();
                     i += 1;
-                    // todo!();
                 }
 
                 ":n" | ":num" | ":togo" => {

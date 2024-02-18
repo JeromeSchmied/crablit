@@ -56,7 +56,7 @@ impl Msg {
                 "<-is the right answer.".bright_red().italic()
             ),
             Self::Flash(s) => format!(
-                "{SPACER}{} {s}{}",
+                "{SPACER}{} {s}\n{SPACER}{}",
                 "=".bright_cyan().bold(),
                 "─".repeat(s.len() + SPACER.len()).bright_purple().bold()
             ),
