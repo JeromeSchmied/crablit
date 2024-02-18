@@ -19,9 +19,8 @@
 -   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
 -   [x] save progress <- done using dirs crate, fs::read,write
+-   [x] flashcards
 -   [ ] levelled knowledge
--   [ ] flashcards
--   [ ] multifile learning
 
 ## maybe needed
 

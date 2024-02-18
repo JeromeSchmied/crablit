@@ -100,16 +100,10 @@ mod tests {
 
     #[test]
     fn new() {
-        let trm = "tarmak is hot";
-        let def = "hot asphalt";
+        let trm = "tarmak is hot".to_string();
+        let def = "hot asphalt".to_string();
 
-        assert_eq!(
-            Card {
-                trm: trm.to_string(),
-                def: def.to_string()
-            },
-            Card::new(trm, def)
-        )
+        assert_eq!(Card::new(&trm, &def), Card { trm, def })
     }
 
     #[test]
