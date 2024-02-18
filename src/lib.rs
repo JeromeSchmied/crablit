@@ -253,10 +253,8 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 }
                 v = question(&v, conf)?;
             }
-
-            state::rm_prog(&conf.file_path_orig())?;
-
             println!("Gone through everything you wanted, great job!");
+            state::rm_prog(&conf.file_path_orig())?;
 
             Ok(())
         }
