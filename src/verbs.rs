@@ -96,6 +96,14 @@ impl Learn for Verb {
             self.inf, self.dri, self.pra, self.per, self.trm
         )
     }
+
+    fn incr(&mut self) {
+        todo!()
+    }
+
+    fn decr(&mut self) {
+        todo!()
+    }
 }
 
 /// Function to convert a Deck from Verbs to Cards

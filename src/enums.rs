@@ -73,3 +73,92 @@ impl Msg {
         }
     }
 }
+
+#[derive(Debug, PartialEq)]
+/// Type of Deck
+pub enum Mode {
+    /// Basic term-definition
+    Cards,
+    /// More complex: for learning verbforms
+    Verbs,
+    /// Convert from `Verbs` to `Cards`. term as term, infinitive as definition.
+    VerbsToCards,
+}
+impl Mode {
+    /// Creates new instance of `Self`
+    /// # usage
+    /// ```
+    /// use crablit::Mode;
+    ///
+    /// let mode = Mode::from("verbs");
+    ///
+    /// assert_eq!(mode, Mode::Verbs);
+    /// ```
+    /// # panics
+    /// if mode is neither verbs, cards, or conv
+    pub fn from(mode: &str) -> Self {
+        let s = &mode.to_lowercase();
+        if s == "verbs" || s == "verb" {
+            Self::Verbs
+        } else if s == "cards" || s == "card" {
+            Self::Cards
+        } else if s == "conv" || s == "convert" || s == "verb_conv" || s == "verbs2cards" {
+            Self::VerbsToCards
+        } else {
+            panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'verbs2cards'!");
+        }
+    }
+
+    /// Creates conviniently displayable String
+    /// # usage
+    /// ```
+    /// use crablit::Mode;
+    ///
+    /// let mode = Mode::from("convert");
+    ///
+    /// assert_eq!("convert", mode.disp())
+    /// ```
+    pub fn disp(&self) -> String {
+        match self {
+            Mode::Cards => "cards".into(),
+            Mode::Verbs => "verbs".into(),
+            Mode::VerbsToCards => "convert".into(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+/// LevelOfKnowledge
+pub enum Lok {
+    Nothing,
+    Something,
+    Almost,
+    Done,
+}
+impl Lok {
+    pub fn new() -> Self {
+        Self::Nothing
+    }
+    pub fn incr(&self) -> Self {
+        match *self {
+            Self::Nothing => Self::Something,
+            Self::Something => Self::Almost,
+            Self::Almost => Self::Done,
+            Self::Done => Self::Done,
+        }
+    }
+    pub fn decr(&self) -> Self {
+        match *self {
+            Self::Nothing => Self::Nothing,
+            Self::Something => Self::Nothing,
+            Self::Almost => Self::Something,
+            Self::Done => Self::Almost,
+        }
+    }
+}
+
+impl Default for Lok {
+    fn default() -> Self {
+        Self::new()
+    }
+}

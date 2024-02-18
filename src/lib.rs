@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::expressions::*;
+use crate::enums::*;
 use colored::Colorize;
 use rustyline::DefaultEditor;
 use std::{
@@ -15,8 +15,8 @@ use std::{
 pub mod cards;
 /// Module for parsing cli arguments
 pub mod config;
-/// Commonly used expressions(text), colored strings
-pub mod expressions;
+/// enums
+pub mod enums;
 /// Module for saving state: progress
 pub mod state;
 /// Module for learning Deck of Verbs
@@ -44,59 +44,10 @@ pub trait Learn {
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
     /// Deserialize: create a line of vocab data to be written to file from `self`
     fn ser(&self, delim: &str) -> String;
-}
-
-#[derive(Debug, PartialEq)]
-/// Type of Deck
-pub enum Mode {
-    /// Basic term-definition
-    Cards,
-    /// More complex: for learning verbforms
-    Verbs,
-    /// Convert from `Verbs` to `Cards`. term as term, infinitive as definition.
-    VerbsToCards,
-}
-impl Mode {
-    /// Creates new instance of `Self`
-    /// # usage
-    /// ```
-    /// use crablit::Mode;
-    ///
-    /// let mode = Mode::from("verbs");
-    ///
-    /// assert_eq!(mode, Mode::Verbs);
-    /// ```
-    /// # panics
-    /// if mode is neither verbs, cards, or conv
-    pub fn from(mode: &str) -> Self {
-        let s = &mode.to_lowercase();
-        if s == "verbs" || s == "verb" {
-            Self::Verbs
-        } else if s == "cards" || s == "card" {
-            Self::Cards
-        } else if s == "conv" || s == "convert" || s == "verb_conv" || s == "verbs2cards" {
-            Self::VerbsToCards
-        } else {
-            panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'verbs2cards'!");
-        }
-    }
-
-    /// Creates conviniently displayable String
-    /// # usage
-    /// ```
-    /// use crablit::Mode;
-    ///
-    /// let mode = Mode::from("convert");
-    ///
-    /// assert_eq!("convert", mode.disp())
-    /// ```
-    pub fn disp(&self) -> String {
-        match self {
-            Mode::Cards => "cards".into(),
-            Mode::Verbs => "verbs".into(),
-            Mode::VerbsToCards => "convert".into(),
-        }
-    }
+    /// increment knowledge level
+    fn incr(&mut self);
+    /// decrement knowledge level
+    fn decr(&mut self);
 }
 
 // enum Kards {
@@ -151,9 +102,9 @@ where
         let msg = if last_hr.is_some_and(|he| {
             he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
         }) {
-            format!("{}> ", expressions::SPACER)
+            format!("{}> ", enums::SPACER)
         } else {
-            format!("{}\n{}> ", item.question().val(), expressions::SPACER)
+            format!("{}\n{}> ", item.question().val(), enums::SPACER)
         };
 
         // let msg = format!("\n{}\n{}> ", item.question(), expressions::SPACER);

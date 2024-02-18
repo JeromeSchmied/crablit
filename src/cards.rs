@@ -1,8 +1,7 @@
 //! # This module includes code specific to learning expressions.
 use crate::*;
 use colored::Colorize;
-use std::error::Error;
-use std::mem::swap;
+use std::{error::Error, mem::swap};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Card {
@@ -10,8 +9,8 @@ pub struct Card {
     trm: String,
     /// Definition in language to be learnt
     def: String,
-    // /// level of knowledge
-    // lev: u32,
+    /// level of knowledge: 0,1,2,3,4,5
+    lev: Lok,
 }
 impl Card {
     /// Creates new instance of a `Card`
@@ -27,6 +26,7 @@ impl Card {
         Self {
             trm: term.to_string(),
             def: def.to_string(),
+            lev: Lok::default(),
         }
     }
     /// Swaps term and definition
@@ -92,6 +92,14 @@ impl Learn for Card {
     fn ser(&self, delim: &str) -> String {
         format!("{}{}{}", self.trm, delim, self.def)
     }
+
+    fn incr(&mut self) {
+        self.lev.incr();
+    }
+
+    fn decr(&mut self) {
+        self.lev.decr();
+    }
 }
 
 #[cfg(test)]
@@ -103,7 +111,14 @@ mod tests {
         let trm = "tarmak is hot".to_string();
         let def = "hot asphalt".to_string();
 
-        assert_eq!(Card::new(&trm, &def), Card { trm, def })
+        assert_eq!(
+            Card::new(&trm, &def),
+            Card {
+                trm,
+                def,
+                lev: Lok::default()
+            }
+        )
     }
 
     #[test]
@@ -115,7 +130,8 @@ mod tests {
         assert_eq!(
             Card {
                 trm: "answer".into(),
-                def: "ask".into()
+                def: "ask".into(),
+                lev: Lok::default()
             },
             swapd
         );
