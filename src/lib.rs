@@ -116,7 +116,6 @@ where
             format!("{}\n{}> ", item.question().val(), enums::SPACER)
         };
 
-        // let msg = format!("\n{}\n{}> ", item.question(), expressions::SPACER);
         let guess = rl.readline(&msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
@@ -188,7 +187,6 @@ where
             item.incr();
             i += 1;
         } else {
-            // r.push(item.clone());
             println!("{}", item.wrong().val());
             item.decr();
             i += 1;
@@ -212,13 +210,12 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
             }
 
             while v.iter().filter(|item| item.lok() == Lok::Done).count() < v.len() {
-                // while !v.is_empty() {
                 if !conf.no_shuffle() {
                     eprintln!("shuffling");
                     fastrand::shuffle(&mut v);
                 }
                 question(&mut v, conf)?;
-            } // }
+            }
             println!("Gone through everything you wanted, great job!");
             state::rm_prog(&conf.file_path_orig())?;
 
