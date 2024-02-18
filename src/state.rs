@@ -61,17 +61,17 @@ pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
 /// use crablit::state::serialize;
 ///
 /// let deck = vec![
-///     Verb::new("inf1", "dri1", "pra1", "per1", "trm1"),
-///     Verb::new("inf2", "dri2", "pra2", "per2", "trm2"),
-///     Verb::new("inf3", "dri3", "pra3", "per3", "trm3"),
-///     Verb::new("inf4", "dri4", "pra4", "per4", "trm4"),
+///     Verb::new("inf1", "dri1", "pra1", "per1", "trm1", None),
+///     Verb::new("inf2", "dri2", "pra2", "per2", "trm2", None),
+///     Verb::new("inf3", "dri3", "pra3", "per3", "trm3", None),
+///     Verb::new("inf4", "dri4", "pra4", "per4", "trm4", None),
 /// ];
 ///
 /// let r = "\
-/// inf1;dri1;pra1;per1;trm1
-/// inf2;dri2;pra2;per2;trm2
-/// inf3;dri3;pra3;per3;trm3
-/// inf4;dri4;pra4;per4;trm4\n";
+/// inf1;dri1;pra1;per1;trm1;Nothing
+/// inf2;dri2;pra2;per2;trm2;Nothing
+/// inf3;dri3;pra3;per3;trm3;Nothing
+/// inf4;dri4;pra4;per4;trm4;Nothing\n";
 ///
 /// assert_eq!(r, serialize(&deck, ';'));
 /// ```
@@ -130,22 +130,22 @@ term7;def7;Nothing\n";
     #[test]
     fn serialize_verbs() {
         let deck = vec![
-            Verb::new("inf1", "dri1", "pra1", "per1", "trm1"),
-            Verb::new("inf2", "dri2", "pra2", "per2", "trm2"),
-            Verb::new("inf3", "dri3", "pra3", "per3", "trm3"),
-            Verb::new("inf4", "dri4", "pra4", "per4", "trm4"),
-            Verb::new("inf5", "dri5", "pra5", "per5", "trm5"),
-            Verb::new("inf6", "dri6", "pra6", "per6", "trm6"),
-            Verb::new("inf7", "dri7", "pra7", "per7", "trm7"),
+            Verb::new("inf1", "dri1", "pra1", "per1", "trm1", None),
+            Verb::new("inf2", "dri2", "pra2", "per2", "trm2", None),
+            Verb::new("inf3", "dri3", "pra3", "per3", "trm3", None),
+            Verb::new("inf4", "dri4", "pra4", "per4", "trm4", None),
+            Verb::new("inf5", "dri5", "pra5", "per5", "trm5", None),
+            Verb::new("inf6", "dri6", "pra6", "per6", "trm6", None),
+            Verb::new("inf7", "dri7", "pra7", "per7", "trm7", None),
         ];
         let r = "\
-inf1;dri1;pra1;per1;trm1
-inf2;dri2;pra2;per2;trm2
-inf3;dri3;pra3;per3;trm3
-inf4;dri4;pra4;per4;trm4
-inf5;dri5;pra5;per5;trm5
-inf6;dri6;pra6;per6;trm6
-inf7;dri7;pra7;per7;trm7\n";
+inf1;dri1;pra1;per1;trm1;Nothing
+inf2;dri2;pra2;per2;trm2;Nothing
+inf3;dri3;pra3;per3;trm3;Nothing
+inf4;dri4;pra4;per4;trm4;Nothing
+inf5;dri5;pra5;per5;trm5;Nothing
+inf6;dri6;pra6;per6;trm6;Nothing
+inf7;dri7;pra7;per7;trm7;Nothing\n";
         assert_eq!(r, serialize(&deck, ';'));
     }
 

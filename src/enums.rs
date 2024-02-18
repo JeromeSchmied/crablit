@@ -166,7 +166,7 @@ impl Lok {
             Self::Done => Self::Almost,
         }
     }
-    pub fn as_string(&self) -> String {
+    pub fn display(&self) -> String {
         match *self {
             Self::Nothing => String::from("Nothing"),
             Self::Something => String::from("Something"),

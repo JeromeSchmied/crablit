@@ -14,14 +14,14 @@ pub struct Verb {
     lok: Lok,
 }
 impl Verb {
-    pub fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
+    pub fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str, lok: Option<&str>) -> Self {
         Verb {
             inf: inf.to_owned(),
             dri: dri.to_owned(),
             pra: pra.to_owned(),
             per: per.to_owned(),
             trm: trm.to_owned(),
-            lok: Lok::default(),
+            lok: Lok::new(lok.unwrap_or_default()),
         }
     }
     fn print_em_colored(&self) -> String {
@@ -75,6 +75,8 @@ impl Learn for Verb {
         let per = words.next().unwrap_or("").trim();
         let trm = words.next().unwrap_or("").trim();
 
+        let lok = words.next();
+
         if inf.is_empty() || dri.is_empty() || pra.is_empty() || per.is_empty() || trm.is_empty() {
             Err(format!(
                 "A line should look like this: \n\t\"{}{}{}{}{}{}{}{}{}\".\nInstead looks like this: \n\t\"{}\".",
@@ -91,14 +93,19 @@ impl Learn for Verb {
             ).into())
         } else {
             // making a Verbs of the values
-            Ok(Box::new(Verb::new(inf, dri, pra, per, trm)))
+            Ok(Box::new(Verb::new(inf, dri, pra, per, trm, lok)))
         }
     }
 
     fn ser(&self, delim: &str) -> String {
         format!(
-            "{}{delim}{}{delim}{}{delim}{}{delim}{}",
-            self.inf, self.dri, self.pra, self.per, self.trm
+            "{}{delim}{}{delim}{}{delim}{}{delim}{}{delim}{}",
+            self.inf,
+            self.dri,
+            self.pra,
+            self.per,
+            self.trm,
+            self.lok().display()
         )
     }
 

@@ -98,7 +98,7 @@ impl Learn for Card {
             "{}{delim}{}{delim}{}",
             self.trm,
             self.def,
-            self.lok().as_string()
+            self.lok().display()
         )
     }
 
