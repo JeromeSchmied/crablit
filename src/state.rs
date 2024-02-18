@@ -82,7 +82,7 @@ pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
 }
 
 /// Save progress to `data_dir`/crablit/`current_file`
-pub fn save_prog<T>(wrongs: &[T], conf: &config::Config) -> Result<(), Box<dyn Error>>
+pub fn save_prog<T>(deck: &[T], conf: &config::Config) -> Result<(), Box<dyn Error>>
 where
     T: Learn + std::fmt::Debug,
 {
@@ -93,8 +93,8 @@ where
     writeln!(ofile, "# mode = \"{}\"", conf.mode().disp())?;
     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
-    println!("r: {:?}", wrongs);
-    let content = serialize(wrongs, conf.delim());
+    println!("r: {:?}", deck);
+    let content = serialize(deck, conf.delim());
     writeln!(ofile, "{}", content)?;
 
     eprintln!("Saved file to {}{:?}.\n\n", SPACER.repeat(2), ofile_path);

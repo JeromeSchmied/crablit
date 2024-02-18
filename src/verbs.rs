@@ -11,6 +11,7 @@ pub struct Verb {
     pra: String,
     per: String,
     trm: String,
+    lok: Lok,
 }
 impl Verb {
     pub fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str) -> Self {
@@ -20,6 +21,7 @@ impl Verb {
             pra: pra.to_owned(),
             per: per.to_owned(),
             trm: trm.to_owned(),
+            lok: Lok::default(),
         }
     }
     fn print_em_colored(&self) -> String {
@@ -30,6 +32,9 @@ impl Verb {
             self.pra.cyan().underline(),
             self.per.bright_magenta().underline()
         )
+    }
+    pub fn lok(&self) -> Lok {
+        self.lok.clone()
     }
 }
 

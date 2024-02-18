@@ -82,20 +82,20 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
 }
 
 /// Start learning the vector, return the remainders: ones not guessed correctly
-pub fn question<T>(v: &[T], conf: &config::Config) -> Result<Vec<T>, Box<dyn Error>>
+pub fn question<T>(v: &mut [T], conf: &config::Config) -> Result<(), Box<dyn Error>>
 where
     T: Learn + Debug + Clone,
 {
     // let mut printer = String::new();
     println!("\n\nYou have {} words to learn, let's start!\n\n", v.len());
     // results vector
-    let mut r: Vec<T> = Vec::new();
+    // let mut r: Vec<T> = Vec::new();
 
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
     while i < v.len() {
-        let item = &v[i];
+        let item = v.get_mut(i).unwrap();
         // display prompt
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
@@ -125,19 +125,20 @@ where
                 }
 
                 ":w" | ":write" | ":save" => {
-                    state::save_prog(&r, conf)?;
+                    state::save_prog(v, conf)?;
                 }
 
                 ":wq" => {
-                    state::save_prog(&r, conf)?;
+                    state::save_prog(v, conf)?;
                     println!("{}", Msg::Exit.val());
                     exit(0);
                 }
 
                 ":typo" => {
                     // ask to type again before correcting?
-                    if let Some(skipping) = r.pop() {
+                    if let Some(skipping) = v.get(i - 1) {
                         println!("{}", Msg::Typo(skipping.ser(" = ")).val());
+                        v.get_mut(i - 1).unwrap().incr();
                     } else {
                         println!("{}", Msg::Typo("None".to_string()).val())
                     }
@@ -172,15 +173,17 @@ where
             }
         } else if guess == item.correct() {
             println!("{}\n", Msg::Knew.val());
+            item.incr();
             i += 1;
         } else {
-            r.push(item.clone());
+            // r.push(item.clone());
             println!("{}", item.wrong().val());
+            item.decr();
             i += 1;
         }
     }
-    println!("\n\n{} remaining cards are {:#?}", r.len(), r);
-    Ok(r)
+    // println!("\n\n{} remaining cards are {:#?}", r.len(), r);
+    Ok(())
 }
 
 /// Starting program execution according to mode
@@ -197,13 +200,14 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 randomly_swap_cards(&mut v);
             }
 
-            while !v.is_empty() {
+            while v.iter().filter(|item| item.lok() == Lok::Done).count() < v.len() {
+                // while !v.is_empty() {
                 if !conf.no_shuffle() {
                     eprintln!("shuffling");
                     fastrand::shuffle(&mut v);
                 }
-                v = question(&v, conf)?;
-            }
+                question(&mut v, conf)?;
+            } // }
             println!("Gone through everything you wanted, great job!");
             state::rm_prog(&conf.file_path_orig())?;
 
@@ -215,12 +219,13 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
                 "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
             );
 
-            while !v.is_empty() {
+            // while !v.is_empty() {
+            while v.iter().filter(|item| item.lok() == Lok::Done).count() < v.len() {
                 eprintln!("shuffling");
                 if !conf.no_shuffle() {
                     fastrand::shuffle(&mut v);
                 }
-                v = question(&v, conf)?;
+                question(&mut v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
             state::rm_prog(&conf.file_path_orig())?;

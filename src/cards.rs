@@ -9,8 +9,8 @@ pub struct Card {
     trm: String,
     /// Definition in language to be learnt
     def: String,
-    /// level of knowledge: 0,1,2,3,4,5
-    lev: Lok,
+    /// level of knowledge: 0,1,2,3
+    lok: Lok,
 }
 impl Card {
     /// Creates new instance of a `Card`
@@ -26,7 +26,7 @@ impl Card {
         Self {
             trm: term.to_string(),
             def: def.to_string(),
-            lev: Lok::default(),
+            lok: Lok::default(),
         }
     }
     /// Swaps term and definition
@@ -43,6 +43,9 @@ impl Card {
     /// ```
     pub fn swap(&mut self) {
         swap(&mut self.trm, &mut self.def);
+    }
+    pub fn lok(&self) -> Lok {
+        self.lok.clone()
     }
 }
 
@@ -94,11 +97,11 @@ impl Learn for Card {
     }
 
     fn incr(&mut self) {
-        self.lev.incr();
+        self.lok.incr();
     }
 
     fn decr(&mut self) {
-        self.lev.decr();
+        self.lok.decr();
     }
 }
 
@@ -116,7 +119,7 @@ mod tests {
             Card {
                 trm,
                 def,
-                lev: Lok::default()
+                lok: Lok::default()
             }
         )
     }
@@ -131,7 +134,7 @@ mod tests {
             Card {
                 trm: "answer".into(),
                 def: "ask".into(),
-                lev: Lok::default()
+                lok: Lok::default()
             },
             swapd
         );
