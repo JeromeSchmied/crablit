@@ -20,7 +20,7 @@
 -   [x] have organized, formatted output <- done: using nice charecters, colors
 -   [x] save progress <- done using dirs crate, fs::read,write
 -   [x] flashcards
--   [ ] levelled knowledge
+-   [x] levelled knowledge
 
 ## maybe needed
 
