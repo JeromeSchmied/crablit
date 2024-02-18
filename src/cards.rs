@@ -103,6 +103,10 @@ impl Learn for Card {
     fn decr(&mut self) {
         self.lok.decr();
     }
+
+    fn lok(&self) -> Lok {
+        self.lok()
+    }
 }
 
 #[cfg(test)]

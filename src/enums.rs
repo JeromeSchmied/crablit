@@ -139,24 +139,31 @@ impl Lok {
     pub fn new() -> Self {
         Self::Nothing
     }
-    pub fn incr(&self) -> Self {
-        match *self {
+    pub fn incr(&mut self) {
+        *self = match *self {
             Self::Nothing => Self::Something,
             Self::Something => Self::Almost,
             Self::Almost => Self::Done,
             Self::Done => Self::Done,
         }
     }
-    pub fn decr(&self) -> Self {
-        match *self {
+    pub fn decr(&mut self) {
+        *self = match *self {
             Self::Nothing => Self::Nothing,
             Self::Something => Self::Nothing,
             Self::Almost => Self::Something,
             Self::Done => Self::Almost,
         }
     }
+    pub fn as_string(&self) -> String {
+        match *self {
+            Self::Nothing => String::from("Nothing"),
+            Self::Something => String::from("Something"),
+            Self::Almost => String::from("Almost"),
+            Self::Done => String::from("Done"),
+        }
+    }
 }
-
 impl Default for Lok {
     fn default() -> Self {
         Self::new()

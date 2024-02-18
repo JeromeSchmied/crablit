@@ -48,6 +48,8 @@ pub trait Learn {
     fn incr(&mut self);
     /// decrement knowledge level
     fn decr(&mut self);
+    /// Lok
+    fn lok(&self) -> Lok;
 }
 
 // enum Kards {
@@ -87,15 +89,20 @@ where
     T: Learn + Debug + Clone,
 {
     // let mut printer = String::new();
-    println!("\n\nYou have {} words to learn, let's start!\n\n", v.len());
-    // results vector
-    // let mut r: Vec<T> = Vec::new();
-
+    println!(
+        "\n\nYou have {} words to learn, let's start!\n\n",
+        v.iter().filter(|item| item.lok() != Lok::Done).count()
+    );
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
     while i < v.len() {
         let item = v.get_mut(i).unwrap();
+
+        if item.lok() == Lok::Done {
+            i += 1;
+            continue;
+        }
         // display prompt
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
@@ -136,11 +143,13 @@ where
 
                 ":typo" => {
                     // ask to type again before correcting?
-                    if let Some(skipping) = v.get(i - 1) {
-                        println!("{}", Msg::Typo(skipping.ser(" = ")).val());
-                        v.get_mut(i - 1).unwrap().incr();
-                    } else {
-                        println!("{}", Msg::Typo("None".to_string()).val())
+                    if i > 1 {
+                        if let Some(skipping) = v.get(i - 1) {
+                            println!("{}", Msg::Typo(skipping.ser(" = ")).val());
+                            v.get_mut(i - 1).unwrap().incr();
+                        } else {
+                            println!("{}", Msg::Typo("None".to_string()).val())
+                        }
                     }
                     // rl.readline(&msg)?;
                 }
@@ -167,7 +176,6 @@ where
                 }
 
                 uc => {
-                    // return Err(["unknown command: ", uc].concat().into());
                     println!("{} {}\n", "Unknown command:".red(), uc);
                 }
             }
@@ -182,7 +190,6 @@ where
             i += 1;
         }
     }
-    // println!("\n\n{} remaining cards are {:#?}", r.len(), r);
     Ok(())
 }
 

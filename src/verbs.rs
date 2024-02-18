@@ -103,11 +103,15 @@ impl Learn for Verb {
     }
 
     fn incr(&mut self) {
-        todo!()
+        self.lok.incr();
     }
 
     fn decr(&mut self) {
-        todo!()
+        self.lok.decr();
+    }
+
+    fn lok(&self) -> Lok {
+        self.lok()
     }
 }
 
