@@ -27,7 +27,7 @@ eula = false
 
 [dependencies]
 # to collect cli arguments
-clap = { version = "4.4.8", features = ["derive"] }
+clap = { version = "4.5.1", features = ["derive"] }
 # for colored output
 colored = "2.0"
 # for data_dir
