@@ -42,11 +42,24 @@ pub struct Config {
 
 impl Config {
     /// Fixing properties by opening file that contains vocab data.
+    ///
+    /// # Errors
+    ///
+    /// - `fs::create()`
+    /// - `get_prog_path()`
+    /// - `writeln!()`
+    /// - `fs::read_to_string()`
+    /// - `get_delim()`
+    /// - `get_mode()`
+    ///
+    /// # Panics
+    ///
+    /// `delim` is empty
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
         let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
-        println!("searching for path at: {:?}", state_file_path);
+        println!("searching for path at: {state_file_path:?}");
         let content = if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
             let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
 
@@ -56,7 +69,7 @@ impl Config {
             );
 
             let state_file = fs::read_to_string(&state_file_path)?;
-            println!("state file content:\n{:?}\n", state_file);
+            println!("state file content:\n{state_file:?}\n");
             state_file
         } else {
             eprintln!("Trying to open {}", &conf.file_path);
@@ -64,21 +77,21 @@ impl Config {
             fs::read_to_string(&conf.file_path)?
         };
 
-        let delim = if conf.delim != "None" {
+        let delim = if conf.delim == "None" {
+            get_delim(&content)?
+        } else {
             eprintln!("got delimiter as arg");
             conf.delim.chars().next().unwrap()
-        } else {
-            get_delim(&content)?
         };
 
-        let mode = if conf.mode != "None" {
+        let mode = if conf.mode == "None" {
+            get_mode(&content, delim)?.disp()
+        } else {
             eprintln!("got mode as arg");
             conf.mode
-        } else {
-            get_mode(&content, &delim)?.disp()
         };
 
-        eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
+        eprintln!("Mode: \"{mode}\", delimiter: \"{delim}\"");
         Ok(Config {
             file_path: conf.file_path,
             card_swap: conf.card_swap,
@@ -92,57 +105,74 @@ impl Config {
     }
 
     /// Path for statefile of filepath got, or if doesn't exist, self
+    ///
+    /// # Panics
+    ///
+    /// `get_prog_path()`
+    #[must_use]
     pub fn file_path(&self) -> PathBuf {
         if state::prog_exists(&self.file_path_orig()) && !self.no_state {
-            state::get_prog_path(&self.file_path_orig()).expect("Coudln't get progress path")
+            state::get_prog_path(&self.file_path_orig()).expect("Couldn't get progress path")
         } else {
             self.file_path.clone().into()
         }
     }
 
-    /// Get original file_path as PathBuf
+    /// Get original `file_path` as `PathBuf`
+    #[must_use]
     pub fn file_path_orig(&self) -> PathBuf {
         self.file_path.clone().into()
     }
 
-    /// Get no_state
+    /// Get `no_state`
+    #[must_use]
     pub fn no_state(&self) -> bool {
         self.no_state
     }
 
-    /// Get no_shuffle
+    /// Get `no_shuffle`
+    #[must_use]
     pub fn no_shuffle(&self) -> bool {
         self.no_shuffle
     }
 
-    /// Get only_check
+    /// Get `only_check`
+    #[must_use]
     pub fn only_check(&self) -> bool {
         self.only_check
     }
 
-    /// Get ask_both
+    /// Get `ask_both`
+    #[must_use]
     pub fn ask_both(&self) -> bool {
         self.ask_both
     }
 
-    /// Get card_swap
+    /// Get `card_swap`
+    #[must_use]
     pub fn card_swap(&self) -> bool {
         self.card_swap
     }
 
     /// Get mode as `Mode`
+    #[must_use]
     pub fn mode(&self) -> Mode {
         Mode::from(&self.mode)
     }
 
     /// Get delimiter as a character
+    ///
+    /// # Panics
+    ///
+    /// `delim` is empty
+    #[must_use]
     pub fn delim(&self) -> char {
         self.delim.chars().next().unwrap()
     }
 }
 
 /// Get mode from content
-fn get_mode(content: &str, delim: &char) -> Result<Mode, &'static str> {
+fn get_mode(content: &str, delim: char) -> Result<Mode, &'static str> {
     if let Ok(mode) = get_prop(content, "mode") {
         return Ok(Mode::from(&mode));
     }
@@ -151,7 +181,7 @@ fn get_mode(content: &str, delim: &char) -> Result<Mode, &'static str> {
     let n = content
         .lines()
         .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
-        .map(|line| sum += line.split(*delim).count())
+        .map(|line| sum += line.split(delim).count())
         .count();
 
     let avg = (sum as f32 / n as f32).ceil() as u8;
@@ -182,18 +212,14 @@ fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
             .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
             .for_each(|line| delim_count += line.trim().chars().filter(|c| c == delim).count());
         if delim_count > 0 {
-            delims_counts.insert(*delim, delim_count as u32);
+            delims_counts.insert(*delim, delim_count.try_into()?);
         }
     }
     for delim in &delims_counts {
         println!("'{}': {}", delim.0, delim.1);
     }
     if delims_counts.is_empty() {
-        Err(format!(
-            "Couldn't determine delimiter, should be one of: {:?}",
-            DELIMS
-        )
-        .into())
+        Err(format!("Couldn't determine delimiter, should be one of: {DELIMS:?}").into())
     } else {
         Ok(*delims_counts.iter().max_by_key(|x| x.1).unwrap().0)
     }
@@ -203,7 +229,7 @@ fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
 fn get_prop(content: &str, prop: &str) -> Result<String, Box<dyn Error>> {
     if content.contains("[crablit]") {
         eprintln!("text contains [crablit]!");
-        let prop = &format!("{} = ", prop);
+        let prop = &format!("{prop} = ");
         if !content.contains(prop) {
             eprintln!("Coudln't find \"{prop}\"");
             return Err(format!("Coudln't find \"{prop}\"").into());
@@ -219,7 +245,7 @@ fn get_prop(content: &str, prop: &str) -> Result<String, Box<dyn Error>> {
             .trim_matches(|c| c == '"' || c == '\'')
             .into())
     } else {
-        Err(format!("Coudln't find {}", prop).into())
+        Err(format!("Coudln't find {prop}").into())
     }
 }
 
@@ -251,7 +277,7 @@ no command : ;;;;;;
         assert_eq!(';', get_delim(content).unwrap());
     }
     #[test]
-    #[should_panic]
+    #[should_panic = "commented line is ignored"]
     fn get_delim_incorrect() {
         let content = "# barna , braun";
         assert_eq!(';', get_delim(content).unwrap());
@@ -268,13 +294,13 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(get_mode(content, &':'), Ok(Mode::Cards));
+        assert_eq!(get_mode(content, ':'), Ok(Mode::Cards));
     }
 
     #[test]
     fn get_mode_correct_simple() {
         let content = "term ; condition";
-        assert_eq!(get_mode(content, &';'), Ok(Mode::Cards));
+        assert_eq!(get_mode(content, ';'), Ok(Mode::Cards));
     }
 
     #[test]
@@ -287,7 +313,7 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(get_mode(content, &':'), Ok(Mode::Cards));
+        assert_eq!(get_mode(content, ':'), Ok(Mode::Cards));
     }
 
     // #[test]

@@ -28,6 +28,7 @@ pub enum Msg {
 }
 impl Msg {
     /// get value for expression
+    #[must_use]
     pub fn val(&self) -> String {
         match self {
             Self::Quest(s) => format!("{SPACER}{} {}", "?".bright_yellow().bold(), s.bright_blue()),
@@ -65,7 +66,7 @@ impl Msg {
                     "{}{} at {:.1}{}, {} more to go",
                     SPACER.repeat(2),
                     "!".bold().bright_purple(),
-                    ((*i as f32 / *sum as f32) * 100.),
+                    ((*i / *sum) * 100),
                     "%".bold().bright_purple(),
                     (sum - i).to_string().italic()
                 )
@@ -86,7 +87,8 @@ pub enum Mode {
 }
 impl Mode {
     /// Creates new instance of `Self`
-    /// # usage
+    ///
+    /// # Usage
     /// ```
     /// use crablit::Mode;
     ///
@@ -94,8 +96,10 @@ impl Mode {
     ///
     /// assert_eq!(mode, Mode::Verbs);
     /// ```
-    /// # panics
+    /// # Panics
+    ///
     /// if mode is neither verbs, cards, or conv
+    #[must_use]
     pub fn from(mode: &str) -> Self {
         let s = &mode.to_lowercase();
         if s == "verbs" || s == "verb" {
@@ -118,6 +122,7 @@ impl Mode {
     ///
     /// assert_eq!("convert", mode.disp())
     /// ```
+    #[must_use]
     pub fn disp(&self) -> String {
         match self {
             Mode::Cards => "cards".into(),
@@ -128,7 +133,7 @@ impl Mode {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-/// LevelOfKnowledge
+/// `LevelOfKnowledge`
 pub enum Lok {
     Nothing,
     Something,
@@ -136,6 +141,7 @@ pub enum Lok {
     Done,
 }
 impl Lok {
+    #[must_use]
     pub fn new(s: &str) -> Self {
         let s = s.trim();
         if s == "Nothing" || s == "0" {
@@ -154,18 +160,17 @@ impl Lok {
         *self = match *self {
             Self::Nothing => Self::Something,
             Self::Something => Self::Almost,
-            Self::Almost => Self::Done,
-            Self::Done => Self::Done,
+            Self::Almost | Self::Done => Self::Done,
         }
     }
     pub fn decr(&mut self) {
         *self = match *self {
-            Self::Nothing => Self::Nothing,
-            Self::Something => Self::Nothing,
+            Self::Nothing | Self::Something => Self::Nothing,
             Self::Almost => Self::Something,
             Self::Done => Self::Almost,
         }
     }
+    #[must_use]
     pub fn display(&self) -> String {
         match *self {
             Self::Nothing => String::from("Nothing"),

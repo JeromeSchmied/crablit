@@ -22,6 +22,7 @@ impl Card {
     ///
     /// let card = Card::new("dog", "Hunde", None);
     /// ```
+    #[must_use]
     pub fn new(term: &str, def: &str, lok: Option<&str>) -> Self {
         Self {
             trm: term.to_string(),
@@ -44,6 +45,7 @@ impl Card {
     pub fn swap(&mut self) {
         swap(&mut self.trm, &mut self.def);
     }
+    #[must_use]
     pub fn lok(&self) -> Lok {
         self.lok.clone()
     }
@@ -131,7 +133,7 @@ mod tests {
                 def,
                 lok: Lok::default()
             }
-        )
+        );
     }
 
     #[test]

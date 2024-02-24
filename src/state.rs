@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 //     '/'
 // }
 
-/// Returns data_dir of current file using `dirs` crate
+/// Returns `data_dir` of current file using `dirs` crate
 fn data_dir() -> PathBuf {
     dirs::data_dir()
         .expect("couldn't find data dir")
@@ -18,6 +18,15 @@ fn data_dir() -> PathBuf {
 }
 
 /// Returns the progress path, if doesn't exist, creates it's path, but not the file itself
+///
+/// # Errors
+///
+/// - `pwd()` errors
+/// - `create_dir(_all)` errors
+///
+/// # Panics
+///
+/// - `pwd()` doesn't contain valud utf8
 pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
     let pwd = std::env::current_dir()?;
     let pwd = pwd.to_str().expect("Couldn't get working dir.");
@@ -39,12 +48,22 @@ pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
 }
 
 /// Returns the existence of path got in state dir
+///
+/// # Panics
+///
+/// `get_prog_path()` errors
+#[must_use]
 pub fn prog_exists(path: &Path) -> bool {
     let path = get_prog_path(path).unwrap();
     fs::read_to_string(path).is_ok()
 }
 
 /// Delete progress if exists
+///
+/// # Errors
+///
+/// - `get_prog_path()` errors
+/// - `fs::remove_file()` errors
 pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
     if prog_exists(path) {
         eprintln!("Removing state file from: {:?}", get_prog_path(path)?);
@@ -82,20 +101,26 @@ pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
 }
 
 /// Save progress to `data_dir`/crablit/`current_file`
+///
+/// # Errors
+///
+/// - `fs::create()` errors
+/// - `get_prog_path()` errors
+/// - `writeln!()` errors
 pub fn save_prog<T>(deck: &[T], conf: &config::Config) -> Result<(), Box<dyn Error>>
 where
     T: Learn + std::fmt::Debug,
 {
-    let ofile_path = state::get_prog_path(&conf.file_path_orig())?;
+    let ofile_path = get_prog_path(&conf.file_path_orig())?;
     let mut ofile = File::create(&ofile_path)?;
 
     writeln!(ofile, "# [crablit]")?;
     writeln!(ofile, "# mode = \"{}\"", conf.mode().disp())?;
     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
-    println!("r: {:?}", deck);
+    println!("r: {deck:?}");
     let content = serialize(deck, conf.delim());
-    writeln!(ofile, "{}", content)?;
+    writeln!(ofile, "{content}")?;
 
     eprintln!("Saved file to {}{:?}.\n\n", SPACER.repeat(2), ofile_path);
 
@@ -105,6 +130,7 @@ where
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::{state, Card, Verb};
 
     #[test]
     fn serialize_cards() {

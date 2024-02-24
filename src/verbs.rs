@@ -1,5 +1,5 @@
 //! # This module includes code specific to learning verbforms.
-use crate::{config::Config, *};
+use crate::*;
 use colored::Colorize;
 use std::io::Write;
 
@@ -14,6 +14,7 @@ pub struct Verb {
     lok: Lok,
 }
 impl Verb {
+    #[must_use]
     pub fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str, lok: Option<&str>) -> Self {
         Verb {
             inf: inf.to_owned(),
@@ -33,6 +34,7 @@ impl Verb {
             self.per.bright_magenta().underline()
         )
     }
+    #[must_use]
     pub fn lok(&self) -> Lok {
         self.lok.clone()
     }
@@ -123,6 +125,15 @@ impl Learn for Verb {
 }
 
 /// Function to convert a Deck from Verbs to Cards
+///
+/// # Errors
+///
+/// - `fs::create()`
+/// - `writeln!()`
+///
+/// # Panics
+///
+/// - `PathBuf::file_stem()`
 pub fn deser_to_card(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
     let pb = PathBuf::from(&conf.file_path_orig());
     let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());

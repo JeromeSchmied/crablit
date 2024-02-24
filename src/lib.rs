@@ -1,5 +1,6 @@
+#![warn(clippy::pedantic)]
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::enums::*;
+use crate::enums::{Msg, SPACER};
 use colored::Colorize;
 use rustyline::DefaultEditor;
 use std::{
@@ -43,6 +44,10 @@ pub trait Learn {
     /// Show hint of term.
     fn hint(&self) -> Msg;
     /// Serialize: create instance of `Self` from a line from file containing vocab data.
+    ///
+    /// # Errors
+    ///
+    /// if couldn't find properly formatted line
     fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
     /// Deserialize: create a line of vocab data to be written to file from `self`
     fn ser(&self, delim: &str) -> String;
@@ -67,6 +72,11 @@ pub trait Learn {
 // }
 
 /// Initializing deck of either `cards`, or `verbs`
+///
+/// # Errors
+///
+/// - can't read `path`
+/// - can't deserialize properly
 pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
     // contents of file with vocab data
     let contents = fs::read_to_string(path)?;
@@ -86,6 +96,10 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
 }
 
 /// Start learning the vector, return the remainders: ones not guessed correctly
+///
+/// # Errors
+///
+/// - `rustyline` can't create instance
 pub fn question<T>(v: &mut [T], conf: &config::Config) -> Result<(), Box<dyn Error>>
 where
     T: Learn + Debug + Clone,
@@ -99,7 +113,7 @@ where
 
     let mut i = 0;
     while i < v.len() {
-        let item = v.get_mut(i).unwrap();
+        let item = &mut v[i];
 
         if item.lok() == Lok::Done {
             i += 1;
@@ -147,12 +161,12 @@ where
                     if i > 0 {
                         if let Some(skipping) = v.get(i - 1) {
                             println!("{}", Msg::Typo(skipping.ser(" = ")).val());
-                            v.get_mut(i - 1).unwrap().incr();
+                            v[i - 1].incr();
                         } else {
-                            println!("{}", Msg::Typo("None".to_string()).val())
+                            println!("{}", Msg::Typo("None".to_string()).val());
                         }
                     } else {
-                        println!("{}", Msg::Typo("None".to_string()).val())
+                        println!("{}", Msg::Typo("None".to_string()).val());
                     }
                     // rl.readline(&msg)?;
                 }
@@ -196,6 +210,13 @@ where
 }
 
 /// Starting program execution according to mode
+///
+/// # Errors
+///
+/// - `init()` returns an error
+/// - `question()` returns an error
+/// - `state::rm()` returns an error
+/// - `verbs::deser_to_card()` returns an error
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     match conf.mode() {
         Mode::Cards => {
@@ -262,6 +283,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 ///
 /// assert_eq!("012___", hint(easy));
 /// ```
+#[must_use]
 pub fn hint(s: &str) -> String {
     let n = s.chars().count() / 2;
     [
@@ -282,7 +304,7 @@ pub fn hint(s: &str) -> String {
 /// crablit::swap_cards(&mut deck);
 /// ```
 pub fn swap_cards(cards: &mut [cards::Card]) {
-    cards.iter_mut().for_each(|card| card.swap());
+    cards.iter_mut().for_each(cards::Card::swap);
 }
 
 /// Randomly swap definition and term of deck(vector) of cards
@@ -296,11 +318,11 @@ pub fn swap_cards(cards: &mut [cards::Card]) {
 /// crablit::randomly_swap_cards(&mut deck);
 /// ```
 pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
-    cards.iter_mut().for_each(|card| {
+    for card in cards.iter_mut() {
         if fastrand::bool() {
-            card.swap()
+            card.swap();
         }
-    });
+    }
 }
 
 #[cfg(test)]
@@ -308,7 +330,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[should_panic]
+    #[should_panic = "mode as `Mode` is incorrect"]
     fn incorrect_mode() {
         Mode::from("mode");
     }
