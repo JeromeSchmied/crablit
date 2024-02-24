@@ -24,16 +24,16 @@
 
 ## maybe needed
 
--   [ ] find duplicates and deal with 'em
--   [ ] if hint typed more than once, show more help
--   [ ] use a printer String, always delete old questions: pretty-print
+-   [ ] find duplicates and deal with 'em somehow
+-   [ ] if hint typed more than once, show more help: verbs
 -   [ ] starring words that need learning, high level
 -   [ ] filtering what to learn, like unusual verbforms
+-   [ ] other question types like i dunno
 
 ## nice-to-haves
 
--   [ ] autocompletion of commands: `:<command>`
 -   [ ] [tui](https://crates.io/crates/ratatui)
+-   [ ] autocompletion of commands: `:<command>`
 -   [ ] taking cli arguments: [clap](https://crates.io/crates/clap)
     -   [x] file name
     -   [x] delimiter
@@ -80,7 +80,7 @@
 
 -   [x] [github repo](https://github.com/JeromeSchmied/crablit), or some github alternative
 -   [x] [crates](https://crates.io)
--   [ ] website: crablit.com or crablit.io or crab.lit
+-   [ ] website: crablit.com or crablit.io or crab.lit or crablit.rs
 -   [ ] being able to share decks
 -   [ ] being able to create decks in app
 -   [ ] clean API
