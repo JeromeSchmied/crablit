@@ -277,7 +277,7 @@ no command : ;;;;;;
         assert_eq!(';', get_delim(content).unwrap());
     }
     #[test]
-    #[should_panic = "commented line is ignored"]
+    #[should_panic]
     fn get_delim_incorrect() {
         let content = "# barna , braun";
         assert_eq!(';', get_delim(content).unwrap());

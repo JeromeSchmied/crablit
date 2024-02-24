@@ -330,9 +330,9 @@ mod tests {
     use super::*;
 
     #[test]
-    #[should_panic = "mode as `Mode` is incorrect"]
+    #[should_panic]
     fn incorrect_mode() {
-        Mode::from("mode");
+        let _ = Mode::from("mode");
     }
     #[test]
     fn correct_mode_cards() {

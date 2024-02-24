@@ -134,7 +134,7 @@ impl Learn for Verb {
 /// # Panics
 ///
 /// - `PathBuf::file_stem()`
-pub fn deser_to_card(verbs: &[Verb], conf: &Config) -> Result<(), Box<dyn Error>> {
+pub fn deser_to_card(verbs: &[Verb], conf: &config::Config) -> Result<(), Box<dyn Error>> {
     let pb = PathBuf::from(&conf.file_path_orig());
     let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
     println!(
