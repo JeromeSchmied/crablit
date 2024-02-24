@@ -161,10 +161,12 @@ cargo install --path .
 ## Alternatives
 
 -   [speki](https://crates.io/crates/speki): pretty great, but only flashcards, huge download size, tui, rust, unmaintained?
+-   [flashed](https://gitlab.com/john_t/flashed.git): nice, but json input, really?, tui, rust, unmaintained?
 -   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust, unmaintained?
 -   [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust, unmaintained?
 -   [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
+-   [oxycards](https://github.com/BrookJeynes/oxycards): very great, tui, rust, unmaintained?
 -   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust, unmaintained?
 
 [1]: examples/img/v0.1.5_cards.png "Image of using crablit in Alacritty terminal on Arch GNU/Linux"
