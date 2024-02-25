@@ -1,4 +1,3 @@
-#![warn(clippy::pedantic)]
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::enums::{Msg, SPACER};
 use colored::Colorize;
@@ -283,7 +282,6 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 ///
 /// assert_eq!("012___", hint(easy));
 /// ```
-#[must_use]
 pub fn hint(s: &str) -> String {
     let n = s.chars().count() / 2;
     [

@@ -52,7 +52,6 @@ pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
 /// # Panics
 ///
 /// `get_prog_path()` errors
-#[must_use]
 pub fn prog_exists(path: &Path) -> bool {
     let path = get_prog_path(path).unwrap();
     fs::read_to_string(path).is_ok()

@@ -28,7 +28,6 @@ pub enum Msg {
 }
 impl Msg {
     /// get value for expression
-    #[must_use]
     pub fn val(&self) -> String {
         match self {
             Self::Quest(s) => format!("{SPACER}{} {}", "?".bright_yellow().bold(), s.bright_blue()),
@@ -99,7 +98,6 @@ impl Mode {
     /// # Panics
     ///
     /// if mode is neither verbs, cards, or conv
-    #[must_use]
     pub fn from(mode: &str) -> Self {
         let s = &mode.to_lowercase();
         if s == "verbs" || s == "verb" {
@@ -122,7 +120,6 @@ impl Mode {
     ///
     /// assert_eq!("convert", mode.disp())
     /// ```
-    #[must_use]
     pub fn disp(&self) -> String {
         match self {
             Mode::Cards => "cards".into(),
@@ -141,7 +138,6 @@ pub enum Lok {
     Done,
 }
 impl Lok {
-    #[must_use]
     pub fn new(s: &str) -> Self {
         let s = s.trim();
         if s == "Nothing" || s == "0" {
@@ -170,7 +166,6 @@ impl Lok {
             Self::Done => Self::Almost,
         }
     }
-    #[must_use]
     pub fn display(&self) -> String {
         match *self {
             Self::Nothing => String::from("Nothing"),

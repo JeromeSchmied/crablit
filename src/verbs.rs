@@ -14,7 +14,6 @@ pub struct Verb {
     lok: Lok,
 }
 impl Verb {
-    #[must_use]
     pub fn new(inf: &str, dri: &str, pra: &str, per: &str, trm: &str, lok: Option<&str>) -> Self {
         Verb {
             inf: inf.to_owned(),
@@ -34,7 +33,6 @@ impl Verb {
             self.per.bright_magenta().underline()
         )
     }
-    #[must_use]
     pub fn lok(&self) -> Lok {
         self.lok.clone()
     }

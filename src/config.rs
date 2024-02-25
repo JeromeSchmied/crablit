@@ -109,7 +109,6 @@ impl Config {
     /// # Panics
     ///
     /// `get_prog_path()`
-    #[must_use]
     pub fn file_path(&self) -> PathBuf {
         if state::prog_exists(&self.file_path_orig()) && !self.no_state {
             state::get_prog_path(&self.file_path_orig()).expect("Couldn't get progress path")
@@ -119,43 +118,36 @@ impl Config {
     }
 
     /// Get original `file_path` as `PathBuf`
-    #[must_use]
     pub fn file_path_orig(&self) -> PathBuf {
         self.file_path.clone().into()
     }
 
     /// Get `no_state`
-    #[must_use]
     pub fn no_state(&self) -> bool {
         self.no_state
     }
 
     /// Get `no_shuffle`
-    #[must_use]
     pub fn no_shuffle(&self) -> bool {
         self.no_shuffle
     }
 
     /// Get `only_check`
-    #[must_use]
     pub fn only_check(&self) -> bool {
         self.only_check
     }
 
     /// Get `ask_both`
-    #[must_use]
     pub fn ask_both(&self) -> bool {
         self.ask_both
     }
 
     /// Get `card_swap`
-    #[must_use]
     pub fn card_swap(&self) -> bool {
         self.card_swap
     }
 
     /// Get mode as `Mode`
-    #[must_use]
     pub fn mode(&self) -> Mode {
         Mode::from(&self.mode)
     }
@@ -165,7 +157,6 @@ impl Config {
     /// # Panics
     ///
     /// `delim` is empty
-    #[must_use]
     pub fn delim(&self) -> char {
         self.delim.chars().next().unwrap()
     }
