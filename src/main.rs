@@ -1,5 +1,3 @@
-#![warn(clippy::pedantic)]
-
 extern crate output_vt100;
 use crablit::config::Config;
 use std::process;

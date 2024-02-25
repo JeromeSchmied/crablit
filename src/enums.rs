@@ -65,9 +65,9 @@ impl Msg {
                     "{}{} at {:.1}{}, {} more to go",
                     SPACER.repeat(2),
                     "!".bold().bright_purple(),
-                    ((*i / *sum) * 100),
+                    (*i as f32 / *sum as f32 * 100.),
                     "%".bold().bright_purple(),
-                    (sum - i).to_string().italic()
+                    (sum + 1 - i).to_string().italic()
                 )
             }
         }

@@ -24,8 +24,7 @@ pub mod verbs;
 
 // re-exports
 pub use cards::Card;
-pub use enums::Lok;
-pub use enums::Mode;
+pub use enums::{Lok, Mode};
 pub use verbs::Verb;
 
 /// The trait for learning either `Cards` of `Verbs`
@@ -104,13 +103,12 @@ where
     T: Learn + Debug + Clone,
 {
     // let mut printer = String::new();
-    println!(
-        "\n\nYou have {} words to learn, let's start!\n\n",
-        v.iter().filter(|item| item.lok() != Lok::Done).count()
-    );
+    let len = v.iter().filter(|item| item.lok() != Lok::Done).count();
+    println!("\n\nYou have {len} words to learn, let's start!\n\n");
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
+    let mut prev_valid_i: i32;
     while i < v.len() {
         let item = &mut v[i];
 
@@ -118,6 +116,7 @@ where
             i += 1;
             continue;
         }
+        prev_valid_i = i as i32 - 1;
         // display prompt
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
@@ -158,9 +157,9 @@ where
                 ":typo" => {
                     // ask to type again before correcting?
                     if i > 0 {
-                        if let Some(skipping) = v.get(i - 1) {
+                        if let Some(skipping) = v.get(prev_valid_i as usize) {
                             println!("{}", Msg::Typo(skipping.ser(" = ")).val());
-                            v[i - 1].incr();
+                            v[prev_valid_i as usize].incr();
                         } else {
                             println!("{}", Msg::Typo("None".to_string()).val());
                         }
@@ -187,8 +186,9 @@ where
                     i += 1;
                 }
 
+                // incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
-                    println!("{}", &Msg::Togo(v.len(), i).val());
+                    println!("{}", &Msg::Togo(len, (prev_valid_i + 1).try_into()?).val());
                 }
 
                 uc => {
@@ -212,10 +212,10 @@ where
 ///
 /// # Errors
 ///
-/// - `init()` returns an error
-/// - `question()` returns an error
-/// - `state::rm()` returns an error
-/// - `verbs::deser_to_card()` returns an error
+/// - `init()`
+/// - `question()`
+/// - `state::rm()`
+/// - `verbs::deser_to_card()`
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     match conf.mode() {
         Mode::Cards => {
