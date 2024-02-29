@@ -19,45 +19,15 @@ pub mod config;
 pub mod enums;
 /// Module for saving state: progress
 pub mod state;
-/// Module for learning Deck of Verbs
-pub mod verbs;
+// /// Module for learning Deck of Verbs
+// pub mod verbs;
 
 // re-exports
 pub use cards::Card;
 pub use enums::{Lok, Mode};
-pub use verbs::Verb;
+// pub use verbs::Verb;
 
-/// The trait for learning either `Cards` of `Verbs`
-pub trait Learn {
-    /// Show as a term, waiting to be answered.
-    fn question(&self) -> Msg;
-    /// Show solution of term.
-    fn correct(&self) -> String;
-    /// Display message when skipping item.
-    fn skip(&self) -> Msg;
-    /// Display message when input of term is not correct.
-    fn wrong(&self) -> Msg;
-    /// Display flashcard.
-    fn flashcard(&self) -> Msg;
-    /// Show hint of term.
-    fn hint(&self) -> Msg;
-    /// Serialize: create instance of `Self` from a line from file containing vocab data.
-    ///
-    /// # Errors
-    ///
-    /// if couldn't find properly formatted line
-    fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>>;
-    /// Deserialize: create a line of vocab data to be written to file from `self`
-    fn ser(&self, delim: &str) -> String;
-    /// increment knowledge level
-    fn incr(&mut self);
-    /// decrement knowledge level
-    fn decr(&mut self);
-    /// Lok
-    fn lok(&self) -> Lok;
-}
-
-// enum Kards {
+// enum Kard {
 //     Adjektiv(String),
 //     Nomen(String),
 //     Verb {
@@ -75,18 +45,18 @@ pub trait Learn {
 ///
 /// - can't read `path`
 /// - can't deserialize properly
-pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Error>> {
+pub fn init(path: &PathBuf, delim: char) -> Result<Vec<Card>, Box<dyn Error>> {
     // contents of file with vocab data
     let contents = fs::read_to_string(path)?;
     // results vector
-    let mut r: Vec<T> = Vec::new();
+    let mut r = Vec::new();
     // iterating over the lines of file to store them in a vector
     for line in contents.lines() {
         // if is comment or empty
         if line.trim().starts_with('#') || line.is_empty() {
             continue;
         }
-        r.push(*Learn::deser(line, delim)?);
+        r.push(*Card::deser(line, delim)?);
     }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);
@@ -98,10 +68,7 @@ pub fn init<T: Learn>(path: &PathBuf, delim: char) -> Result<Vec<T>, Box<dyn Err
 /// # Errors
 ///
 /// - `rustyline` can't create instance
-pub fn question<T>(v: &mut [T], conf: &config::Config) -> Result<(), Box<dyn Error>>
-where
-    T: Learn + Debug + Clone,
-{
+pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Error>> {
     // let mut printer = String::new();
     let len = v.iter().filter(|item| item.lok() != Lok::Done).count();
     println!("\n\nYou have {len} words to learn, let's start!\n\n");
@@ -120,13 +87,16 @@ where
         // display prompt
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
-        let msg = if last_hr.is_some_and(|he| {
-            he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
-        }) {
-            format!("{}> ", enums::SPACER)
-        } else {
-            format!("{}\n{}> ", item.question().val(), enums::SPACER)
-        };
+        let msg = format!(
+            "{}{SPACER}> ",
+            if last_hr.is_some_and(|he| {
+                he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
+            }) {
+                "".to_string()
+            } else {
+                format!("{}\n", item.question())
+            }
+        );
 
         let guess = rl.readline(&msg)?;
         rl.add_history_entry(&guess)?;
@@ -141,7 +111,7 @@ where
                 }
 
                 ":h" | ":help" | ":hint" => {
-                    println!("{}", item.hint().val());
+                    println!("{}", item.hint());
                 }
 
                 ":w" | ":write" | ":save" => {
@@ -170,7 +140,7 @@ where
                 }
 
                 ":skip" => {
-                    println!("{}\n\n", item.skip().val());
+                    println!("{}\n\n", item.skip());
                     i += 1;
                     continue;
                 }
@@ -181,7 +151,7 @@ where
                 }
 
                 ":f" | ":flash" => {
-                    println!("{}\n\n\n", item.flashcard().val(),);
+                    println!("{}\n\n\n", item.flashcard());
                     item.incr();
                     i += 1;
                 }
@@ -200,7 +170,7 @@ where
             item.incr();
             i += 1;
         } else {
-            println!("{}", item.wrong().val());
+            println!("{}", item.wrong());
             item.decr();
             i += 1;
         }
@@ -241,28 +211,25 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 
             Ok(())
         }
-        Mode::Verbs => {
-            let mut v: Vec<Verb> = init(&conf.file_path(), conf.delim())?;
-            println!(
-                "\n\n\nStarting to learn verbs, input should be as following: <inf>, <dri>, <prä>, <per>"
-            );
-
-            // while !v.is_empty() {
-            while v.iter().filter(|item| item.lok() == Lok::Done).count() < v.len() {
-                eprintln!("shuffling");
-                if !conf.no_shuffle() {
-                    fastrand::shuffle(&mut v);
-                }
-                question(&mut v, conf)?;
-            }
-            println!("Gone through everything you wanted, great job!");
-            state::rm_prog(&conf.file_path_orig())?;
-
-            Ok(())
-        }
         Mode::VerbsToCards => {
-            let v: Vec<Verb> = init(&conf.file_path(), conf.delim())?;
-            verbs::deser_to_card(&v, conf)?;
+            let v = init(&conf.file_path(), conf.delim())?;
+            let data = cards::deser_verbs_to_cards(&v, conf)?;
+
+            let pb = PathBuf::from(&conf.file_path_orig());
+            let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
+            println!(
+                "\n\nConverting verbs to cards, from file: {:?} to file: {}",
+                conf.file_path_orig(),
+                outf_name.bright_blue()
+            );
+            let mut out_f = File::create(outf_name)?;
+
+            writeln!(out_f, "# [crablit]")?;
+            writeln!(out_f, "# mode = \"cards\"")?;
+            writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
+            writeln!(out_f, "{data}")?;
+
+            println!("Converting from verbs to cards done");
 
             Ok(())
         }
@@ -335,11 +302,6 @@ mod tests {
     #[test]
     fn correct_mode_cards() {
         assert_eq!(Mode::Cards, Mode::from("cards"));
-    }
-    #[test]
-    fn mode_new_simple() {
-        let mode = "verbs";
-        assert_eq!(Mode::Verbs, Mode::from(mode));
     }
     #[test]
     fn mode_new_conv() {

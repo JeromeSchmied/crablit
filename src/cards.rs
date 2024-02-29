@@ -44,37 +44,56 @@ impl Card {
     pub fn swap(&mut self) {
         swap(&mut self.trm, &mut self.def);
     }
-    pub fn lok(&self) -> Lok {
-        self.lok.clone()
-    }
 }
 
-impl Learn for Card {
-    fn question(&self) -> Msg {
-        Msg::Quest(self.trm.to_string())
+impl Card {
+    pub fn question(&self) -> String {
+        format!(
+            "{SPACER}{} {}",
+            "?".bright_yellow().bold(),
+            self.trm.bright_blue()
+        )
     }
 
-    fn correct(&self) -> String {
+    pub fn correct(&self) -> String {
         self.def.to_string()
     }
 
-    fn skip(&self) -> Msg {
-        Msg::Skip(self.ser(" = "))
+    pub fn skip(&self) -> String {
+        format!(
+            "{}{} {}",
+            SPACER.repeat(2),
+            "Skipping:".bright_magenta(),
+            self.ser(" = ")
+        )
     }
 
-    fn wrong(&self) -> Msg {
-        Msg::Wrong(self.def.yellow().underline().to_string())
+    pub fn hint(&self) -> String {
+        format!("{SPACER}{} {}", "#".cyan().bold(), hint(&self.def))
     }
 
-    fn hint(&self) -> Msg {
-        Msg::Hint(crate::hint(&self.def))
+    pub fn wrong(&self) -> String {
+        format!(
+            "{SPACER}{} {} {}\n\n",
+            "~".bright_red().bold(),
+            self.def.yellow().underline(),
+            "<-is the right answer.".bright_red().italic()
+        )
     }
 
-    fn flashcard(&self) -> Msg {
-        Msg::Flash(self.def.clone())
+    pub fn flashcard(&self) -> String {
+        format!(
+            "{SPACER}{} {}\n{SPACER}{}",
+            "=".bright_cyan().bold(),
+            self.def,
+            "─"
+                .repeat(self.def.len() + SPACER.len())
+                .bright_purple()
+                .bold()
+        )
     }
 
-    fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
+    pub fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 && words.clone().count() != 3 {
             Err(format!(
@@ -93,7 +112,7 @@ impl Learn for Card {
         }
     }
 
-    fn ser(&self, delim: &str) -> String {
+    pub fn ser(&self, delim: &str) -> String {
         format!(
             "{}{delim}{}{delim}{}",
             self.trm,
@@ -102,18 +121,50 @@ impl Learn for Card {
         )
     }
 
-    fn incr(&mut self) {
+    pub fn incr(&mut self) {
         self.lok.incr();
     }
 
-    fn decr(&mut self) {
+    pub fn decr(&mut self) {
         self.lok.decr();
     }
 
-    fn lok(&self) -> Lok {
-        self.lok()
+    pub fn lok(&self) -> Lok {
+        self.lok.clone()
     }
 }
+
+pub(crate) fn deser_verbs_to_cards(
+    v: &[Card],
+    conf: &config::Config,
+) -> Result<String, Box<dyn Error>> {
+    Ok(v.iter().fold(String::new(), |result, card| {
+        result + card.trm.split(conf.delim()).next().unwrap_or("") + &card.def
+    }))
+}
+
+// pub fn deser_to_card(verbs: &[Verb], conf: &config::Config) -> Result<(), Box<dyn Error>> {
+//     let pb = PathBuf::from(&conf.file_path_orig());
+//     let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
+//     println!(
+//         "\n\nConverting verbs to cards, from file: {:?} to file: {}",
+//         conf.file_path_orig(),
+//         outf_name.bright_blue()
+//     );
+//     let mut out_f = File::create(outf_name)?;
+
+//     writeln!(out_f, "# [crablit]")?;
+//     writeln!(out_f, "# mode = \"cards\"")?;
+//     writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
+
+//     for line in verbs {
+//         writeln!(out_f, "{}{}{}", line.trm, conf.delim(), line.inf)?;
+//     }
+
+//     println!("Converting from verbs to cards done");
+
+//     Ok(())
+// }
 
 #[cfg(test)]
 mod tests {
@@ -150,10 +201,11 @@ mod tests {
         );
     }
 
-    #[test]
-    fn disp() {
-        let card = Card::new("term", "def", None);
+    // #[test]
+    // fn disp() {
+    //     todo!()
+    //     let card = Card::new("term", "def", None);
 
-        assert_eq!(card.question().val(), Msg::Quest("term".to_string()).val());
-    }
+    //     assert_eq!(card.question(), Msg::("term".to_string()).val());
+    // }
 }

@@ -19,7 +19,7 @@ pub struct Config {
     #[arg(short, long, default_value_t = false)]
     ask_both: bool,
 
-    /// Mode: either cards, verbs or verbs2cards
+    /// Mode: either cards or verbs2cards
     #[arg(short, long, default_value = "None")]
     mode: String,
 
@@ -179,8 +179,6 @@ fn get_mode(content: &str, delim: char) -> Result<Mode, &'static str> {
     eprintln!("sum: {sum}, n: {n}, avg: {avg}");
     if avg == 2 {
         Ok(Mode::Cards)
-    } else if avg > 2 && avg < 7 {
-        Ok(Mode::Verbs)
     } else {
         Err("couldn't determine mode of deck")
     }

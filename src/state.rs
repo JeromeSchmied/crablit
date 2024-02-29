@@ -26,10 +26,10 @@ fn data_dir() -> PathBuf {
 ///
 /// # Panics
 ///
-/// - `pwd()` doesn't contain valud utf8
+/// - `pwd()` doesn't contain valid utf8
 pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
     let pwd = std::env::current_dir()?;
-    let pwd = pwd.to_str().expect("Couldn't get working dir.");
+    let pwd = pwd.to_str().expect("couldn't get working dir");
 
     // try to create data_dir, if exists, don't do anything
     if let Err(err) = std::fs::create_dir(self::data_dir()) {
@@ -75,25 +75,25 @@ pub fn rm_prog(path: &Path) -> Result<(), Box<dyn Error>> {
 ///
 /// # usage
 /// ```
-/// use crablit::Verb;
+/// use crablit::Card;
 /// use crablit::state::serialize;
 ///
 /// let deck = vec![
-///     Verb::new("inf1", "dri1", "pra1", "per1", "trm1", None),
-///     Verb::new("inf2", "dri2", "pra2", "per2", "trm2", None),
-///     Verb::new("inf3", "dri3", "pra3", "per3", "trm3", None),
-///     Verb::new("inf4", "dri4", "pra4", "per4", "trm4", None),
+///     Card::new("def1", "trm1", None),
+///     Card::new("def2", "trm2", None),
+///     Card::new("def3", "trm3", None),
+///     Card::new("def4", "trm4", None),
 /// ];
 ///
 /// let r = "\
-/// inf1;dri1;pra1;per1;trm1;Nothing
-/// inf2;dri2;pra2;per2;trm2;Nothing
-/// inf3;dri3;pra3;per3;trm3;Nothing
-/// inf4;dri4;pra4;per4;trm4;Nothing\n";
+/// def1;trm1;Nothing
+/// def2;trm2;Nothing
+/// def3;trm3;Nothing
+/// def4;trm4;Nothing\n";
 ///
 /// assert_eq!(r, serialize(&deck, ';'));
 /// ```
-pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
+pub fn serialize(v: &[Card], delim: char) -> String {
     v.iter().fold(String::new(), |r, item| {
         r + &item.ser(&delim.to_string()) + "\n"
     })
@@ -106,10 +106,7 @@ pub fn serialize<T: Learn>(v: &[T], delim: char) -> String {
 /// - `fs::create()` errors
 /// - `get_prog_path()` errors
 /// - `writeln!()` errors
-pub fn save_prog<T>(deck: &[T], conf: &config::Config) -> Result<(), Box<dyn Error>>
-where
-    T: Learn + std::fmt::Debug,
-{
+pub fn save_prog(deck: &[Card], conf: &config::Config) -> Result<(), Box<dyn Error>> {
     let ofile_path = get_prog_path(&conf.file_path_orig())?;
     let mut ofile = File::create(&ofile_path)?;
 
@@ -129,7 +126,7 @@ where
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{state, Card, Verb};
+    use crate::{state, Card};
 
     #[test]
     fn serialize_cards() {
@@ -150,27 +147,6 @@ term4;def4;Nothing
 term5;def5;Nothing
 term6;def6;Nothing
 term7;def7;Nothing\n";
-        assert_eq!(r, serialize(&deck, ';'));
-    }
-    #[test]
-    fn serialize_verbs() {
-        let deck = vec![
-            Verb::new("inf1", "dri1", "pra1", "per1", "trm1", None),
-            Verb::new("inf2", "dri2", "pra2", "per2", "trm2", None),
-            Verb::new("inf3", "dri3", "pra3", "per3", "trm3", None),
-            Verb::new("inf4", "dri4", "pra4", "per4", "trm4", None),
-            Verb::new("inf5", "dri5", "pra5", "per5", "trm5", None),
-            Verb::new("inf6", "dri6", "pra6", "per6", "trm6", None),
-            Verb::new("inf7", "dri7", "pra7", "per7", "trm7", None),
-        ];
-        let r = "\
-inf1;dri1;pra1;per1;trm1;Nothing
-inf2;dri2;pra2;per2;trm2;Nothing
-inf3;dri3;pra3;per3;trm3;Nothing
-inf4;dri4;pra4;per4;trm4;Nothing
-inf5;dri5;pra5;per5;trm5;Nothing
-inf6;dri6;pra6;per6;trm6;Nothing
-inf7;dri7;pra7;per7;trm7;Nothing\n";
         assert_eq!(r, serialize(&deck, ';'));
     }
 
