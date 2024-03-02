@@ -93,7 +93,7 @@ impl Card {
         )
     }
 
-    pub fn deser(line: &str, delim: char) -> Result<Box<Self>, Box<dyn Error>> {
+    pub fn deser(line: &str, delim: char) -> Result<Self, Box<dyn Error>> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 && words.clone().count() != 3 {
             Err(format!(
@@ -108,7 +108,7 @@ impl Card {
             let trm = words.next().unwrap().trim();
             let def = words.next().unwrap().trim();
             let lok = words.next();
-            Ok(Box::new(Card::new(trm, def, lok)))
+            Ok(Card::new(trm, def, lok))
         }
     }
 

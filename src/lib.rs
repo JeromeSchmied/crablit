@@ -53,10 +53,10 @@ pub fn init(path: &PathBuf, delim: char) -> Result<Vec<Card>, Box<dyn Error>> {
     // iterating over the lines of file to store them in a vector
     for line in contents.lines() {
         // if is comment or empty
-        if line.trim().starts_with('#') || line.is_empty() {
+        if line.trim().starts_with('#') || line.trim().is_empty() {
             continue;
         }
-        r.push(*Card::deser(line, delim)?);
+        r.push(Card::deser(line, delim)?);
     }
     eprintln!("File succesfully read.");
     // println!("content: {:?}", r);

@@ -59,17 +59,18 @@ pub fn prog_exists(path: &Path) -> bool {
 
 pub fn get_content(conf: &config::Config) -> Result<String, Box<dyn Error>> {
     let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
-    println!("searching for path at: {state_file_path:?}");
+    // println!("searching for path at: {state_file_path:?}");
     if !conf.no_state() && state::prog_exists(&conf.file_path_orig()) {
         let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
 
-        eprintln!(
-            "Opening file from previously saved state: \"{:?}\"",
-            &state_file_path
-        );
+        // eprintln!(
+        //     "Opening file from previously saved state: \"{:?}\"",
+        //     &state_file_path
+        // );
+        eprintln!("Opening file from previously saved state.");
 
         let state_file = fs::read_to_string(&state_file_path)?;
-        println!("state file content:\n{state_file:?}\n");
+        // println!("state file content:\n{state_file:?}\n");
         Ok(state_file)
     } else {
         eprintln!("Trying to open {}", &conf.file_path().display());
