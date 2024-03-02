@@ -2,7 +2,7 @@
 use crate::*;
 // use assert_cmd::Command;
 use clap::Parser;
-use std::{collections::HashMap, error::Error, fs, path::PathBuf};
+use std::{collections::HashMap, error::Error, path::PathBuf};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -58,24 +58,7 @@ impl Config {
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
-        println!("searching for path at: {state_file_path:?}");
-        let content = if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
-            let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
-
-            eprintln!(
-                "Opening file from previously saved state: \"{:?}\"",
-                &state_file_path
-            );
-
-            let state_file = fs::read_to_string(&state_file_path)?;
-            println!("state file content:\n{state_file:?}\n");
-            state_file
-        } else {
-            eprintln!("Trying to open {}", &conf.file_path);
-
-            fs::read_to_string(&conf.file_path)?
-        };
+        let content = state::get_content(&conf)?;
 
         let delim = if conf.delim == "None" {
             get_delim(&content)?
