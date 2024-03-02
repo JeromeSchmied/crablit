@@ -139,7 +139,13 @@ pub(crate) fn deser_verbs_to_cards(
     conf: &config::Config,
 ) -> Result<String, Box<dyn Error>> {
     Ok(v.iter().fold(String::new(), |result, card| {
-        result + card.trm.split(conf.delim()).next().unwrap_or("") + &card.def
+        result
+            + &format!(
+                "{}{}{}\n",
+                card.trm.split(conf.delim()).next().unwrap_or(""),
+                conf.delim(),
+                &card.def
+            )
     }))
 }
 
