@@ -1,0 +1,333 @@
+# [crablit]
+# delim = ';'
+
+# Bedeutung auf Ungarisch     ; Infinitiv, E/3, Präteritum, Perfekt 
+elfogad                       ; akzeptieren, akzeptiert, akzeptierte, hat akzeptiert 
+változtat v-t, v-n            ; ändern, ändert, änderte, hat geändert 
+változik                      ; sich ändern, ändert sich, änderte sich, hat sich geändert 
+felel/válaszol                ; antworten, antwortet, antwortete, hat geantwortet 
+bosszankodik                  ; sich ärgern, ärgert sich, ärgerte sich, hat sich geärgert 
+lélegzik                      ; atmen, atmet, atmete, hat geatmet 
+fürdik                        ; baden, badet, badete, hat gebadet 
+épít                          ; bauen, baut, baute, hat gebaut 
+kérvényez                     ; beantragen, beantragt, beantragte, hat beantragt 
+megköszön                     ; sich bedanken, bedankt sich, bedankte sich, hat sich bedankt 
+jelent, jelentéssel bír       ; bedeuten, bedeutet, bedeutete, hat bedeutet 
+siet                          ; sich beeilen, beeilt sich, beeilte sich, hat sich beeilt 
+befejez                       ; beenden, beendet, beendete, hat beendet 
+köszönt                       ; begrüßen, begrüßt, begrüßte, hat begrüßt 
+kap                           ; bekommen, bekommt, bekam, hat bekommen 
+viselkedik                    ; sich behehmen, benimmt sich, benahm sich, hat sich benommen 
+használ                       ; benutzen, benutzt, benutzte, hat benutzt 
+kiszámol                      ; berechnen, berechnet, berechnete, hat berechnet 
+leír, ábrázol, jellemez       ; beschreiben, beschreibt, beschrieb, hat beschrieben 
+panaszkodik                   ; sich beschweren, beschwer sich, beschwerte sich, hat sich beschwert 
+megtekint                     ; besichtigen, besichtigt, besichtigte, hat besichtigt 
+megbeszél                     ; besprechen, bespricht, besprach, hat besprochen 
+rendel                        ; bestellen, bestellt, bestellte, hat bestellt 
+meglátogat                    ; besuchen, besucht, besuchte, hat besucht 
+felügyel v-t                  ; bewachen, bewacht, bewachte, hat bewacht 
+mozog                         ; sich bewegen, bewegt sich, bewegte sich, hat sich bewegt 
+bizonyít                      ; beweisen, beweist, bewies, hat bewiesen 
+értékel, becsül               ; bewerten, bewertet, bewertete, hat bewertet 
+kifizet                       ; bezahlen, bezahlt, bezahlte, hat bezahlt 
+kínál                         ; anbieten, bietet an, bot an, hat angeboten 
+beköt                         ; zubinden, bindet zu, band zu, hat zugebunden 
+kér                           ; bitten, bittet, bat, hat gebeten 
+kér                           ; bitten, bittet, bat, hat gebeten 
+marad                         ; bleiben, bleibt, blieb, ist geblieben 
+megmarad                      ; übrigbleiben, bleibt übrig, blieb übrig, ist übriggeblieben 
+blogol                        ; bloggen, bloggt, bloggte, hat gebloggt 
+bokszol                       ; boxen, boxt, boxte, hat geboxt 
+szüksége van v-re             ; brauchen, braucht, brauchte, hat gebraucht 
+hoz, visz                     ; bringen, bringt, brachte, hat gebracht 
+lefoglal                      ; buchen, bucht, buchte, hat gebucht 
+beszélget                     ; chatten, chattet, chattete, hat gechattet 
+kijelentkezik                 ; auschecken, checkt aus, checkte aus, hat ausgecheckt 
+bejelentkezik                 ; einchecken, checkt ein, checkte ein, hat eingecheckt 
+pihen, lazít                  ; chillen, chillt, chillte, hat gechillt 
+lehet (módbeli segédige)      ; dürfen, darf, durfte, hat gedurft 
+gondol                        ; denken, denkt, dachte, hat gedacht 
+gondol                        ; denken, denkt, dachte, hat gedacht 
+utánagondol                   ; nachdenken, denkt nach, dachte nach, hat nachgedacht 
+megvitat                      ; diskutieren, diskutiert, diskutierte, hat diskutiert 
+dokumentál                    ; dokumentieren, dokumentiert, dokumentierte, hat dokumentiert 
+kifejez                       ; ausdrücken, drückt aus, drückte aus, hat ausgedrückt 
+zuhanyozik                    ; sich duschen, duscht sich, duschte sich, hat sich geduscht 
+tegez                         ; duzen, duzt, duzte, hat geduzt 
+megegyezik                    ; sich einigen, einingt sich, einigte sich, hat sich geeinigt 
+ajánl                         ; empfehlen, empfiehlt, empfahl, hat empfohlen 
+igyekszik                     ; sich engagieren, engagiert sich, engagierte sich, hat sich engagiert 
+eldönt                        ; entscheiden, entscheidet, entschied, hat entschieden 
+megbocsát                     ; entschuldigen, entschuldigt, entschuldigte, hat entschuldigt 
+bocsánatot kér                ; sich entschuldigen, entschuldigt sich, entschuldigte sich, hat sich entschuldigt 
+pihen                         ; sich entspannen, entspannt sich, entspannte sich, hat sich entspannt 
+keletkezik                    ; entstehen, entsteht, entstand, ist entstanden 
+fejleszt                      ; entwickeln, entwickt, entwickelte, hat entwickelt 
+emlékezik                     ; sich erinnern, erinnert sich, erinnerte sich, hat sich erinnert 
+felismer                      ; erkennen, erkennt, erkannte, hat erkannt 
+elismer                       ; anerkennen, erkennt an, erkannte an, hat anerkannt 
+elmagyaráz                    ; erklären, erklärt, erklärte, hat erklärt 
+megél, átél                   ; erleben, erlebt, erlebte, hat erlebt 
+elér                          ; erreichen, erreicht, erreichte, hat erreicht 
+elmesél                       ; erzählen, erzählt, erzählte, hat erzählt 
+elindul                       ; abfahren, fährt ab, fuhr ab, ist abgefahren 
+autóval utazik, megy          ; Auto fahren, fährt Auto, fuhr Auto, ist Auto gefahren 
+odautazik                     ; hinfahren, fährt hin, fuhr hin, ist/hat hingefahren 
+görkorcsolyázik               ; Inliner fahren, fährt Inliner, fuhr Inliner, ist Inliner gefahren 
+elindul                       ; losfahren, fährt los, fuhr los, ist losgefahren 
+gördeszkázik                  ; Skateboard fahren, fährt Skateboard, fuhr Skateboard, ist Skateboard gefahren 
+tovább halad                  ; weiterfahren, fährt weiter, fuhr weiter, ist weitergefahren 
+leesik                        ; hinunterfallen, fällt hinunter, fiel hinunter, ist hinuntergefallen 
+elfog, megfog                 ; fangen, fängt, fing, hat gefangen 
+elkezd                        ; anfangen, fängt an, fing an, hat angefangen 
+megfog                        ; anfassen, fasst an, fasste an, hat angefasst 
+összefoglal                   ; zusammenfassen, fasst zusammen, fasste zusammen, hat zusammengefasst 
+hiányzik                      ; fehlen, fehlt, fehlte, hat gefehlt 
+ünnepel                       ; feiern, feiert, feierte, hat gefeiert 
+filmez                        ; filmen, filmt, filmte, hat gefilmt 
+talál                         ; finden, findet, fand, hat gefunden 
+zajlik, van                   ; stattfinden, findet statt, fand statt, hat stattgefunden 
+repül                         ; fliegen, fliegt, flog, ist geflogen 
+szökik, menekül               ; fliehen, flieht, floh, ist geflohen 
+menekül, szökik               ; flüchten, flüchtet, flüchtete, ist geflüchtet 
+fényképez                     ; fotografieren, fotografiert, fotografierte, hat fotografiert 
+kérdez                        ; fragen, fragt, fragte, hat gefragt 
+kérdezősködik                 ; nachfragen, fragt nach, fragte nach, hat nachgefragt 
+örül                          ; sich freuen, freut sich, freute sich, hat sich gefreut 
+reggelizik                    ; frühstücken, frühstückt, frühstückte, hat gefrühstückt 
+érzi magát                    ; sich fühlen, fühlt sich, fühlte sich, hat sich gefühlt 
+jól érzi magát                ; sich wohlfühlen, fühlt sich wohl, fühlte sich wohl, hat sich wohlgefühlt 
+kitölt                        ; ausfüllen, füllt aus, füllte aus, hat ausgefüllt 
+etet                          ; füttern, füttert, fütterte, hat gefüttern 
+biztosít                      ; garantieren, garantiert, garantierte, hat garantiert 
+szül                          ; gebären, gebiert, gebar, hat geboren 
+tetszik                       ; gefallen, gefällt, gefiel, hat gefallen 
+vmi valakié                   ; gehören, gehört, gehörte, hat gehört 
+szórakozni megy               ; ausgehen, geht aus, ging aus, ist ausgegangen 
+sétál                         ; spazieren gehen, geht spazieren, ging spazieren, ist spazieren gegangen 
+gyalogol                      ; zu Fuß gehen, geht zu Fuß, ging zu Fuß, ist zu Fuß gegangen 
+élvez                         ; genießen, genießt, genoss, hat genossen 
+alakít, formál                ; gestalten, gestaltet, gestaltete, hat gestalten 
+nyer                          ; gewinnen, gewinnt, gewann, hat gewonnen 
+győz                          ; gewinnen, gewinnt, gewann, hat gewonnen 
+hozzászokik                   ; sich gewöhnen, gewöhnt sich, gewöhnte sich, hat gewöhnt 
+bead, betáplál                ; eingeben, gibt ein, gab ein, hat eingegeben 
+önt                           ; gießen, gießt, goss, hat gegossen 
+hisz                          ; glauben, glaubt, glaubte, hat geglaubt 
+üdvözöl                       ; grüßen, grüßt, grüßte, hat gegrüßt 
+tart (átvitt értelemben is)   ; halten, hält, hielt, hat gehalten 
+szól v-ről                    ; handeln, handelt, handelte, hat gehandelt 
+akaszt, rak, helyez           ; hängen, hängt, hängte, hat gehängt 
+gyűlöl                        ; hassen, hasst, hasste, hat gehaßt 
+birtokol                      ; haben, hat, hatte, hat gehabt 
+joga van vhez                 ; ein Recht haben, hat ein Recht, hatte ein Recht, hat eine Recht gehabt 
+szabad(ideje van)             ; frei haben, hat frei, hatte frei, hat freigehabt 
+jó hangulata van              ; gute Laune haben, hat gute Laune, hatte gute Laune, hat gute Laune gehabt 
+házasodik                     ; heiraten, heiratet, heiratete, hat geheiratet 
+hív                           ; heißen, heißt, hieß, hat geheißen 
+segít                         ; helfen, hilft, half, hat geholfen 
+betesz, beilleszt             ; hineinlegen, hineinlegt, legte hinein, hat gehineinlegt 
+elmegy érte és elhoz          ; holen, holt, holte, hat geholt 
+elhoz v-t, elmegy v-ért       ; abholen, holt ab, holte ab, hat abgeholt 
+hallgat                       ; hören, hört, hörte, hat gehört 
+érdekel                       ; interessieren, interessiert, interessierte, hat interessiert 
+érdeklődik                    ; sich interessieren, interessiert sich, interessierte sich, hat sich interessiert 
+irritál                       ; irritieren, irritiert, irritierte, hat irritiert 
+eszik                         ; essen, isst, aß, hat gegessen 
+vacsorázik                    ; zu Abend essen, isst zu Abend, aß zu Abend, hat zu Abend gegessen 
+van                           ; sein, ist, war, ist gewesen 
+kész v-re                     ; bereit sein, ist bereit, war bereit, ist bereit sein 
+születik                      ; geboren sein, ist geboren, war geboren, ist geboren 
+dolgozik                      ; jobben, jobbt, jobbte, hat gejobbt 
+kocog                         ; joggen, joggt, joggte, ist/hat gejoggt 
+-hat/het, tud                 ; können, kann, konnte, hat gekonnt 
+kiismeri magát                ; sich auskennen, kannt sich aus, kannte sich aus, hat sich ausgekannt 
+vásárol                       ; kaufen, kauft, kaufte, hat gekauft 
+bevásárol                     ; einkaufen, kauft ein, kaufte ein, hat eingekauft 
+ismer                         ; kennen, kennt, kannte, hat gekannt 
+ismerik egymást               ; sich kennen, kennt sich, kannte sich, hat sich gekannt 
+mászik                        ; klettern, klettert, kletterte, ist geklettert 
+főz                           ; kochen, kocht, kochte, hat gekocht 
+jön                           ; kommen, kommt, kam, ist gekommen 
+megérkezik                    ; ankommen, kommt an, kam an, ist angekommen 
+kijön vkivel                  ; auskommen, kommt aus, kam aus, ist ausgekommen 
+vele jön                      ; mitkommen, kommt mit, kam mit, ist mitgekommen 
+közel kerül v-hez (átvitt is) ; nahekommen, kommt nahe, kam nahe, ist nahegekommen 
+másol                         ; kopieren, kopiert, kopierte, hat kopiert 
+kerül vmibe                   ; kosten, kostet, kostete, hat gekostet 
+csókol                        ; küssen, küsst, küsste, hat geküsst 
+nevet                         ; lachen, lacht, lachte, hat gelacht 
+meghív                        ; einladen, lädt ein, lud ein, hat eingeladen 
+feltölt                       ; hochladen, lädt hoch, lud hoch, hat hochgeladen 
+fut, szalad                   ; laufen, läuft, lief, ist gelaufen 
+él                            ; leben, lebt, lebte, hat gelebt 
+fektet, rak, helyez           ; legen, legt, legte, hat gelegt 
+lefekszik                     ; sich legen, legt sich, legte sich, hat sich gelegt 
+kölcsönöz (ad, vesz)          ; leihen, leiht, lieh, hat geliehen 
+vezet, irányít                ; leiten, leitet, leitete, hat geleitet 
+megismer v-t                  ; kennenlernen, lernt kennen, lernte kennen, hat kennengelernt 
+megismerkedik v-vel           ; sich kennenlernen, lernt sich kennen, lernte sich kennen, hat sich kennengelernt 
+szeret (embert)               ; lieben, liebt, liebte, hat geliebt 
+fekszik                       ; liegen, liegt, lag, hat gelegen 
+olvas                         ; lesen, liest, las, hat gelesen 
+töröl                         ; löschen, löscht, löschte, hat gelöscht 
+csinál                        ; machen, macht, machte, hat gemacht 
+be-, felkapcsol               ; anmachen, macht an, machte an, hat angemacht 
+kinyit, felnyit               ; aufmachen, macht auf, machte auf, hat aufgemacht 
+megegyezik, kikapcsol         ; ausmachen, macht aus, machte aus, hat ausgemacht 
+megegyezik                    ; ausmachen, macht aus, machte aus, hat ausgemacht 
+örömet szerez                 ; jm eine Freude machen, macht jm eine Freude, machte jm eine Freude, hat jm eine Freude gemacht 
+jógázik                       ; Yoga machen, macht Yoga, machte Yoga, hat Yoga gemacht 
+bezár                         ; zumachen, macht zu, machte zu, hat zugemacht 
+szeret, kedvel                ; mögen, mag, mochte, hat gemocht 
+fest                          ; malen, malt, malte, hat gemalt 
+menedzsel                     ; managen, managt, managte, hat gemanagt 
+gondol, vél                   ; meinen, meint, meinte, hat gemeint 
+jelentkezik                   ; sich melden, meldet sich, meldete sich, hat sich gemelden 
+bérel                         ; mieten, mietet, mietete, hat gemietet 
+kever                         ; mischen, mischt, mischte, hat gemischt 
+közöl akivel                  ; mitteilen, mitteilt, teilte mit, hat gemitteilt 
+ösztönöz                      ; motivieren, motiviert, motivierte, hat motiviert 
+kell, szükséges               ; müssen, muss, musste, hat gemusst 
+nevez                         ; nennen, nennt, nannte, hat genannt 
+idegesít                      ; nerven, nervt, nervte, hat genervt 
+vesz(univerzális)             ; nehmen, nimmt, nahm, hat genommen 
+tolerál, elfogad              ; annehmen, nimmt an, nahm an, hat angenommen 
+magával visz                  ; mitnehmen, nimmt mit, nahm mit, hat mitgenommen 
+jegyzetel                     ; notieren, notiert, notierte, hat genotiert 
+rendszerez, elrendez          ; ordnen, ordnet, ordnete, hat geordnet 
+szervez                       ; organisieren, organisiert, organisierte, hat organisiert 
+tájékozódik                   ; sich orientieren, orieniert sich, orientierte sich, hat sich orientiert 
+kipakol                       ; auspacken, packt aus, packte aus, hat ausgepackt 
+történik                      ; passieren, passiert, passierte, ist passiert 
+illik, passzol                ; passen, passt, passte, hat gepasst 
+illeszkedik                   ; passen, passt, passte, hat gepasst 
+tervez                        ; planen, plant, plante, hat geplant 
+felpróbál                     ; anprobieren, probiert an, probierte an, hat angeprobiert 
+provokál                      ; provozieren, provoziert, provozierte, hat geprovoziert 
+tanácsot ad                   ; raten, rät, riet, hat geraten 
+dohányzik                     ; rauchen, raucht, rauchte, hat geraucht 
+kitakarít                     ; aufräumen, räumt auf, räumte auf, hat aufgeräumt 
+reagál                        ; reagieren, reagiert, reagierte, hat reagiert 
+újrahasznosít                 ; recyceln, recycelt, recycelte, hat recycelt 
+beszélget                     ; reden, redet, redete, hat geredet 
+esik (eső)                    ; regnen, regnet, regnete, hat geregnet 
+ösztönöz                      ; anregen, regt an, regte an, hat angeregt 
+utazik                        ; reisen, reist, reiste, ist gereist 
+pihen                         ; relaxen, relaxt, relaxte, hat relaxt 
+rohan                         ; rennen, rennt, rannte, ist gerannt 
+felújít                       ; renovieren, renoviert, renovierte, hat renoviert 
+megjavít                      ; reparieren, repariert, reparierte, hat repariert 
+szaga van v-nek, megszagol    ; riechen, riecht, roch, hat gerochen 
+szaglik                       ; riechen, riecht, roch, hat gerochen 
+kiált, szólít                 ; rufen, ruft, rief, hat gerufen 
+felhív                        ; anrufen, ruft an, rief an, hat angerufen 
+mond                          ; sagen, sagt, sagte, hat gesagt 
+lemond v-t                    ; absagen, sagt ab, sagte ab, hat abgesagt 
+gyűjt                         ; sammeln, sammelt, sammelte, hat gesammelt 
+lekapcsol                     ; abschalten, schaltet ab, schaltete ab, hat abgeschaltet 
+szégyelli magát               ; sich schämen, schämt sich, schämte sich, hat sich geschämt 
+megnéz                        ; anschauen, schaut an, schaute an, hat angeschaut 
+süt (a nap)                   ; scheinen, scheint, schien, hat geschienen 
+ajándékoz                     ; schenken, schenkt, schenkte, hat geschenkt 
+küld                          ; schicken, schickt, schickte, hat geschickt 
+lő                            ; schießen, schießt, schoss, hat geschossen 
+alszik                        ; schlafen, schläft, schlief, hat geschlafen 
+befejez, lezár                ; abschließen, schließt ab, schloss ab, hat abgeschlossen 
+ízlik                         ; schmecken, schmeckt, schmeckte, hat geschmeckt 
+ír                            ; schreiben, schreibt, schrieb, hat geschrieben 
+felír                         ; aufschreiben, schreibt auf, schrieb auf, hat aufgeschrieben 
+kiabál                        ; schreien, schreit, schrie, hat geschrien 
+úszik                         ; schwimmen, schwimmt, schwamm, ist/hat geschwommen 
+vitorlázik                    ; segeln, segelt, segelte, hat gesegeln 
+lát                           ; sehen, sieht, sah, hat gesehen 
+kinéz valahogy                ; aussehen, sieht aus, sah aus, hat ausgesehen 
+tv-t néz                      ; fernsehen, sieht fern, sah fern, hat ferngesehen 
+látják egymást                ; sich sehen, sieht sich, sah sich, hat sich gesehen 
+figyel v-t                    ; zusehen, sieht zu, sah zu, hat zugesehen 
+magáz                         ; siezen, siezt, siezte, hat gesiezt 
+énekel                        ; singen, singt, sang, hat gesungen 
+ül                            ; sitzen, sitzt, saß, hat gesessen 
+kell (belső késztetés)        ; sollen, soll, sollte, hat gesollt 
+elment, raktároz              ; speichern, speichert, speicherte, hat gespeichert 
+játszik                       ; spielen, spielt, spielte, hat gespielt 
+beszél                        ; sprechen, spricht, sprach, hat gesprochen 
+megszólít (átvitt: megérint)  ; ansprechen, spricht an, sprach an, hat angesprochen 
+kiejt, kimond                 ; aussprechen, spricht aus, sprach aus, hat ausgesprochen 
+ugrik                         ; springen, springt, sprang, ist gesprungen 
+szór, permetez                ; sprühen, sprüht, sprühte, hat gesprüht 
+elkezd/kezdődik               ; starten, startet, startete, ist/hat gestartet 
+áll                           ; stehen, steht, stand, hat gestanden 
+áll                           ; stehen, steht, stand, hat gestanden 
+felkel                        ; aufstehen, steht auf, stand auf, ist aufgestanden 
+be-, felszáll                 ; einsteigen, steigt ein, stieg ein, ist eingestiegen 
+állít, rak, helyez            ; stellen, stellt, stellte, hat gestellt 
+meghal                        ; sterben, stirbt, starb, ist gestorben 
+zavar                         ; stören, stört, störte, hat gestört 
+tanul (felsőoktatásban)       ; studieren, studiert, studierte, hat studiert 
+keres                         ; suchen, sucht, suchte, hat gesucht 
+szörföz                       ; surfen, surft, surfte, ist gesurft 
+táncol                        ; tanzen, tanzt, tanzte, hat getanzt 
+cserél                        ; tauschen, tauscht, tauschte, hat getauscht 
+kicserél                      ; austauschen, tauscht aus, tauschte aus, hat ausgetauscht 
+megoszt                       ; teilen, teilt, teilte, hat geteilt 
+telefonál                     ; telefonieren, telefoniert, telefonierte, hat telefoniert 
+hord, visel                   ; tragen, trägt, trug, hat getragen 
+edz                           ; trainieren, trainiert, trainierte, hat trainiert 
+álmodik                       ; träumen, träumt, träumte, hat geträumt 
+találkozik                    ; treffen, trifft, traf, hat getroffen 
+találkozik v-vel              ; sich treffen, trifft sich, traf sich, hat sich getroffen 
+iszik                         ; trinken, trinkt, trank, hat getrunken 
+lép                           ; treten, tritt, trat, ist getreten 
+fellép                        ; auftreten, tritt auf, trat auf, ist aufgetreten 
+tornázik                      ; turnen, turnt, turnte, hat geturnt 
+tesz, csinál                  ; tun, tut, tat, hat getan 
+fájdalmat okoz                ; wehtun, tut weh, tat weh, hat wehgetan 
+éjszakázik                    ; übernachten, übernachtet, übernachtete, hat übernachtet 
+lefordít                      ; übersetzen, übersetzt, übersetzte, hat übersetzt 
+átutal                        ; überweisen, überweist, überwies, hat überwiesen 
+gyakorol                      ; üben, übt, übte, hat geübt 
+átölel                        ; umarmen, umarmt, umarmte, hat umarmt 
+szórakozik, beszélget         ; sich unterhalten, unterhält sich, unterhielt sich, hat sich unterhalten 
+vállalkozik v-re              ; unternehmen, unternimmt, unternahm, hat unternommen 
+tanít                         ; unterrichten, unterrichtet, unterrichtete, hat unterrichtet 
+támogat                       ; unterstützen, unterstützt, unterstützte, hat unterstützt 
+jobbít, javít                 ; verbessern, verbessert, verbesserte, hat verbessert 
+eltölt                        ; verbringen, verbringt, verbrachte, hat verbracht 
+pénzt keres                   ; Geld verdienen, verdient Geld, verdiente Geld, hat Geld verdient 
+elmúlik                       ; vergehen, vergeht, verging, ist vergangen 
+elfelejt                      ; vergessen, vergisst, vergaß, hat vergessen 
+összehasonlít                 ; vergleichen, vergleicht, verglich, hat verglichen 
+viselkedik                    ; sich verhalten, verhält sich, verhielt sich, hat sich verhalten 
+elad                          ; verkaufen, verkauft, verkaufte, hat verkauft 
+veszít                        ; verlieren, verliert, verlor, hat verloren 
+hiányol                       ; vermissen, vermisst, vermisste, hat vermisst 
+megért                        ; verstehen, versteht, verstand, hat verstanden 
+értik egymást                 ; sich verstehen, versteht sich, verstand sich, hat sich verstanden 
+bízik v-ben                   ; vertrauen, vertraut, vertraute, hat vertraut 
+bemutatkozik                  ; sich vorstellen, vorstellt sich, stellte sich vor, hat sich vorstellt 
+felnő                         ; aufwachsen, wächst auf, wuchs auf, ist aufgewachsen 
+felébred                      ; aufwachen, wacht auf, wachte auf, ist aufgewacht 
+választ                       ; wählen, wählt, wählte, hat gewählt 
+vándorol, túrázik             ; wandern, wandert, wanderte, ist gewandert 
+bemelegít                     ; sich aufwärmen, wärmt sich auf, wärmte sich auf, hat sich aufgewärmt 
+vár v-re, v-t                 ; warten, wartet, wartete, hat gewartet 
+vár v-t                       ; warten, wartet, wartete, hat gewartet 
+tud                           ; wissen, weiß, wusste, hat gewusst 
+továbbít                      ; weiterleiten, leitet weiter, leitete weiter, hat weitergeleitet 
+akar                          ; wollen, will, wollte, hat gewollt 
+lesz, válik valamivé          ; werden, wird, wurde, ist geworden 
+eldob                         ; wegwerfen, wirft weg, warf weg, hat weggeworfen 
+lakik                         ; wohnen, wohnt, wohnte, hat gewohnt 
+csodálkozik                   ; sich wundern, wundert sich, wunderte sich, hat sich gewundert 
+kíván                         ; wünschen, wünscht, wünschte, hat gewünscht 
+kockával dob, kockára vág     ; würfeln, würfelt, würfelte, hat gewürfelt 
+mutat                         ; zeigen, zeigt, zeigte, hat gezeigt 
+ruhadarabot felvesz, vonz     ; anziehen, zieht an, zog an, hat angezogen 
+elköltözik                    ; ausziehen, zieht aus, zog aus, ist ausgezogen 
+beköltözik                    ; einziehen, zieht ein, zog ein, ist eingezogen 
+felöltözködik                 ; sich anziehen, zieht sich an, zog sich an, hat sich angezogen 
+átköltözik                    ; umziehen, zieht um, zog um, ist umgezogen 
+oda-, hozzáköltözik           ; zuziehen, zieht zu, zog zu, ist zugezogen 
+                               
