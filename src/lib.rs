@@ -19,12 +19,10 @@ pub mod config;
 pub mod state;
 /// enums, messages
 pub mod utils;
-// /// Module for learning Deck of Verbs
-// pub mod verbs;
 
 // re-exports
 pub use cards::Card;
-pub use utils::{Lok, Mode};
+pub use utils::Lok;
 // pub use verbs::Verb;
 
 // enum Kard {
@@ -187,12 +185,12 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
 /// - `state::rm()`
 /// - `verbs::deser_to_card()`
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
-    match conf.mode() {
-        Mode::Cards => {
+    match conf.convert() {
+        false => {
             let mut v = init(&conf.file_path(), conf.delim())?;
-            if conf.card_swap() {
+            if conf.swap() {
                 println!("swapping terms and definitions of each card");
-                swap_cards(&mut v);
+                cards::swap(&mut v);
             }
             if conf.ask_both() {
                 println!("swapping terms and definitions of some cards");
@@ -211,7 +209,7 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
 
             Ok(())
         }
-        Mode::VerbsToCards => {
+        true => {
             let v = init(&conf.file_path(), conf.delim())?;
             let data = cards::deser_verbs_to_cards(&v, conf)?;
 
@@ -236,42 +234,6 @@ pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     }
 }
 
-/// Show hint from the string got
-/// # usage
-/// ```
-/// use crablit::hint;
-///
-/// let dunno_want_hint = "This is a very-very hard-to-guess sentence.";
-///
-/// assert_eq!("This is a very-very h______________________", hint(dunno_want_hint));
-///
-/// let easy = "012345";
-///
-/// assert_eq!("012___", hint(easy));
-/// ```
-pub fn hint(s: &str) -> String {
-    let n = s.chars().count() / 2;
-    [
-        s.chars().take(n).collect::<String>(),
-        s.chars().skip(n).map(|_| '_').collect(),
-    ]
-    .concat()
-}
-
-/// Swap definition and term of deck(vector) of cards
-///
-/// # usage
-/// ```
-/// use crablit::Card;
-///
-/// let mut deck = vec![Card::new("term1", "def1", None), Card::new("term2", "def2", None), Card::new("term3", "def3", None)];
-///
-/// crablit::swap_cards(&mut deck);
-/// ```
-pub fn swap_cards(cards: &mut [cards::Card]) {
-    cards.iter_mut().for_each(cards::Card::swap);
-}
-
 /// Randomly swap definition and term of deck(vector) of cards
 ///
 /// # usage
@@ -285,56 +247,7 @@ pub fn swap_cards(cards: &mut [cards::Card]) {
 pub fn randomly_swap_cards(cards: &mut [cards::Card]) {
     for card in cards.iter_mut() {
         if fastrand::bool() {
-            card.swap();
+            card.swap_me();
         }
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    #[should_panic]
-    fn incorrect_mode() {
-        let _ = Mode::from("mode");
-    }
-    #[test]
-    fn correct_mode_cards() {
-        assert_eq!(Mode::Cards, Mode::from("cards"));
-    }
-    #[test]
-    fn mode_new_conv() {
-        let mode = "verbs2cards";
-        assert_eq!(Mode::VerbsToCards, Mode::from(mode));
-        let mode = "convert";
-        assert_eq!(Mode::VerbsToCards, Mode::from(mode));
-    }
-
-    #[test]
-    fn hint_not_odd() {
-        let get_hint = String::from("1234");
-        assert_eq!("12__", hint(&get_hint));
-    }
-    #[test]
-    fn hint_odd() {
-        let get_hint = String::from("12345");
-        assert_eq!("12___", hint(&get_hint));
-    }
-    #[test]
-    fn hint_non_ascii() {
-        let get_hint = String::from("aáéűúőóüöíä|Ä");
-        assert_eq!("aáéűúő_______", hint(&get_hint));
-    }
-
-    #[test]
-    fn swap_cards_works() {
-        let mut cards = vec![Card::new("term", "definition", None)];
-
-        swap_cards(&mut cards);
-        assert_eq!(cards, vec![Card::new("definition", "term", None)]);
-    }
-
-    // init()
-    // verbs::conv()
 }

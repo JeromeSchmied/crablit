@@ -39,58 +39,8 @@ pub fn togo(sum: usize, i: usize) -> String {
     )
 }
 
-#[derive(Debug, PartialEq)]
-/// Type of Deck
-pub enum Mode {
-    /// Basic term-definition
-    Cards,
-    /// Convert from `Verbs` to `Cards`. term as term, infinitive as definition.
-    VerbsToCards,
-}
-impl Mode {
-    /// Creates new instance of `Self`
-    ///
-    /// # Usage
-    /// ```
-    /// use crablit::Mode;
-    ///
-    /// let mode = Mode::from("cards");
-    ///
-    /// assert_eq!(mode, Mode::Cards);
-    /// ```
-    /// # Panics
-    ///
-    /// if mode is neither cards, or conv
-    pub fn from(mode: &str) -> Self {
-        let s = &mode.to_lowercase();
-        if s == "cards" || s == "card" {
-            Self::Cards
-        } else if s == "conv" || s == "convert" || s == "verb_conv" || s == "verbs2cards" {
-            Self::VerbsToCards
-        } else {
-            panic!("Couldn't determine type of deck: it wasn't 'cards', 'verbs' or 'verbs2cards'!");
-        }
-    }
-
-    /// Creates conviniently displayable String
-    /// # usage
-    /// ```
-    /// use crablit::Mode;
-    ///
-    /// let mode = Mode::from("convert");
-    ///
-    /// assert_eq!("convert", mode.disp())
-    /// ```
-    pub fn disp(&self) -> String {
-        match self {
-            Mode::Cards => "cards".into(),
-            Mode::VerbsToCards => "convert".into(),
-        }
-    }
-}
-
 #[derive(Debug, Clone, PartialEq)]
-/// `LevelOfKnowledge`Rendering
+/// `LevelOfKnowledge`
 pub enum Lok {
     Nothing,
     Something,

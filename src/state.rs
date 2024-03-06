@@ -1,15 +1,6 @@
 use crate::*;
 use std::path::{Path, PathBuf};
 
-// #[cfg(windows)]
-// fn get_sep() -> char {
-//     '\\'
-// }
-// #[cfg(not(windows))]
-// fn get_sep() -> char {
-//     '/'
-// }
-
 /// Returns `data_dir` of current file using `dirs` crate
 fn data_dir() -> PathBuf {
     dirs::data_dir()
@@ -54,17 +45,13 @@ pub fn get_prog_path(path: &Path) -> Result<PathBuf, Box<std::io::Error>> {
 /// `get_prog_path()`
 pub fn prog_exists(path: &Path) -> bool {
     let path = get_prog_path(path).unwrap();
-    fs::read_to_string(path).is_ok()
+    path.exists()
 }
 
 pub fn get_content(conf: &config::Config) -> Result<String, Box<dyn Error>> {
     if !conf.no_state() && state::prog_exists(&conf.file_path_orig()) {
         let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
 
-        // eprintln!(
-        //     "Opening file from previously saved state: \"{:?}\"",
-        //     &state_file_path
-        // );
         eprintln!("Opening file from previously saved state.");
 
         let state_file = fs::read_to_string(state_file_path)?;
@@ -131,7 +118,6 @@ pub fn save_prog(deck: &[Card], conf: &config::Config) -> Result<(), Box<dyn Err
     let mut ofile = File::create(&ofile_path)?;
 
     writeln!(ofile, "# [crablit]")?;
-    writeln!(ofile, "# mode = \"{}\"", conf.mode().disp())?;
     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
     println!("r: {deck:?}");

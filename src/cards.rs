@@ -1,6 +1,6 @@
 //! # This module includes code specific to learning expressions.
 use crate::*;
-use std::{error::Error, mem::swap};
+use std::{error::Error, mem};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Card {
@@ -33,15 +33,15 @@ impl Card {
     /// # usage
     ///
     /// ```
-    /// use crablit::cards;
+    /// use crablit::Card;
     ///
-    /// let mut swapd = cards::Card::new("ask", "answer", None);
-    /// swapd.swap();
+    /// let mut swapd = Card::new("ask", "answer", None);
+    /// swapd.swap_me();
     ///
-    /// assert_ne!(cards::Card::new("ask", "answer", None), swapd);
+    /// assert_ne!(Card::new("ask", "answer", None), swapd);
     /// ```
-    pub fn swap(&mut self) {
-        swap(&mut self.trm, &mut self.def);
+    pub fn swap_me(&mut self) {
+        mem::swap(&mut self.trm, &mut self.def);
     }
 }
 
@@ -68,7 +68,15 @@ impl Card {
     }
 
     pub fn hint(&self) -> String {
-        format!("{SPACER}{} {}", "#".cyan().bold(), hint(&self.def))
+        let hint = {
+            let n = self.def.chars().count() / 2;
+            [
+                self.def.chars().take(n).collect::<String>(),
+                self.def.chars().skip(n).map(|_| '_').collect(),
+            ]
+            .concat()
+        };
+        format!("{SPACER}{} {}", "#".cyan().bold(), hint)
     }
 
     pub fn wrong(&self) -> String {
@@ -148,28 +156,19 @@ pub(crate) fn deser_verbs_to_cards(
     }))
 }
 
-// pub fn deser_to_card(verbs: &[Verb], conf: &config::Config) -> Result<(), Box<dyn Error>> {
-//     let pb = PathBuf::from(&conf.file_path_orig());
-//     let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
-//     println!(
-//         "\n\nConverting verbs to cards, from file: {:?} to file: {}",
-//         conf.file_path_orig(),
-//         outf_name.bright_blue()
-//     );
-//     let mut out_f = File::create(outf_name)?;
-
-//     writeln!(out_f, "# [crablit]")?;
-//     writeln!(out_f, "# mode = \"cards\"")?;
-//     writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
-
-//     for line in verbs {
-//         writeln!(out_f, "{}{}{}", line.trm, conf.delim(), line.inf)?;
-//     }
-
-//     println!("Converting from verbs to cards done");
-
-//     Ok(())
-// }
+/// Swap definition and term of deck(vector) of cards
+///
+/// # usage
+/// ```
+/// use crablit::Card;
+///
+/// let mut deck = vec![Card::new("term1", "def1", None), Card::new("term2", "def2", None), Card::new("term3", "def3", None)];
+///
+/// crablit::cards::swap(&mut deck);
+/// ```
+pub fn swap(cards: &mut [cards::Card]) {
+    cards.iter_mut().for_each(cards::Card::swap_me);
+}
 
 #[cfg(test)]
 mod tests {
@@ -191,9 +190,9 @@ mod tests {
     }
 
     #[test]
-    fn swap() {
+    fn swap_works() {
         let mut swapd = Card::new("ask", "answer", None);
-        swapd.swap();
+        swapd.swap_me();
 
         assert_ne!(Card::new("ask", "answer", None), swapd);
         assert_eq!(
@@ -204,6 +203,13 @@ mod tests {
             },
             swapd
         );
+    }
+    #[test]
+    fn swap_cards_works() {
+        let mut cards = vec![Card::new("term", "definition", None)];
+
+        swap(&mut cards);
+        assert_eq!(cards, vec![Card::new("definition", "term", None)]);
     }
 
     // #[test]

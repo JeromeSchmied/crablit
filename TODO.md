@@ -24,7 +24,7 @@
 
 ## maybe needed
 
--   [ ] delete unnecessary verbs module and therefore every freakin' 2. line
+-   [x] delete unnecessary verbs module and therefore every freakin' 2. line
 -   [ ] find duplicates and deal with 'em somehow
 -   [ ] if hint typed more than once, show more help: verbs
 -   [ ] starring words that need learning, high level

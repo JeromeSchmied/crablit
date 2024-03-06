@@ -13,15 +13,15 @@ pub struct Config {
 
     /// Swap terms and definitions of cards
     #[arg(short = 's', long, default_value_t = false)]
-    card_swap: bool,
+    swap: bool,
 
     /// Sometimes ask the term, sometimes definition of cards
     #[arg(short, long, default_value_t = false)]
     ask_both: bool,
 
-    /// Mode: either cards or verbs2cards
-    #[arg(short, long, default_value = "None")]
-    mode: String,
+    /// Convert valid verbs to cards
+    #[arg(long, default_value_t = false)]
+    convert: bool,
 
     /// Delimiter used in file to seperate terms and definitions
     #[arg(short, long, default_value = "None")]
@@ -36,7 +36,7 @@ pub struct Config {
     no_state: bool,
 
     /// Only check file syntax don't actually start learning deck
-    #[arg(short = 'c', long = "check", default_value_t = false)]
+    #[arg(long = "check", default_value_t = false)]
     only_check: bool,
 }
 
@@ -50,7 +50,6 @@ impl Config {
     /// - `writeln!()`
     /// - `fs::read_to_string()`
     /// - `get_delim()`
-    /// - `get_mode()`
     ///
     /// # Panics
     ///
@@ -67,23 +66,10 @@ impl Config {
             conf.delim.chars().next().unwrap()
         };
 
-        let mode = if conf.mode == "None" {
-            get_mode(&content, delim)?.disp()
-        } else {
-            eprintln!("got mode as arg");
-            conf.mode
-        };
-
-        eprintln!("Mode: \"{mode}\", delimiter: \"{delim}\"");
+        eprintln!("Delimiter: \"{delim}\"");
         Ok(Config {
-            file_path: conf.file_path,
-            card_swap: conf.card_swap,
-            ask_both: conf.ask_both,
-            no_shuffle: conf.no_shuffle,
-            mode,
             delim: delim.to_string(),
-            only_check: conf.only_check,
-            no_state: conf.no_state,
+            ..conf
         })
     }
 
@@ -126,13 +112,13 @@ impl Config {
     }
 
     /// Get `card_swap`
-    pub fn card_swap(&self) -> bool {
-        self.card_swap
+    pub fn swap(&self) -> bool {
+        self.swap
     }
 
     /// Get mode as `Mode`
-    pub fn mode(&self) -> Mode {
-        Mode::from(&self.mode)
+    pub fn convert(&self) -> bool {
+        self.convert
     }
 
     /// Get delimiter as a character
@@ -142,28 +128,6 @@ impl Config {
     /// `delim` is empty
     pub fn delim(&self) -> char {
         self.delim.chars().next().unwrap()
-    }
-}
-
-/// Get mode from content
-fn get_mode(content: &str, delim: char) -> Result<Mode, &'static str> {
-    if let Ok(mode) = get_prop(content, "mode") {
-        return Ok(Mode::from(&mode));
-    }
-    // get avg count of splits
-    let mut sum = 0;
-    let n = content
-        .lines()
-        .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
-        .map(|line| sum += line.split(delim).count())
-        .count();
-
-    let avg = (sum as f32 / n as f32).ceil() as u8;
-    eprintln!("sum: {sum}, n: {n}, avg: {avg}");
-    if avg == 2 {
-        Ok(Mode::Cards)
-    } else {
-        Err("couldn't determine mode of deck")
     }
 }
 
@@ -253,39 +217,6 @@ no command : ;;;;;;
     fn get_delim_incorrect() {
         let content = "# barna , braun";
         assert_eq!(';', get_delim(content).unwrap());
-    }
-
-    #[test]
-    fn get_mode_config() {
-        let content = "\
-# [crablit]
-# mode = \"cards\"
-# delim = ':'
-
-or : ||
-and : &&
-no command : ;;;;;; 
-";
-        assert_eq!(get_mode(content, ':'), Ok(Mode::Cards));
-    }
-
-    #[test]
-    fn get_mode_correct_simple() {
-        let content = "term ; condition";
-        assert_eq!(get_mode(content, ';'), Ok(Mode::Cards));
-    }
-
-    #[test]
-    fn get_mode_correct_complex() {
-        let content = "\
-# mode = \"cards\"
-# delim = ':'
-
-or : ||
-and : &&
-no command : ;;;;;; 
-";
-        assert_eq!(get_mode(content, ':'), Ok(Mode::Cards));
     }
 
     // #[test]
