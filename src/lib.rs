@@ -1,6 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::enums::{Msg, SPACER};
-use colored::Colorize;
+use crate::utils::{exit, knew, revise, togo, typo, SPACER};
+use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
     error::Error,
@@ -8,23 +8,23 @@ use std::{
     fs::{self, File},
     io::Write,
     path::PathBuf,
-    process::exit,
+    process,
 };
 
 /// Module for learning Deck of Cards
 pub mod cards;
 /// Module for parsing cli arguments
 pub mod config;
-/// enums
-pub mod enums;
 /// Module for saving state: progress
 pub mod state;
+/// enums, messages
+pub mod utils;
 // /// Module for learning Deck of Verbs
 // pub mod verbs;
 
 // re-exports
 pub use cards::Card;
-pub use enums::{Lok, Mode};
+pub use utils::{Lok, Mode};
 // pub use verbs::Verb;
 
 // enum Kard {
@@ -106,8 +106,8 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
         if guess.starts_with(':') {
             match guess {
                 ":q" | ":quit" | ":exit" => {
-                    println!("{}", Msg::Exit.val());
-                    exit(0);
+                    println!("{}", exit());
+                    process::exit(0);
                 }
 
                 ":h" | ":help" | ":hint" => {
@@ -120,21 +120,21 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
 
                 ":wq" => {
                     state::save_prog(v, conf)?;
-                    println!("{}", Msg::Exit.val());
-                    exit(0);
+                    println!("{}", exit());
+                    process::exit(0);
                 }
 
                 ":typo" => {
                     // ask to type again before correcting?
                     if i > 0 {
                         if let Some(skipping) = v.get(prev_valid_i as usize) {
-                            println!("{}", Msg::Typo(skipping.ser(" = ")).val());
+                            println!("{}", typo(&skipping.ser(" = ")));
                             v[prev_valid_i as usize].incr();
                         } else {
-                            println!("{}", Msg::Typo("None".to_string()).val());
+                            println!("{}", typo("None"));
                         }
                     } else {
-                        println!("{}", Msg::Typo("None".to_string()).val());
+                        println!("{}", typo("None"));
                     }
                     // rl.readline(&msg)?;
                 }
@@ -146,7 +146,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
                 }
 
                 ":revise" => {
-                    println!("{}", Msg::Revise.val());
+                    println!("{}", revise());
                     break;
                 }
 
@@ -158,7 +158,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
 
                 // incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
-                    println!("{}", &Msg::Togo(len, (prev_valid_i + 1).try_into()?).val());
+                    println!("{}", togo(len, (prev_valid_i + 1).try_into()?));
                 }
 
                 uc => {
@@ -166,7 +166,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
                 }
             }
         } else if guess == item.correct() {
-            println!("{}\n", Msg::Knew.val());
+            println!("{}\n", knew());
             item.incr();
             i += 1;
         } else {

@@ -1,54 +1,42 @@
 //! # Code containing expressions used in `crablit` regularly.
-use colored::Colorize;
+use owo_colors::OwoColorize;
 
 /// space before any output
 pub const SPACER: &str = "    ";
-/// commonly used expressions(text), colored strings
-pub enum Msg {
-    /// Knew it
-    Knew,
-    /// goin' to the ones not guessed correctly
-    Revise,
-    /// Correct the following:
-    Typo(String),
-    /// Stop executing the program
-    Exit,
-    /// still this much to go
-    Togo(usize, usize),
+
+pub fn knew() -> String {
+    format!(
+        "{SPACER}{} {}",
+        "$".bright_green().bold(),
+        "Yes, that's right!\n".bright_green()
+    )
 }
-impl Msg {
-    /// get value for expression
-    pub fn val(&self) -> String {
-        match self {
-            Self::Knew => format!(
-                "{SPACER}{} {}",
-                "$".bright_green().bold(),
-                "Yes, that's right!\n".bright_green()
-            ),
-            Self::Revise => {
-                format!(
-                    "{SPACER}{}",
-                    "Going to the ones not guessed correctly...".bright_magenta()
-                )
-            }
-            Self::Typo(s) => format!(
-                "{}{} {s}",
-                SPACER.repeat(2),
-                "Corrected:".bright_magenta().italic(),
-            ),
-            Self::Exit => format!("\n{SPACER}{}", "Exiting...".bright_magenta().italic()),
-            Self::Togo(sum, i) => {
-                format!(
-                    "{}{} at {:.1}{}, {} more to go",
-                    SPACER.repeat(2),
-                    "!".bold().bright_purple(),
-                    (*i as f32 / *sum as f32 * 100.),
-                    "%".bold().bright_purple(),
-                    (sum + 1 - i).to_string().italic()
-                )
-            }
-        }
-    }
+pub fn revise() -> String {
+    format!(
+        "{SPACER}{}",
+        "Going to the ones not guessed correctly...".bright_magenta()
+    )
+}
+
+pub fn typo(s: &str) -> String {
+    format!(
+        "{}{} {s}",
+        SPACER.repeat(2),
+        "Corrected:".bright_magenta().italic(),
+    )
+}
+pub fn exit() -> String {
+    format!("\n{SPACER}{}", "Exiting...".bright_magenta().italic())
+}
+pub fn togo(sum: usize, i: usize) -> String {
+    format!(
+        "{}{} at {:.1}{}, {} more to go",
+        SPACER.repeat(2),
+        "!".bold().bright_purple(),
+        (i as f32 / sum as f32 * 100.),
+        "%".bold().bright_purple(),
+        (sum + 1 - i).to_string().italic()
+    )
 }
 
 #[derive(Debug, PartialEq)]
