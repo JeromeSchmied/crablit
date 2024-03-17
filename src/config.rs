@@ -1,132 +1,138 @@
-//! # In this module, you can find code that helps in collecting cli
-//! arguments and determining properties of a file containing vocab data.
+//! # In this module, you can find code that helps in collecting cli arguments and determining properties of a file containing vocab data.
 use crate::*;
+// use assert_cmd::Command;
 use clap::Parser;
-use std::{collections::HashMap, error::Error, fs, path::PathBuf};
+use std::{collections::HashMap, error::Error, path::PathBuf};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
 pub struct Config {
     /// Path of the file to learn
     #[arg(required = true)]
-    pub file_path: String,
+    file_path: String,
 
     /// Swap terms and definitions of cards
     #[arg(short = 's', long, default_value_t = false)]
-    pub card_swap: bool,
+    swap: bool,
 
     /// Sometimes ask the term, sometimes definition of cards
     #[arg(short, long, default_value_t = false)]
-    pub ask_both: bool,
+    ask_both: bool,
 
-    /// Mode: either cards, verbs or verbs2cards
-    #[arg(short, long, default_value = "None")]
-    pub mode: String,
+    /// Convert valid verbs to cards
+    #[arg(long, default_value_t = false)]
+    convert: bool,
 
     /// Delimiter used in file to seperate terms and definitions
     #[arg(short, long, default_value = "None")]
-    pub delim: String,
+    delim: String,
 
     /// Don't shuffle card order
     #[arg(long, default_value_t = false)]
-    pub no_shuffle: bool,
+    no_shuffle: bool,
 
     /// Don't load previous state
     #[arg(long, default_value_t = false)]
-    pub no_state: bool,
+    no_state: bool,
 
     /// Only check file syntax don't actually start learning deck
-    #[arg(short = 'c', long = "check", default_value_t = false)]
-    pub only_check: bool,
+    #[arg(long = "check", default_value_t = false)]
+    only_check: bool,
 }
 
 impl Config {
     /// Fixing properties by opening file that contains vocab data.
+    ///
+    /// # Errors
+    ///
+    /// - `fs::create()`
+    /// - `get_prog_path()`
+    /// - `writeln!()`
+    /// - `fs::read_to_string()`
+    /// - `get_delim()`
+    ///
+    /// # Panics
+    ///
+    /// `delim` is empty
     pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
         let conf = Config::parse();
 
-        let state_file_path = state::get_progress_path(&conf.file_path)?;
-        println!("searching for path at: {:?}", state_file_path);
-        let content = if !conf.no_state && crate::state::progress_exists(&conf.file_path) {
-            let state_file_path = state::get_progress_path(&conf.file_path)?;
+        let content = state::get_content(&conf)?;
 
-            eprintln!(
-                "Opening file from previously saved state: \"{:?}\"",
-                &state_file_path
-            );
-
-            let state_file = fs::read_to_string(&state_file_path)?;
-            println!("state file content:\n{:?}\n", state_file);
-            state_file
+        let delim = if conf.delim == "None" {
+            get_delim(&content)?
         } else {
-            eprintln!("Trying to open {}", &conf.file_path);
-
-            fs::read_to_string(&conf.file_path)?
-        };
-
-        let delim = if conf.delim != "None" {
             eprintln!("got delimiter as arg");
             conf.delim.chars().next().unwrap()
-        } else {
-            get_delim(&content)?
         };
 
-        let mode = if conf.mode != "None" {
-            eprintln!("got mode as arg");
-            conf.mode
-        } else {
-            get_mode(&content, &delim)?
-        };
-
-        eprintln!("Mode: \"{}\", delimiter: \"{}\"", mode, delim);
+        eprintln!("Delimiter: \"{delim}\"");
         Ok(Config {
-            file_path: conf.file_path,
-            card_swap: conf.card_swap,
-            ask_both: conf.ask_both,
-            no_shuffle: conf.no_shuffle,
-            mode,
             delim: delim.to_string(),
-            only_check: conf.only_check,
-            no_state: conf.no_state,
+            ..conf
         })
     }
 
     /// Path for statefile of filepath got, or if doesn't exist, self
+    ///
+    /// # Panics
+    ///
+    /// `get_prog_path()`
     pub fn file_path(&self) -> PathBuf {
-        if state::progress_exists(&self.file_path) && !self.no_state {
-            state::get_progress_path(&self.file_path).expect("Coudln't get progress path")
+        if state::prog_exists(&self.file_path_orig()) && !self.no_state {
+            state::get_prog_path(&self.file_path_orig()).expect("Couldn't get progress path")
         } else {
             self.file_path.clone().into()
         }
     }
-}
 
-/// Get mode from content
-fn get_mode(content: &str, delim: &char) -> Result<String, &'static str> {
-    if let Ok(mode) = get_prop(content, "mode") {
-        return Ok(mode);
+    /// Get original `file_path` as `PathBuf`
+    pub fn file_path_orig(&self) -> PathBuf {
+        self.file_path.clone().into()
     }
-    // get avg count of splits
-    let mut sum = 0;
-    let n = content
-        .lines()
-        .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
-        .map(|line| sum += line.split(*delim).count())
-        .count();
 
-    let avg = (sum as f32 / n as f32).ceil();
-    eprintln!("sum: {sum}, n: {n}, avg: {avg}");
-    if avg == 2. {
-        Ok("cards".to_string())
-    } else if avg > 2. && avg < 7. {
-        Ok("verbs".to_string())
-    } else {
-        Err("couldn't determine mode of deck")
+    /// Get `no_state`
+    pub fn no_state(&self) -> bool {
+        self.no_state
+    }
+
+    /// Get `no_shuffle`
+    pub fn no_shuffle(&self) -> bool {
+        self.no_shuffle
+    }
+
+    /// Get `only_check`
+    pub fn only_check(&self) -> bool {
+        self.only_check
+    }
+
+    /// Get `ask_both`
+    pub fn ask_both(&self) -> bool {
+        self.ask_both
+    }
+
+    /// Get `card_swap`
+    pub fn swap(&self) -> bool {
+        self.swap
+    }
+
+    /// Get mode as `Mode`
+    pub fn convert(&self) -> bool {
+        self.convert
+    }
+
+    /// Get delimiter as a character
+    ///
+    /// # Panics
+    ///
+    /// `delim` is empty
+    pub fn delim(&self) -> char {
+        self.delim.chars().next().unwrap()
     }
 }
 
 /// Get delimiter from content
-fn get_delim(content: &str) -> Result<char, String> {
+fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
     const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
 
     if let Ok(delim) = get_prop(content, "delim") {
@@ -142,30 +148,27 @@ fn get_delim(content: &str) -> Result<char, String> {
             .filter(|line| !line.trim().starts_with('#') && !line.is_empty())
             .for_each(|line| delim_count += line.trim().chars().filter(|c| c == delim).count());
         if delim_count > 0 {
-            delims_counts.insert(*delim, delim_count as u32);
+            delims_counts.insert(*delim, delim_count.try_into()?);
         }
     }
     for delim in &delims_counts {
-        println!("{}: {}", delim.0, delim.1);
+        println!("'{}': {}", delim.0, delim.1);
     }
     if delims_counts.is_empty() {
-        Err(format!(
-            "Couldn't determine delimiter, should be one of: {:?}",
-            DELIMS
-        ))
+        Err(format!("Couldn't determine delimiter, should be one of: {DELIMS:?}").into())
     } else {
         Ok(*delims_counts.iter().max_by_key(|x| x.1).unwrap().0)
     }
 }
 
 /// Get property from content
-fn get_prop(content: &str, prop: &str) -> Result<String, String> {
+fn get_prop(content: &str, prop: &str) -> Result<String, Box<dyn Error>> {
     if content.contains("[crablit]") {
         eprintln!("text contains [crablit]!");
-        let prop = &format!("{} = ", prop);
+        let prop = &format!("{prop} = ");
         if !content.contains(prop) {
             eprintln!("Coudln't find \"{prop}\"");
-            return Err(format!("Coudln't find \"{prop}\""));
+            return Err(format!("Coudln't find \"{prop}\"").into());
         }
         Ok(content
             .lines()
@@ -176,9 +179,9 @@ fn get_prop(content: &str, prop: &str) -> Result<String, String> {
             .unwrap()
             .trim()
             .trim_matches(|c| c == '"' || c == '\'')
-            .to_string())
+            .into())
     } else {
-        Err(format!("Coudln't find {}", prop))
+        Err(format!("Coudln't find {prop}").into())
     }
 }
 
@@ -197,7 +200,7 @@ or : ||
 and : &&
 no command : ;;;;;; 
 ";
-        assert_eq!(Ok(':'), get_delim(content));
+        assert_eq!(':', get_delim(content).unwrap());
     }
     #[test]
     fn get_delim_correct() {
@@ -216,38 +219,11 @@ no command : ;;;;;;
         assert_eq!(';', get_delim(content).unwrap());
     }
 
-    #[test]
-    fn get_mode_config() {
-        let content = "\
-# [crablit]
-# mode = \"cards\"
-# delim = ':'
-
-or : ||
-and : &&
-no command : ;;;;;; 
-";
-        assert_eq!(get_mode(content, &':'), Ok("cards".to_string()));
-    }
-
-    #[test]
-    fn get_mode_correct_simple() {
-        let content = "term ; condition";
-        assert_eq!(get_mode(content, &';'), Ok("cards".to_string()));
-    }
-
-    #[test]
-    fn get_mode_correct_complex() {
-        let content = "\
-# mode = \"cards\"
-# delim = ':'
-
-or : ||
-and : &&
-no command : ;;;;;; 
-";
-        assert_eq!(get_mode(content, &':'), Ok("cards".to_string()));
-    }
+    // #[test]
+    // fn configg() {
+    //     let mut command = Command::cargo_bin("crablit").unwrap();
+    //     command.arg("test.txt");
+    // }
 
     //     #[test]
     //     fn basic_correct_cards() {
