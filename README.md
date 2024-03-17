@@ -18,7 +18,7 @@
 
 -   [Features](#features)
 -   [Creating files to learn](#creating-files-to-learn)
--   [Installing](#installing)
+-   [Installation](#installation)
 -   [Usage](#usage)
 -   [How it works](#how-it-works)
 -   [Notes](#notes)
@@ -86,9 +86,7 @@ to pour | gießen
 <!-- # or you can install latest development version with -->
 <!-- cargo install --git https://github.com/jeromeschmied/crablit -->
 
-## Installing
-
-### MSRV: Minimum Supported Rust Version is `1.74.1`
+## Installation
 
 0. **_Easiest, recommended:_** Go to releases page and see instructions built by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
 
@@ -139,7 +137,7 @@ cargo install --path .
 -   To see flashcard-like stuff: `:f` or `:flash`. Yet untested.
 -   To check status of current iteration: `:n`, `:num` or `:togo`.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
--   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
+-   If `NO_COLOR=1`, coloring is disabled, thanks to [owo-colors](https://crates.io/crates/owo-colors).
 
 ## How it works
 
