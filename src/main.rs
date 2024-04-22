@@ -9,7 +9,7 @@ fn main() {
         process::exit(1);
     });
 
-    if !conf.only_check() {
+    if !conf.only_check {
         if let Err(e) = crablit::run(&conf) {
             eprintln!("App error: {e}");
             process::exit(2);

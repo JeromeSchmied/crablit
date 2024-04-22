@@ -185,20 +185,20 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
 /// - `state::rm()`
 /// - `verbs::deser_to_card()`
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
-    match conf.convert() {
+    match conf.convert {
         false => {
             let mut v = init(&conf.file_path(), conf.delim())?;
-            if conf.swap() {
+            if conf.swap {
                 println!("swapping terms and definitions of each card");
                 cards::swap(&mut v);
             }
-            if conf.ask_both() {
+            if conf.ask_both {
                 println!("swapping terms and definitions of some cards");
                 randomly_swap_cards(&mut v);
             }
 
             while v.iter().filter(|item| item.lok() == Lok::Done).count() < v.len() {
-                if !conf.no_shuffle() {
+                if !conf.no_shuffle {
                     eprintln!("shuffling");
                     fastrand::shuffle(&mut v);
                 }

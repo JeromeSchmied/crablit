@@ -13,15 +13,15 @@ pub struct Config {
 
     /// Swap terms and definitions of cards
     #[arg(short = 's', long, default_value_t = false)]
-    swap: bool,
+    pub swap: bool,
 
     /// Sometimes ask the term, sometimes definition of cards
     #[arg(short, long, default_value_t = false)]
-    ask_both: bool,
+    pub ask_both: bool,
 
     /// Convert valid verbs to cards
     #[arg(long, default_value_t = false)]
-    convert: bool,
+    pub convert: bool,
 
     /// Delimiter used in file to seperate terms and definitions
     #[arg(short, long, default_value = "None")]
@@ -29,15 +29,15 @@ pub struct Config {
 
     /// Don't shuffle card order
     #[arg(long, default_value_t = false)]
-    no_shuffle: bool,
+    pub no_shuffle: bool,
 
     /// Don't load previous state
     #[arg(long, default_value_t = false)]
-    no_state: bool,
+    pub no_state: bool,
 
     /// Only check file syntax don't actually start learning deck
     #[arg(long = "check", default_value_t = false)]
-    only_check: bool,
+    pub only_check: bool,
 }
 
 impl Config {
@@ -89,36 +89,6 @@ impl Config {
     /// Get original `file_path` as `PathBuf`
     pub fn file_path_orig(&self) -> PathBuf {
         self.file_path.clone().into()
-    }
-
-    /// Get `no_state`
-    pub fn no_state(&self) -> bool {
-        self.no_state
-    }
-
-    /// Get `no_shuffle`
-    pub fn no_shuffle(&self) -> bool {
-        self.no_shuffle
-    }
-
-    /// Get `only_check`
-    pub fn only_check(&self) -> bool {
-        self.only_check
-    }
-
-    /// Get `ask_both`
-    pub fn ask_both(&self) -> bool {
-        self.ask_both
-    }
-
-    /// Get `card_swap`
-    pub fn swap(&self) -> bool {
-        self.swap
-    }
-
-    /// Get mode as `Mode`
-    pub fn convert(&self) -> bool {
-        self.convert
     }
 
     /// Get delimiter as a character

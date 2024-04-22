@@ -49,7 +49,7 @@ pub fn prog_exists(path: &Path) -> bool {
 }
 
 pub fn get_content(conf: &config::Config) -> Result<String, Box<dyn Error>> {
-    if !conf.no_state() && state::prog_exists(&conf.file_path_orig()) {
+    if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
         let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
 
         eprintln!("Opening file from previously saved state.");
