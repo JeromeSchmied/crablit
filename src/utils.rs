@@ -1,13 +1,13 @@
 //! # Code containing expressions used in `crablit` regularly.
-use std::fmt;
 
 use owo_colors::OwoColorize;
+use std::fmt;
 
 /// space before any output
 pub const SPCR: &str = "    ";
 
 /// Knew it text.
-pub fn knew() -> String {
+pub fn knew_msg() -> String {
     format!(
         "{SPCR}{} {}",
         "$".bright_green().bold(),
@@ -15,14 +15,14 @@ pub fn knew() -> String {
     )
 }
 /// Revising text.
-pub fn revise() -> String {
+pub fn revise_msg() -> String {
     format!(
         "{SPCR}{}",
         "Going to the ones not guessed correctly...".bright_magenta()
     )
 }
 /// Typo text.
-pub fn typo(s: &str) -> String {
+pub fn typo_msg(s: &str) -> String {
     format!(
         "{}{} {s}",
         SPCR.repeat(2),
@@ -30,11 +30,11 @@ pub fn typo(s: &str) -> String {
     )
 }
 /// Exiting text.
-pub fn exit() -> String {
+pub fn exit_msg() -> String {
     format!("\n{SPCR}{}", "Exiting...".bright_magenta().italic())
 }
 /// To go text.
-pub fn togo(sum: usize, i: usize) -> String {
+pub fn togo_msg(sum: usize, i: usize) -> String {
     format!(
         "{}{} at {:.1}{}, {} more to go",
         SPCR.repeat(2),

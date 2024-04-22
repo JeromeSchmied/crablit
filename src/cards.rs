@@ -1,4 +1,5 @@
 //! # This module includes code specific to learning expressions.
+
 use crate::*;
 
 /// one `term` - `def`inition representation with current [`Lok`]
@@ -75,7 +76,7 @@ impl Card {
             ]
             .concat()
         };
-        format!("{SPCR}{} {}", "#".cyan().bold(), hint)
+        format!("{SPCR}{} {hint}", "#".cyan().bold())
     }
 
     /// Returns the text when this [`Card`] was wrong.
