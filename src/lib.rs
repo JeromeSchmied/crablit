@@ -125,6 +125,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     process::exit(0);
                 }
 
+                // not very stable!
                 ":typo" => {
                     // ask to type again before correcting?
                     if i > 0 {

@@ -4,6 +4,7 @@ use owo_colors::OwoColorize;
 /// space before any output
 pub const SPACER: &str = "    ";
 
+/// Knew it text.
 pub fn knew() -> String {
     format!(
         "{SPACER}{} {}",
@@ -11,13 +12,14 @@ pub fn knew() -> String {
         "Yes, that's right!\n".bright_green()
     )
 }
+/// Revising text.
 pub fn revise() -> String {
     format!(
         "{SPACER}{}",
         "Going to the ones not guessed correctly...".bright_magenta()
     )
 }
-
+/// Typo text.
 pub fn typo(s: &str) -> String {
     format!(
         "{}{} {s}",
@@ -25,9 +27,11 @@ pub fn typo(s: &str) -> String {
         "Corrected:".bright_magenta().italic(),
     )
 }
+/// Exiting text.
 pub fn exit() -> String {
     format!("\n{SPACER}{}", "Exiting...".bright_magenta().italic())
 }
+/// To go text.
 pub fn togo(sum: usize, i: usize) -> String {
     format!(
         "{}{} at {:.1}{}, {} more to go",
@@ -40,7 +44,7 @@ pub fn togo(sum: usize, i: usize) -> String {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-/// `LevelOfKnowledge`
+/// Level Of Knowledge
 pub enum Lok {
     Nothing,
     Something,
@@ -48,6 +52,15 @@ pub enum Lok {
     Done,
 }
 impl Lok {
+    /// Creates a new [`Lok`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use crablit::Lok;
+    ///
+    /// assert_eq!(Lok::new("1"), Lok::Something);
+    /// ```
     pub fn new(s: &str) -> Self {
         let s = s.trim();
         if s == "Nothing" || s == "0" {

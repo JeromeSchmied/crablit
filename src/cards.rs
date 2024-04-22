@@ -1,6 +1,7 @@
 //! # This module includes code specific to learning expressions.
 use crate::*;
 
+/// one `term` - `def`inition representation with current [`Lok`]
 #[derive(Debug, Clone, PartialEq)]
 pub struct Card {
     /// Term in known language
@@ -13,7 +14,7 @@ pub struct Card {
 impl Card {
     /// Creates new instance of a `Card`
     ///
-    /// # usage
+    /// # Example
     ///
     /// ```
     /// use crablit::Card;
@@ -29,7 +30,7 @@ impl Card {
     }
     /// Swaps term and definition
     ///
-    /// # usage
+    /// # Example
     ///
     /// ```
     /// use crablit::Card;
@@ -37,7 +38,7 @@ impl Card {
     /// let mut swapd = Card::new("ask", "answer", None);
     /// swapd.swap_me();
     ///
-    /// assert_ne!(Card::new("ask", "answer", None), swapd);
+    /// assert_eq!(Card::new("answer", "ask", None), swapd);
     /// ```
     pub fn swap_me(&mut self) {
         std::mem::swap(&mut self.trm, &mut self.def);
@@ -156,8 +157,8 @@ impl Card {
 }
 
 /// Deserialize verbs to cards.
-pub(crate) fn deser_verbs_to_cards(v: &[Card], conf: &config::Config) -> AnyErr<String> {
-    Ok(v.iter().fold(String::new(), |result, card| {
+pub fn deser_verbs_to_cards(cards: &[Card], conf: &config::Config) -> AnyErr<String> {
+    Ok(cards.iter().fold(String::new(), |result, card| {
         result
             + &format!(
                 "{}{}{}\n",
@@ -178,8 +179,8 @@ pub(crate) fn deser_verbs_to_cards(v: &[Card], conf: &config::Config) -> AnyErr<
 ///
 /// crablit::cards::swap(&mut deck);
 /// ```
-pub fn swap(cards: &mut [cards::Card]) {
-    cards.iter_mut().for_each(cards::Card::swap_me);
+pub fn swap(cards: &mut [Card]) {
+    cards.iter_mut().for_each(Card::swap_me);
 }
 
 #[cfg(test)]
