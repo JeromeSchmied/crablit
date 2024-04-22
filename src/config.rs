@@ -80,18 +80,18 @@ impl Config {
     /// `get_prog_path()`
     pub fn file_path(&self) -> PathBuf {
         if state::prog_exists(&self.file_path_orig()) && !self.no_state {
-            state::get_prog_path(&self.file_path_orig()).expect("Couldn't get progress path")
+            state::prog_path(&self.file_path_orig()).expect("Couldn't get progress path")
         } else {
             self.file_path.clone()
         }
     }
 
-    /// Get original `file_path` as `PathBuf`
+    /// Get original [`Config::file_path`]
     pub fn file_path_orig(&self) -> PathBuf {
         self.file_path.clone()
     }
 
-    /// Get delimiter as a character
+    /// Get delimiter
     ///
     /// # Panics
     ///
@@ -137,8 +137,8 @@ fn get_prop(content: &str, prop: &str) -> AnyErr<String> {
         eprintln!("text contains [crablit]!");
         let prop = &format!("{prop} = ");
         if !content.contains(prop) {
-            eprintln!("Coudln't find \"{prop}\"");
-            return Err(format!("Coudln't find \"{prop}\"").into());
+            eprintln!("Couldn't find \"{prop}\"");
+            return Err(format!("Couldn't find \"{prop}\"").into());
         }
         Ok(content
             .lines()
@@ -151,7 +151,7 @@ fn get_prop(content: &str, prop: &str) -> AnyErr<String> {
             .trim_matches(|c| c == '"' || c == '\'')
             .into())
     } else {
-        Err(format!("Coudln't find {prop}").into())
+        Err(format!("Couldn't find {prop}").into())
     }
 }
 

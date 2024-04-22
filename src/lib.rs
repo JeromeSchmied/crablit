@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::utils::{exit_txt, knew_msg, revise_txt, togo_txt, typo_txt, SPCR};
+use crate::utils::{exit_msg, knew_msg, revise_msg, togo_msg, typo_msg, SPCR};
 use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
@@ -107,7 +107,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
         if guess.starts_with(':') {
             match guess {
                 ":q" | ":quit" | ":exit" => {
-                    println!("{}", exit_txt());
+                    println!("{}", exit_msg());
                     process::exit(0);
                 }
 
@@ -121,7 +121,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 
                 ":wq" => {
                     state::save_prog(v, conf)?;
-                    println!("{}", exit_txt());
+                    println!("{}", exit_msg());
                     process::exit(0);
                 }
 
@@ -130,13 +130,13 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     // ask to type again before correcting?
                     if i > 0 {
                         if let Some(skipping) = v.get(prev_valid_i as usize) {
-                            println!("{}", typo_txt(&skipping.ser(" = ")));
+                            println!("{}", typo_msg(&skipping.ser(" = ")));
                             v[prev_valid_i as usize].lok.incr();
                         } else {
-                            println!("{}", typo_txt("None"));
+                            println!("{}", typo_msg("None"));
                         }
                     } else {
-                        println!("{}", typo_txt("None"));
+                        println!("{}", typo_msg("None"));
                     }
                     // rl.readline(&msg)?;
                 }
@@ -148,7 +148,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                 }
 
                 ":revise" => {
-                    println!("{}", revise_txt());
+                    println!("{}", revise_msg());
                     break;
                 }
 
@@ -160,7 +160,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 
                 // incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
-                    println!("{}", togo_txt(len, (prev_valid_i + 1).try_into()?));
+                    println!("{}", togo_msg(len, (prev_valid_i + 1).try_into()?));
                 }
 
                 uc => {

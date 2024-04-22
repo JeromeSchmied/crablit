@@ -18,7 +18,7 @@ fn data_dir() -> PathBuf {
 /// # Panics
 ///
 /// - `pwd()` doesn't contain valid utf8
-pub fn get_prog_path(path: &Path) -> AnyErr<PathBuf> {
+pub fn prog_path(path: &Path) -> AnyErr<PathBuf> {
     let pwd = std::env::current_dir()?;
     let pwd = pwd.to_str().expect("couldn't get working dir");
 
@@ -44,13 +44,15 @@ pub fn get_prog_path(path: &Path) -> AnyErr<PathBuf> {
 ///
 /// `get_prog_path()`
 pub fn prog_exists(path: &Path) -> bool {
-    let path = get_prog_path(path).unwrap();
+    let path = prog_path(path).unwrap();
     path.exists()
 }
 
+/// Get content of file specified in `conf.file_path`,
+/// if a progress/state file is found, use that
 pub fn get_content(conf: &config::Config) -> AnyErr<String> {
     if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
-        let state_file_path = state::get_prog_path(&conf.file_path_orig())?;
+        let state_file_path = state::prog_path(&conf.file_path_orig())?;
 
         eprintln!("Opening file from previously saved state.");
 
@@ -72,8 +74,8 @@ pub fn get_content(conf: &config::Config) -> AnyErr<String> {
 /// - `fs::remove_file()` errors
 pub fn rm_prog(path: &Path) -> AnyErr<()> {
     if prog_exists(path) {
-        eprintln!("Removing state file from: {:?}", get_prog_path(path)?);
-        fs::remove_file(get_prog_path(path)?)?;
+        eprintln!("Removing state file from: {:?}", prog_path(path)?);
+        fs::remove_file(prog_path(path)?)?;
     }
     Ok(())
 }
@@ -114,7 +116,7 @@ pub fn serialize(v: &[Card], delim: char) -> String {
 /// - `get_prog_path()` errors
 /// - `writeln!()` errors
 pub fn save_prog(deck: &[Card], conf: &config::Config) -> AnyErr<()> {
-    let ofile_path = get_prog_path(&conf.file_path_orig())?;
+    let ofile_path = prog_path(&conf.file_path_orig())?;
     let mut ofile = File::create(&ofile_path)?;
 
     writeln!(ofile, "# [crablit]")?;
@@ -164,7 +166,7 @@ term7;def7;Nothing\n";
     // get_prog_path
     #[test]
     fn get_progress_path() {
-        assert!(get_prog_path(Path::new("test_prog_path.txt")).is_ok());
+        assert!(prog_path(Path::new("test_prog_path.txt")).is_ok());
     }
 
     // // save_prog
@@ -186,7 +188,7 @@ term7;def7;Nothing\n";
     #[test]
     fn progress_exists() {
         let orig_path = Path::new("test_prog_exists.txt");
-        let state_path = state::get_prog_path(orig_path).unwrap();
+        let state_path = state::prog_path(orig_path).unwrap();
 
         let mut ofile = File::create(state_path).unwrap();
         writeln!(ofile, "is there anybody in there?").unwrap();
@@ -199,7 +201,7 @@ term7;def7;Nothing\n";
     #[test]
     fn remove_progress() {
         let orig_path = Path::new("test_rm_prog.txt");
-        let state_path = state::get_prog_path(orig_path).unwrap();
+        let state_path = state::prog_path(orig_path).unwrap();
 
         let mut ofile = File::create(state_path).unwrap();
         writeln!(ofile, "is there anybody in there?").unwrap();
