@@ -132,12 +132,7 @@ impl Card {
 
     /// Serialize this [`Card`].
     pub fn ser(&self, delim: &str) -> String {
-        format!(
-            "{}{delim}{}{delim}{}",
-            self.trm,
-            self.def,
-            self.lok.display()
-        )
+        format!("{}{delim}{}{delim}{}", self.trm, self.def, self.lok)
     }
 }
 

@@ -1,4 +1,6 @@
 //! # Code containing expressions used in `crablit` regularly.
+use std::fmt;
+
 use owo_colors::OwoColorize;
 
 /// space before any output
@@ -91,17 +93,24 @@ impl Lok {
             Self::Done => Self::Almost,
         }
     }
-    pub fn display(&self) -> String {
-        match *self {
-            Self::Nothing => String::from("Nothing"),
-            Self::Something => String::from("Something"),
-            Self::Almost => String::from("Almost"),
-            Self::Done => String::from("Done"),
-        }
-    }
 }
 impl Default for Lok {
     fn default() -> Self {
         Self::Nothing
+    }
+}
+impl fmt::Display for Lok {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(
+            f,
+            "{}",
+            match *self {
+                Self::Nothing => "Nothing",
+                Self::Something => "Something",
+                Self::Almost => "Almost",
+                Self::Done => "Done",
+            }
+        )?;
+        Ok(())
     }
 }
