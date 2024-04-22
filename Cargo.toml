@@ -26,15 +26,21 @@ eula = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+chrono = "0.4.38"
 # to collect cli arguments
 clap = { version = "4.5.1", features = ["derive"] }
 # for data_dir
 dirs = "5.0.1"
 # for random generation: shuffling
 fastrand = "2.0.1"
+# logging
+fern = "0.6.2"
+log = "0.4.21"
 # for fixing stupid windows' colours
 output_vt100 = "0.1.3"
+# for colored output
 owo-colors = "4.0.0"
+# for yummy readline-like input 
 rustyline = "14.0.0"
 # testing
 # assert_cmd = "2.0.13"

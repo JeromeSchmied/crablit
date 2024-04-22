@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::utils::{exit_msg, knew_msg, revise_msg, togo_msg, typo_msg, SPCR};
+use crate::utils::*;
 use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
@@ -27,6 +27,15 @@ pub use utils::Lok;
 
 /// any `Err` implementing [`std::error::Error`]
 pub type AnyErr<T> = Result<T, Box<dyn Error>>;
+
+/// get log path for `kind`.log
+pub fn log_path(kind: &str) -> Option<PathBuf> {
+    let cache_path = dirs::cache_dir()?.join("crablit");
+    if !cache_path.exists() {
+        fs::create_dir_all(&cache_path).expect("couldn't create cache dir");
+    }
+    Some(cache_path.join([kind, ".log"].concat()))
+}
 
 // enum Kard {
 //     Adjektiv(String),
