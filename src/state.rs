@@ -126,7 +126,7 @@ pub fn save_prog(deck: &[Card], conf: &config::Config) -> AnyErr<()> {
     writeln!(ofile, "# [crablit]")?;
     writeln!(ofile, "# delim = \'{}\'\n\n", conf.delim())?;
 
-    println!("r: {deck:?}");
+    trace!("r: {deck:?}");
     let content = serialize(deck, conf.delim());
     writeln!(ofile, "{content}")?;
 
