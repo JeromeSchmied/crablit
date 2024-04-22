@@ -101,10 +101,10 @@ impl Default for Lok {
 }
 impl fmt::Display for Lok {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(
+        write!(
             f,
             "{}",
-            match *self {
+            match self {
                 Self::Nothing => "Nothing",
                 Self::Something => "Something",
                 Self::Almost => "Almost",
