@@ -24,8 +24,8 @@ pub struct Config {
     pub convert: bool,
 
     /// Delimiter used in file to seperate terms and definitions
-    #[arg(short, long, default_value = "None")]
-    delim: String,
+    #[arg(short, long)]
+    delim: Option<char>,
 
     /// Don't shuffle card order
     #[arg(long, default_value_t = false)]
@@ -59,16 +59,16 @@ impl Config {
 
         let content = state::get_content(&conf)?;
 
-        let delim = if conf.delim == "None" {
-            get_delim(&content)?
-        } else {
+        let delim = if let Some(dlm) = conf.delim {
             eprintln!("got delimiter as arg");
-            conf.delim.chars().next().unwrap()
+            dlm
+        } else {
+            get_delim(&content)?
         };
 
         eprintln!("Delimiter: \"{delim}\"");
         Ok(Config {
-            delim: delim.to_string(),
+            delim: Some(delim),
             ..conf
         })
     }
@@ -95,9 +95,9 @@ impl Config {
     ///
     /// # Panics
     ///
-    /// `delim` is empty
+    /// `delim` is `None`
     pub fn delim(&self) -> char {
-        self.delim.chars().next().unwrap()
+        self.delim.expect("oh my! no valid delimiter found")
     }
 }
 
