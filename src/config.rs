@@ -9,7 +9,7 @@ use std::{collections::HashMap, error::Error, path::PathBuf};
 pub struct Config {
     /// Path of the file to learn
     #[arg(required = true)]
-    file_path: String,
+    file_path: PathBuf,
 
     /// Swap terms and definitions of cards
     #[arg(short = 's', long, default_value_t = false)]
@@ -82,13 +82,13 @@ impl Config {
         if state::prog_exists(&self.file_path_orig()) && !self.no_state {
             state::get_prog_path(&self.file_path_orig()).expect("Couldn't get progress path")
         } else {
-            self.file_path.clone().into()
+            self.file_path.clone()
         }
     }
 
     /// Get original `file_path` as `PathBuf`
     pub fn file_path_orig(&self) -> PathBuf {
-        self.file_path.clone().into()
+        self.file_path.clone()
     }
 
     /// Get delimiter as a character
