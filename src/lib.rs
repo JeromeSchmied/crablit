@@ -1,5 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::utils::*;
+use log::*;
 use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
@@ -56,6 +57,7 @@ pub fn log_path(kind: &str) -> Option<PathBuf> {
 /// - can't read `path`
 /// - can't deserialize properly
 pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
+    info!("initializing");
     // contents of file with vocab data
     let contents = fs::read_to_string(path)?;
     // results vector
@@ -64,12 +66,14 @@ pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
     for line in contents.lines() {
         // if is comment or empty
         if line.trim().starts_with('#') || line.trim().is_empty() {
+            trace!("comment, no need: {line:?}");
             continue;
         }
         r.push(Card::deser(line, delim)?);
     }
-    eprintln!("File succesfully read.");
-    // println!("content: {:?}", r);
+    info!("File succesfully read.");
+    trace!("content: {:?}", r);
+
     Ok(r)
 }
 
@@ -96,7 +100,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
         prev_valid_i = i as i32 - 1;
         // display prompt
         let last_hr = rl.history().iter().last();
-        // eprintln!("last history element: {:?}", last_hr);
+        info!("last history element: {:?}", last_hr);
         let msg = format!(
             "{}{SPCR}> ",
             if last_hr.is_some_and(|he| {
@@ -198,26 +202,28 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 /// - `state::rm()`
 /// - `verbs::deser_to_card()`
 pub fn run(conf: &config::Config) -> AnyErr<()> {
+    info!("running app");
     match conf.convert {
         false => {
             let mut v = init(&conf.file_path(), conf.delim())?;
             if conf.swap {
-                println!("swapping terms and definitions of each card");
+                info!("swapping terms and definitions of each card");
                 cards::swap(&mut v);
             }
             if conf.ask_both {
-                println!("swapping terms and definitions of some cards");
+                info!("swapping terms and definitions of some cards");
                 randomly_swap_cards(&mut v);
             }
 
             while v.iter().filter(|item| item.lok == Lok::Done).count() < v.len() {
                 if !conf.no_shuffle {
-                    eprintln!("shuffling");
+                    info!("shuffling");
                     fastrand::shuffle(&mut v);
                 }
                 question(&mut v, conf)?;
             }
             println!("Gone through everything you wanted, great job!");
+            info!("done");
             state::rm_prog(&conf.file_path_orig())?;
 
             Ok(())

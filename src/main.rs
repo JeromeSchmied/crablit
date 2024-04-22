@@ -38,12 +38,15 @@ fn main() -> AnyErr<()> {
 
     let conf = Config::fix_from_file().unwrap_or_else(|err| {
         eprintln!("Problem during parsing file: {err}");
+        error!("Problem during parsing file: {err}");
         process::exit(1);
     });
+    info!("succesfully set up config");
 
     if !conf.only_check {
         if let Err(e) = crablit::run(&conf) {
             eprintln!("App error: {e}");
+            error!("App error: {e}");
             process::exit(2);
         };
     }

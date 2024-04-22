@@ -20,20 +20,24 @@ fn data_dir() -> PathBuf {
 /// - `pwd()` doesn't contain valid utf8
 pub fn prog_path(path: &Path) -> AnyErr<PathBuf> {
     let pwd = std::env::current_dir()?;
+    info!("pwd: {pwd:?}");
     let pwd = pwd.to_str().expect("couldn't get working dir");
 
     // try to create data_dir, if exists, don't do anything
     if let Err(err) = std::fs::create_dir(self::data_dir()) {
         if err.kind() == std::io::ErrorKind::NotFound {
+            info!("data_dir: {:?} doesn't exist, creating", self::data_dir());
             std::fs::create_dir_all(self::data_dir())?;
         } else if err.kind() == std::io::ErrorKind::AlreadyExists {
         } else {
+            error!("error creating data_dir: {err:?}");
             return Err(Box::new(err));
         }
     }
     let current_file_path = &format!("{}/{}", pwd, path.display())
         .replace('/', "%")
         .replace('\\', "%");
+    info!("current file path formatted for being state-file: {current_file_path:?}");
 
     Ok(self::data_dir().join(current_file_path))
 }
@@ -54,13 +58,13 @@ pub fn get_content(conf: &config::Config) -> AnyErr<String> {
     if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
         let state_file_path = state::prog_path(&conf.file_path_orig())?;
 
-        eprintln!("Opening file from previously saved state.");
+        info!("Opening file from previously saved state.");
 
         let state_file = fs::read_to_string(state_file_path)?;
         // println!("state file content:\n{state_file:?}\n");
         Ok(state_file)
     } else {
-        eprintln!("Trying to open {}", &conf.file_path().display());
+        info!("Trying to open {}", &conf.file_path().display());
 
         Ok(fs::read_to_string(conf.file_path())?)
     }
@@ -74,7 +78,7 @@ pub fn get_content(conf: &config::Config) -> AnyErr<String> {
 /// - `fs::remove_file()` errors
 pub fn rm_prog(path: &Path) -> AnyErr<()> {
     if prog_exists(path) {
-        eprintln!("Removing state file from: {:?}", prog_path(path)?);
+        info!("Removing state file from: {:?}", prog_path(path)?);
         fs::remove_file(prog_path(path)?)?;
     }
     Ok(())
@@ -126,7 +130,7 @@ pub fn save_prog(deck: &[Card], conf: &config::Config) -> AnyErr<()> {
     let content = serialize(deck, conf.delim());
     writeln!(ofile, "{content}")?;
 
-    eprintln!("Saved file to {}{:?}.\n\n", SPCR.repeat(2), ofile_path);
+    info!("Saved file to {}{:?}.\n\n", SPCR.repeat(2), ofile_path);
 
     Ok(())
 }

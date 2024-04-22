@@ -1,14 +1,14 @@
 //! # In this module, you can find code that helps in collecting cli arguments and determining properties of a file containing vocab data.
 use crate::*;
-// use assert_cmd::Command;
 use clap::Parser;
+use log::*;
 use std::{collections::HashMap, path::PathBuf};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
 pub struct Config {
     /// Path of the file to learn
-    #[arg(required = true)]
+    #[arg()]
     file_path: PathBuf,
 
     /// Swap terms and definitions of cards
@@ -58,15 +58,17 @@ impl Config {
         let conf = Config::parse();
 
         let content = state::get_content(&conf)?;
+        trace!("file content: {content}");
 
         let delim = if let Some(dlm) = conf.delim {
-            eprintln!("got delimiter as arg");
+            info!("got delimiter: {dlm} as arg");
             dlm
         } else {
+            info!("found delimiter in file");
             get_delim(&content)?
         };
 
-        eprintln!("Delimiter: \"{delim}\"");
+        info!("delimiter: \'{delim}\'");
         Ok(Config {
             delim: Some(delim),
             ..conf
@@ -104,8 +106,10 @@ impl Config {
 /// Get delimiter from content
 fn get_delim(content: &str) -> AnyErr<char> {
     const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
+    info!("currently supported delimiters: {DELIMS:?}");
 
     if let Ok(delim) = get_prop(content, "delim") {
+        info!("delim: {delim} was written to file as a property");
         return Ok(delim.chars().next().unwrap());
     }
 
@@ -121,11 +125,10 @@ fn get_delim(content: &str) -> AnyErr<char> {
             delims_counts.insert(*delim, delim_count.try_into()?);
         }
     }
-    for delim in &delims_counts {
-        println!("'{}': {}", delim.0, delim.1);
-    }
+    trace!("possible delimiters and their counts: {delims_counts:?}");
     if delims_counts.is_empty() {
-        Err(format!("Couldn't determine delimiter, should be one of: {DELIMS:?}").into())
+        error!("couldn't determine delimiter");
+        Err(format!("couldn't determine delimiter, should be one of: {DELIMS:?}").into())
     } else {
         Ok(*delims_counts.iter().max_by_key(|x| x.1).unwrap().0)
     }
@@ -134,10 +137,10 @@ fn get_delim(content: &str) -> AnyErr<char> {
 /// Get property from content
 fn get_prop(content: &str, prop: &str) -> AnyErr<String> {
     if content.contains("[crablit]") {
-        eprintln!("text contains [crablit]!");
+        trace!("text contains [crablit]!");
         let prop = &format!("{prop} = ");
         if !content.contains(prop) {
-            eprintln!("Couldn't find \"{prop}\"");
+            error!("Couldn't find \"{prop}\"");
             return Err(format!("Couldn't find \"{prop}\"").into());
         }
         Ok(content
