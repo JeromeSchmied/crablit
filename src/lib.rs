@@ -89,7 +89,6 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
-    let mut prev_valid_i: i32;
     while i < v.len() {
         let item = &mut v[i];
 
@@ -97,7 +96,6 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
             i += 1;
             continue;
         }
-        prev_valid_i = i as i32 - 1;
         // display prompt
         let last_hr = rl.history().iter().last();
         info!("last history element: {:?}", last_hr);
@@ -115,57 +113,65 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
         let guess = rl.readline(&msg)?;
         rl.add_history_entry(&guess)?;
         let guess = guess.trim();
+        info!("guessed: {guess:?}");
 
         // is command
         if guess.starts_with(':') {
             match guess {
                 ":q" | ":quit" | ":exit" => {
+                    info!(":q => quitting");
                     println!("{}", exit_msg());
                     process::exit(0);
                 }
 
                 ":h" | ":help" | ":hint" => {
+                    info!(":h => showing help");
                     println!("{}", item.hint());
                 }
 
                 ":w" | ":write" | ":save" => {
+                    info!(":w => saving progress");
                     state::save_prog(v, conf)?;
                 }
 
                 ":wq" => {
+                    info!(":wq => saving progress, then quitting");
                     state::save_prog(v, conf)?;
                     println!("{}", exit_msg());
                     process::exit(0);
                 }
 
-                // not very stable!
+                // TODO: not very stable, should check for not being Lok::Done and being only 1 away!!
                 ":typo" => {
-                    // ask to type again before correcting?
-                    if i > 0 {
-                        if let Some(skipping) = v.get(prev_valid_i as usize) {
-                            println!("{}", typo_msg(&skipping.ser(" = ")));
-                            v[prev_valid_i as usize].lok.incr();
-                        } else {
-                            println!("{}", typo_msg("None"));
-                        }
+                    info!(":typo => restoring last ");
+                    // find last that's not Lok::Done
+                    let typod = v.iter().take(i).rposition(|j| j.lok != Lok::Done);
+                    info!("found typod word at {typod:?}");
+                    if let Some(typo) = v.get(typod.unwrap_or(usize::MAX)) {
+                        println!("{}", typo_msg(&typo.ser(" = ")));
+                        v[typod.unwrap()].lok.incr();
                     } else {
                         println!("{}", typo_msg("None"));
                     }
+                    // ask to type again before correcting?
                     // rl.readline(&msg)?;
                 }
 
                 ":skip" => {
+                    info!(":skip => skipping");
                     println!("{}\n\n", item.skip());
                     i += 1;
                     continue;
                 }
 
                 ":revise" => {
+                    info!(":revise => revising");
                     println!("{}", revise_msg());
                     break;
                 }
 
                 ":f" | ":flash" => {
+                    info!(":f => showing flashcard");
                     println!("{}\n\n\n", item.flashcard());
                     item.lok.incr();
                     i += 1;
@@ -173,10 +179,12 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 
                 // incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
-                    println!("{}", togo_msg(len, (prev_valid_i + 1).try_into()?));
+                    info!(":n => showing togo");
+                    println!("{}", togo_msg(len, i));
                 }
 
                 uc => {
+                    warn!(":{uc} => unknown command");
                     println!("{} {}\n", "Unknown command:".red(), uc);
                 }
             }
