@@ -2,7 +2,7 @@
 use crate::*;
 // use assert_cmd::Command;
 use clap::Parser;
-use std::{collections::HashMap, error::Error, path::PathBuf};
+use std::{collections::HashMap, path::PathBuf};
 
 #[derive(Parser, Debug, PartialEq)]
 #[command(version, about, author, long_about = None)]
@@ -54,7 +54,7 @@ impl Config {
     /// # Panics
     ///
     /// `delim` is empty
-    pub fn fix_from_file() -> Result<Self, Box<dyn Error>> {
+    pub fn fix_from_file() -> AnyErr<Self> {
         let conf = Config::parse();
 
         let content = state::get_content(&conf)?;
@@ -102,7 +102,7 @@ impl Config {
 }
 
 /// Get delimiter from content
-fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
+fn get_delim(content: &str) -> AnyErr<char> {
     const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
 
     if let Ok(delim) = get_prop(content, "delim") {
@@ -132,7 +132,7 @@ fn get_delim(content: &str) -> Result<char, Box<dyn Error>> {
 }
 
 /// Get property from content
-fn get_prop(content: &str, prop: &str) -> Result<String, Box<dyn Error>> {
+fn get_prop(content: &str, prop: &str) -> AnyErr<String> {
     if content.contains("[crablit]") {
         eprintln!("text contains [crablit]!");
         let prop = &format!("{prop} = ");

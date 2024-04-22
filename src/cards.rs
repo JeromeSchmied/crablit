@@ -1,6 +1,5 @@
 //! # This module includes code specific to learning expressions.
 use crate::*;
-use std::{error::Error, mem};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Card {
@@ -41,7 +40,7 @@ impl Card {
     /// assert_ne!(Card::new("ask", "answer", None), swapd);
     /// ```
     pub fn swap_me(&mut self) {
-        mem::swap(&mut self.trm, &mut self.def);
+        std::mem::swap(&mut self.trm, &mut self.def);
     }
 }
 
@@ -100,7 +99,7 @@ impl Card {
         )
     }
 
-    pub fn deser(line: &str, delim: char) -> Result<Self, Box<dyn Error>> {
+    pub fn deser(line: &str, delim: char) -> AnyErr<Self> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 && words.clone().count() != 3 {
             Err(format!(
@@ -141,10 +140,7 @@ impl Card {
     }
 }
 
-pub(crate) fn deser_verbs_to_cards(
-    v: &[Card],
-    conf: &config::Config,
-) -> Result<String, Box<dyn Error>> {
+pub(crate) fn deser_verbs_to_cards(v: &[Card], conf: &config::Config) -> AnyErr<String> {
     Ok(v.iter().fold(String::new(), |result, card| {
         result
             + &format!(

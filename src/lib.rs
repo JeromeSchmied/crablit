@@ -25,6 +25,9 @@ pub use cards::Card;
 pub use utils::Lok;
 // pub use verbs::Verb;
 
+/// any `Err` implementing [`std::error::Error`]
+pub type AnyErr<T> = Result<T, Box<dyn Error>>;
+
 // enum Kard {
 //     Adjektiv(String),
 //     Nomen(String),
@@ -43,7 +46,7 @@ pub use utils::Lok;
 ///
 /// - can't read `path`
 /// - can't deserialize properly
-pub fn init(path: &PathBuf, delim: char) -> Result<Vec<Card>, Box<dyn Error>> {
+pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
     // contents of file with vocab data
     let contents = fs::read_to_string(path)?;
     // results vector
@@ -66,7 +69,7 @@ pub fn init(path: &PathBuf, delim: char) -> Result<Vec<Card>, Box<dyn Error>> {
 /// # Errors
 ///
 /// - `rustyline` can't create instance
-pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Error>> {
+pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
     // let mut printer = String::new();
     let len = v.iter().filter(|item| item.lok() != Lok::Done).count();
     println!("\n\nYou have {len} words to learn, let's start!\n\n");
@@ -184,7 +187,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Result<(), Box<dyn Err
 /// - `question()`
 /// - `state::rm()`
 /// - `verbs::deser_to_card()`
-pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
+pub fn run(conf: &config::Config) -> AnyErr<()> {
     match conf.convert {
         false => {
             let mut v = init(&conf.file_path(), conf.delim())?;
