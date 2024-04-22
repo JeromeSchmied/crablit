@@ -1,5 +1,5 @@
 //! # Library for vocabulary learning, used in `crablit`.
-use crate::utils::{exit, knew, revise, togo, typo, SPACER};
+use crate::utils::{exit, knew, revise, togo, typo, SPCR};
 use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
@@ -89,7 +89,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
         let last_hr = rl.history().iter().last();
         // eprintln!("last history element: {:?}", last_hr);
         let msg = format!(
-            "{}{SPACER}> ",
+            "{}{SPCR}> ",
             if last_hr.is_some_and(|he| {
                 he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
             }) {

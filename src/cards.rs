@@ -49,7 +49,7 @@ impl Card {
     /// Returns the question for this [`Card`].
     pub fn question(&self) -> String {
         format!(
-            "{SPACER}{} {}",
+            "{SPCR}{} {}",
             "?".bright_yellow().bold(),
             self.trm.bright_blue()
         )
@@ -59,7 +59,7 @@ impl Card {
     pub fn skip(&self) -> String {
         format!(
             "{}{} {}",
-            SPACER.repeat(2),
+            SPCR.repeat(2),
             "Skipping:".bright_magenta(),
             self.ser(" = ")
         )
@@ -75,13 +75,13 @@ impl Card {
             ]
             .concat()
         };
-        format!("{SPACER}{} {}", "#".cyan().bold(), hint)
+        format!("{SPCR}{} {}", "#".cyan().bold(), hint)
     }
 
     /// Returns the text when this [`Card`] was wrong.
     pub fn wrong(&self) -> String {
         format!(
-            "{SPACER}{} {} {}\n\n",
+            "{SPCR}{} {} {}\n\n",
             "~".bright_red().bold(),
             self.def.yellow().underline(),
             "<-is the right answer.".bright_red().italic()
@@ -91,11 +91,11 @@ impl Card {
     /// Returns the flashcard text for this [`Card`].
     pub fn flashcard(&self) -> String {
         format!(
-            "{SPACER}{} {}\n{SPACER}{}",
+            "{SPCR}{} {}\n{SPCR}{}",
             "=".bright_cyan().bold(),
             self.def,
             "─"
-                .repeat(self.def.len() + SPACER.len())
+                .repeat(self.def.len() + SPCR.len())
                 .bright_purple()
                 .bold()
         )

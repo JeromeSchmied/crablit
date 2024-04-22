@@ -124,7 +124,7 @@ pub fn save_prog(deck: &[Card], conf: &config::Config) -> AnyErr<()> {
     let content = serialize(deck, conf.delim());
     writeln!(ofile, "{content}")?;
 
-    eprintln!("Saved file to {}{:?}.\n\n", SPACER.repeat(2), ofile_path);
+    eprintln!("Saved file to {}{:?}.\n\n", SPCR.repeat(2), ofile_path);
 
     Ok(())
 }

@@ -4,12 +4,12 @@ use std::fmt;
 use owo_colors::OwoColorize;
 
 /// space before any output
-pub const SPACER: &str = "    ";
+pub const SPCR: &str = "    ";
 
 /// Knew it text.
 pub fn knew() -> String {
     format!(
-        "{SPACER}{} {}",
+        "{SPCR}{} {}",
         "$".bright_green().bold(),
         "Yes, that's right!\n".bright_green()
     )
@@ -17,7 +17,7 @@ pub fn knew() -> String {
 /// Revising text.
 pub fn revise() -> String {
     format!(
-        "{SPACER}{}",
+        "{SPCR}{}",
         "Going to the ones not guessed correctly...".bright_magenta()
     )
 }
@@ -25,19 +25,19 @@ pub fn revise() -> String {
 pub fn typo(s: &str) -> String {
     format!(
         "{}{} {s}",
-        SPACER.repeat(2),
+        SPCR.repeat(2),
         "Corrected:".bright_magenta().italic(),
     )
 }
 /// Exiting text.
 pub fn exit() -> String {
-    format!("\n{SPACER}{}", "Exiting...".bright_magenta().italic())
+    format!("\n{SPCR}{}", "Exiting...".bright_magenta().italic())
 }
 /// To go text.
 pub fn togo(sum: usize, i: usize) -> String {
     format!(
         "{}{} at {:.1}{}, {} more to go",
-        SPACER.repeat(2),
+        SPCR.repeat(2),
         "!".bold().bright_purple(),
         (i as f32 / sum as f32 * 100.),
         "%".bold().bright_purple(),
@@ -48,9 +48,13 @@ pub fn togo(sum: usize, i: usize) -> String {
 #[derive(Debug, Clone, PartialEq)]
 /// Level Of Knowledge
 pub enum Lok {
+    /// has not seen it yet
     Nothing,
+    /// got once right
     Something,
+    /// got twice rigth
     Almost,
+    /// got 3 times right: done
     Done,
 }
 impl Lok {
@@ -78,6 +82,16 @@ impl Lok {
         }
     }
     /// Increment this [`Lok`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use crablit::Lok;
+    ///
+    /// let mut lok = Lok::default();
+    /// lok.incr();
+    /// assert_eq!(lok, Lok::Something);
+    /// ```
     pub fn incr(&mut self) {
         *self = match *self {
             Self::Nothing => Self::Something,
@@ -86,6 +100,16 @@ impl Lok {
         }
     }
     /// Decrement this [`Lok`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use crablit::utils::Lok;
+    ///
+    /// let mut lok = Lok::Almost;
+    /// lok.decr();
+    /// assert_eq!(lok, Lok::Something);
+    /// ```
     pub fn decr(&mut self) {
         *self = match *self {
             Self::Nothing | Self::Something => Self::Nothing,
