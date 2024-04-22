@@ -7,7 +7,7 @@ pub struct Card {
     /// Term in known language
     trm: String,
     /// Definition in language to be learnt
-    def: String,
+    pub def: String,
     /// level of knowledge: 0,1,2,3
     pub lok: Lok,
 }
@@ -53,11 +53,6 @@ impl Card {
             "?".bright_yellow().bold(),
             self.trm.bright_blue()
         )
-    }
-
-    /// Returns the correct answer for this [`Card`].
-    pub fn correct(&self) -> String {
-        self.def.to_string()
     }
 
     /// Returns the text for skipping this [`Card`].
@@ -117,7 +112,7 @@ impl Card {
             Err(format!(
                 "A line should look like this:\n\t\"{}{}{}\".\nInstead looks like this:\n\t\"{}\".",
                 "<term>".blue().italic(),
-                delim.to_string().red().bold(),
+                delim.red().bold(),
                 "<definition>".yellow().italic(),
                 line,
             )

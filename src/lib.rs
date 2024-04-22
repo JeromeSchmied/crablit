@@ -167,7 +167,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     println!("{} {}\n", "Unknown command:".red(), uc);
                 }
             }
-        } else if guess == item.correct() {
+        } else if guess == item.def {
             println!("{}\n", knew());
             item.lok.incr();
             i += 1;
