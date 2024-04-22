@@ -75,6 +75,7 @@ impl Lok {
             Self::default()
         }
     }
+    /// Increment this [`Lok`].
     pub fn incr(&mut self) {
         *self = match *self {
             Self::Nothing => Self::Something,
@@ -82,6 +83,7 @@ impl Lok {
             Self::Almost | Self::Done => Self::Done,
         }
     }
+    /// Decrement this [`Lok`].
     pub fn decr(&mut self) {
         *self = match *self {
             Self::Nothing | Self::Something => Self::Nothing,

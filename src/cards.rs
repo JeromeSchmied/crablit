@@ -9,7 +9,7 @@ pub struct Card {
     /// Definition in language to be learnt
     def: String,
     /// level of knowledge: 0,1,2,3
-    lok: Lok,
+    pub lok: Lok,
 }
 impl Card {
     /// Creates new instance of a `Card`
@@ -136,23 +136,8 @@ impl Card {
             "{}{delim}{}{delim}{}",
             self.trm,
             self.def,
-            self.lok().display()
+            self.lok.display()
         )
-    }
-
-    /// Increment the [`Lok`] of this [`Card`].
-    pub fn incr(&mut self) {
-        self.lok.incr();
-    }
-
-    /// Decrement the [`Lok`] of this [`Card`].
-    pub fn decr(&mut self) {
-        self.lok.decr();
-    }
-
-    /// Returns the [`Lok`] of this [`Card`].
-    pub fn lok(&self) -> Lok {
-        self.lok.clone()
     }
 }
 

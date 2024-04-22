@@ -71,7 +71,7 @@ pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
 /// - `rustyline` can't create instance
 pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
     // let mut printer = String::new();
-    let len = v.iter().filter(|item| item.lok() != Lok::Done).count();
+    let len = v.iter().filter(|item| item.lok != Lok::Done).count();
     println!("\n\nYou have {len} words to learn, let's start!\n\n");
     let mut rl = DefaultEditor::new()?;
 
@@ -80,7 +80,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
     while i < v.len() {
         let item = &mut v[i];
 
-        if item.lok() == Lok::Done {
+        if item.lok == Lok::Done {
             i += 1;
             continue;
         }
@@ -131,7 +131,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     if i > 0 {
                         if let Some(skipping) = v.get(prev_valid_i as usize) {
                             println!("{}", typo(&skipping.ser(" = ")));
-                            v[prev_valid_i as usize].incr();
+                            v[prev_valid_i as usize].lok.incr();
                         } else {
                             println!("{}", typo("None"));
                         }
@@ -154,7 +154,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 
                 ":f" | ":flash" => {
                     println!("{}\n\n\n", item.flashcard());
-                    item.incr();
+                    item.lok.incr();
                     i += 1;
                 }
 
@@ -169,11 +169,11 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
             }
         } else if guess == item.correct() {
             println!("{}\n", knew());
-            item.incr();
+            item.lok.incr();
             i += 1;
         } else {
             println!("{}", item.wrong());
-            item.decr();
+            item.lok.decr();
             i += 1;
         }
     }
@@ -201,7 +201,7 @@ pub fn run(conf: &config::Config) -> AnyErr<()> {
                 randomly_swap_cards(&mut v);
             }
 
-            while v.iter().filter(|item| item.lok() == Lok::Done).count() < v.len() {
+            while v.iter().filter(|item| item.lok == Lok::Done).count() < v.len() {
                 if !conf.no_shuffle {
                     eprintln!("shuffling");
                     fastrand::shuffle(&mut v);
