@@ -45,6 +45,7 @@ impl Card {
 }
 
 impl Card {
+    /// Returns the question for this [`Card`].
     pub fn question(&self) -> String {
         format!(
             "{SPACER}{} {}",
@@ -53,10 +54,12 @@ impl Card {
         )
     }
 
+    /// Returns the correct answer for this [`Card`].
     pub fn correct(&self) -> String {
         self.def.to_string()
     }
 
+    /// Returns the text for skipping this [`Card`].
     pub fn skip(&self) -> String {
         format!(
             "{}{} {}",
@@ -66,6 +69,7 @@ impl Card {
         )
     }
 
+    /// Returns hint for this [`Card`].
     pub fn hint(&self) -> String {
         let hint = {
             let n = self.def.chars().count() / 2;
@@ -78,6 +82,7 @@ impl Card {
         format!("{SPACER}{} {}", "#".cyan().bold(), hint)
     }
 
+    /// Returns the text when this [`Card`] was wrong.
     pub fn wrong(&self) -> String {
         format!(
             "{SPACER}{} {} {}\n\n",
@@ -87,6 +92,7 @@ impl Card {
         )
     }
 
+    /// Returns the flashcard text for this [`Card`].
     pub fn flashcard(&self) -> String {
         format!(
             "{SPACER}{} {}\n{SPACER}{}",
@@ -99,6 +105,11 @@ impl Card {
         )
     }
 
+    /// Deserialize this [`Card`].
+    ///
+    /// # Errors, Panics
+    ///
+    /// Errors, Panics if invalid.
     pub fn deser(line: &str, delim: char) -> AnyErr<Self> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 && words.clone().count() != 3 {
@@ -118,6 +129,7 @@ impl Card {
         }
     }
 
+    /// Serialize this [`Card`].
     pub fn ser(&self, delim: &str) -> String {
         format!(
             "{}{delim}{}{delim}{}",
@@ -127,19 +139,23 @@ impl Card {
         )
     }
 
+    /// Increment the [`Lok`] of this [`Card`].
     pub fn incr(&mut self) {
         self.lok.incr();
     }
 
+    /// Decrement the [`Lok`] of this [`Card`].
     pub fn decr(&mut self) {
         self.lok.decr();
     }
 
+    /// Returns the [`Lok`] of this [`Card`].
     pub fn lok(&self) -> Lok {
         self.lok.clone()
     }
 }
 
+/// Deserialize verbs to cards.
 pub(crate) fn deser_verbs_to_cards(v: &[Card], conf: &config::Config) -> AnyErr<String> {
     Ok(v.iter().fold(String::new(), |result, card| {
         result
