@@ -2,7 +2,7 @@
 
 [![Crates.io Version](https://img.shields.io/crates/v/crablit)](https://crates.io/crates/crablit)
 [![Crates.io License](https://img.shields.io/crates/l/crablit)](https://choosealicense.com/licenses/mit/)
-[![dependency status](https://deps.rs/crate/crablit/0.1.5/status.svg)](https://deps.rs/crate/crablit/0.1.5)
+[![dependency status](https://deps.rs/crate/crablit/0.1.6/status.svg)](https://deps.rs/crate/crablit/0.1.6)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jeromeschmied/crablit/rust.yml)](https://github.com/jeromeschmied/crablit/actions)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/commits)
 [![GitHub issues](https://img.shields.io/github/issues/jeromeschmied/crablit)](https://github.com/jeromeschmied/crablit/issues)
@@ -12,11 +12,13 @@
 >
 > Crablit is still in beta, functionality is not tested thoroughly.
 
+## Table of Contents (ToC)
+
 <!--toc:start-->
 
 -   [Features](#features)
 -   [Creating files to learn](#creating-files-to-learn)
--   [Installing](#installing)
+-   [Installation](#installation)
 -   [Usage](#usage)
 -   [How it works](#how-it-works)
 -   [Notes](#notes)
@@ -27,7 +29,8 @@
 
 -   _open-source_, MIT licensed
 -   _Cross-platform_: works on Windows, MacOS, but with GNU/Linux 1st philosophy.
--   _Fast_: initialization of **20000000** cards (574MB) takes about **4.3s** with a maximum of 2.4GB RAM usage.
+-   _Fast_: initialization of **20000000** cards (574MB) takes about **5s** with a maximum of 2.4GB RAM usage.
+-   readline like editing.
 -   Written answers.
 
 ## Creating files to learn
@@ -55,20 +58,19 @@ proud | stolz
 to pour | gießen
 ```
 
--   Mode for _Verb-learning_: if you need to learn lots of verbforms, like:
+-   _Verb-learning_: if you need to learn lots of verbforms, you could do:
 
 ```text
 # [crablit]
-# mode = "verbs"
-# delim = '	'
+# delim = ';'
 
 # Verben Tabelle von DaF leicht 1,2
 # it's hungarian but that really doesn't matter
 
-# INFINI	DRITTE	PRÄTER	PERFEKT 	MEANING 	KOMMENT
-atmen	    atmet	atmete	h. geatmet	lélegzik	Er hat ruhig geatmet.
-baden	    badet	badete	h. gebadet	fürdik  	Das Mädchen duscht den Hund.
-bauen	    baut	baute	h. gebaut	épít    	Haus bauen
+# INFINI ; DRITTE, PRÄTER, PERFEKT, MEANING
+  atmen  ; atmet, atmete, h. geatmet, to breathe
+  baden  ; badet, badete, h. gebadet, to have a bath
+  bauen  ; baut, baute, h. gebaut, to build
 ...
 ```
 
@@ -84,18 +86,19 @@ bauen	    baut	baute	h. gebaut	épít    	Haus bauen
 <!-- # or you can install latest development version with -->
 <!-- cargo install --git https://github.com/jeromeschmied/crablit -->
 
-## Installing
+## Installation
 
 0. **_Easiest, recommended:_** Go to releases page and see instructions built by [cargo-dist](https://opensource.axo.dev/cargo-dist/).
 
 or:
+
 -   [Install Rust](https://www.rust-lang.org/tools/install), in case you don't have it.
 -   Open a [terminal](https://github.com/cdleon/awesome-terminals) and do one of the following install methods:
 
 1. From [crates.io](https://crates.io/crates/crablit):
 
 ```shell
-cargo install crablit
+cargo install crablit --locked
 ```
 
 3. Download source from github:
@@ -124,13 +127,17 @@ cargo install --path .
 
 -   Run `crablit --help` to see help.
 -   Type the definition of the questioned word/phrase.
--   To see hint: `:hint` or `:h`.
+-   To see hint: `:help`, `:hint` or `:h`.
 -   If you mistyped it, type: `:typo`.
 -   To skip: `:skip`.
 -   To quit: `quit` or `exit` or `:q`.
 -   To save progress: `:w` or `:write` or `:save`, to continue, you can open the file just like before. It's not yet stable on Windows.
+-   To save, then quit: `:wq`.
+-   To go to the ones not guessed correctly and ignore the other ones: `:revise`.
+-   To see flashcard-like stuff: `:f` or `:flash`. Yet untested.
+-   To check status of current iteration: `:n`, `:num` or `:togo`.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
--   If `NO_COLOR=1`, coloring is disabled, thanks to [colored](https://crates.io/crates/colored).
+-   If `NO_COLOR=1`, coloring is disabled, thanks to [owo-colors](https://crates.io/crates/owo-colors).
 
 ## How it works
 
@@ -139,22 +146,24 @@ cargo install --path .
 -   See [images for more](examples/img)!
 -   It takes a source text file with deck of cards: .tsv, .csv or .txt. See [examples](https://github.com/JeromeSchmied/crablit/tree/main/examples).
 -   Stores them in a vector.
--   Asks them until you know all well (currently only till you guess them right once).
+-   Asks them until you know all well: guessed 4 times correctly.
 
 ## Notes
 
 -   I'm only learning Rust at the moment, so code quality might not be outstanding.
--   Flashcards, TUI, GUI, Website are coming, but it takes time.
--   Any bugs, questions shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or [email](mailto:iitsnotme214@proton.me).
+-   TUI, GUI, Website are coming, but it takes time.
+-   Any bugs, questions, feature requests shall be reported to [github](https://github.com/JeromeSchmied/crablit/issues), or by [email](mailto:iitsnotme214@proton.me).
 -   To help with development, see [todos](TODO.md).
 
 ## Alternatives
 
 -   [speki](https://crates.io/crates/speki): pretty great, but only flashcards, huge download size, tui, rust, unmaintained?
+-   [flashed](https://gitlab.com/john_t/flashed.git): nice, but json input, really?, tui, rust, unmaintained?
 -   [vocage](https://crates.io/crates/vocage): only flashcards, tui, rust, unmaintained?
 -   [flcard](https://crates.io/crates/flcard): only flashcards, very simple, rust, unmaintained?
 -   [fla.sh](https://github.com/tallguyjenks/fla.sh): only flashcards, bash
 -   [hascard](https://github.com/Yvee1/hascard): only flashcards, haskell
+-   [oxycards](https://github.com/BrookJeynes/oxycards): very great, tui, rust, unmaintained?
 -   [exhaust](https://github.com/heyrict/exhaust): I couldn't get it to work, rust, unmaintained?
 
 [1]: examples/img/v0.1.5_cards.png "Image of using crablit in Alacritty terminal on Arch GNU/Linux"

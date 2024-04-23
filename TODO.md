@@ -19,19 +19,22 @@
 -   [x] output the right amount of '\_'-s even for special (more byte) characers <- done: `s.chars().count()`
 -   [x] have organized, formatted output <- done: using nice charecters, colors
 -   [x] save progress <- done using dirs crate, fs::read,write
--   [ ] make progress saving stable
--   [ ] autocompletion of commands: `:<command>`
--   [ ] levelled knowledge
+-   [x] flashcards
+-   [x] levelled knowledge
+
+## maybe needed
+
+-   [x] delete unnecessary verbs module and therefore every freakin' 2. line
+-   [ ] find duplicates and deal with 'em somehow
+-   [ ] if hint typed more than once, show more help: verbs
 -   [ ] starring words that need learning, high level
--   [ ] use a printer String, always delete old questions: pretty-print
--   [ ] flashcards
--   [ ] find duplicates and deal with 'em
+-   [ ] filtering what to learn, like unusual verbforms
+-   [ ] other question types like i dunno
 
 ## nice-to-haves
 
--   [ ] if hint typed more than once, show more help
 -   [ ] [tui](https://crates.io/crates/ratatui)
--   [ ] filtering what to learn, like unusual verbforms
+-   [ ] autocompletion of commands: `:<command>`
 -   [ ] taking cli arguments: [clap](https://crates.io/crates/clap)
     -   [x] file name
     -   [x] delimiter
@@ -55,7 +58,7 @@
 
 -   [ ] write docs, man
 -   [x] being able to determine every property itself <- kinda?
--   [ ] everything knowt or quizlet has
+-   [ ] everything actually useful knowt or quizlet has
 -   [x] being able to learn verbs with their forms from tables
 -   [ ] fuzzy matching words
 -   [ ] tests: like in school
@@ -66,8 +69,7 @@
 -   [x] clean main.rs
 -   [x] don't write almost the same functions twice, use generics and all <- init(), quest() now uses traits, generics
 -   [x] basic tests: being cross-platform, `lib` tests
--   [ ] tests: assert_cmd
--   [ ] being stupid-proof == no bugs
+-   [ ] tests: e.g.: assert_cmd
 -   [ ] non-spagethi code with
 
     -   [x] `mod`s
@@ -79,9 +81,9 @@
 
 -   [x] [github repo](https://github.com/JeromeSchmied/crablit), or some github alternative
 -   [x] [crates](https://crates.io)
--   [ ] website: crablit.com or crablit.io or crab.lit
+-   [ ] website: crablit.com or crablit.io or crab.lit or crablit.rs
 -   [ ] being able to share decks
--   [ ] being able to create flashcard decks in app
+-   [ ] being able to create decks in app
 -   [ ] clean API
 -   [ ] template files for creating great flashcards with
     -   [x] delimiter

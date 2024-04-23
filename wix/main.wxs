@@ -61,7 +61,7 @@
     <Product
         Id='*'
         Name='crablit'
-        UpgradeCode='DF323B3C-9AF0-40ED-A2E8-E1C5D615772A'
+        UpgradeCode='62AC77F4-2DE5-4AD3-8A06-513A30143EFB'
         Manufacturer='Jeromos Kovács'
         Language='1033'
         Codepage='1252'
@@ -110,7 +110,7 @@
                     -->
 
                     <Directory Id='Bin' Name='bin'>
-                        <Component Id='Path' Guid='0B5C924B-9580-4836-92B0-86506605072C' KeyPath='yes'>
+                        <Component Id='Path' Guid='BB57D6D2-0855-4746-8E20-037395B060F6' KeyPath='yes'>
                             <Environment
                                 Id='PATH'
                                 Name='PATH'
