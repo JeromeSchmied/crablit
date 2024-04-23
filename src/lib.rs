@@ -141,7 +141,6 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     process::exit(0);
                 }
 
-                // TODO: not very stable, should check for not being Lok::Done and being only 1 away!!
                 ":typo" => {
                     info!(":typo => restoring last ");
                     // find last that's not Lok::Done
