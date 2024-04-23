@@ -1,7 +1,6 @@
 //! # In this module, you can find code that helps in collecting cli arguments and determining properties of a file containing vocab data.
 use crate::*;
 use clap::Parser;
-use log::*;
 use std::{collections::HashMap, path::PathBuf};
 
 #[derive(Parser, Debug, PartialEq)]
