@@ -7,7 +7,7 @@
 -   [x] spaced repetition <- iterating over vector, pushing back not guessed ones, they get questioned later, shuffled
 -   [x] end-user dealing with typos <- :typo
 -   [x] hints <- :hint
--   [x] colored output <- [colored](https://crates.io/crates/colored) from crates.io
+-   [x] colored output <- [yansi](https://crates.io/crates/yansi) from crates.io
 
 ## further development
 
@@ -26,9 +26,7 @@
 
 -   [x] delete unnecessary verbs module and therefore every freakin' 2. line
 -   [ ] find duplicates and deal with 'em somehow
--   [ ] if hint typed more than once, show more help: verbs
 -   [ ] starring words that need learning, high level
--   [ ] filtering what to learn, like unusual verbforms
 -   [ ] other question types like i dunno
 
 ## nice-to-haves
@@ -49,18 +47,16 @@
     -   [ ] anki decks
     -   [ ] quizlet decks
     -   [ ] knowt decks
-    -   [ ] [chatgpt](https://chat.openai.com) just because everyone is crazy about it
     -   [ ] [Dudenswissensnetz](https://duden.de)
     -   [ ] [verbformen](https://verbformen.de)
     -   [ ] [oxford english dictionary](https://oed.com/dictionary)
-    -   [ ] lots of other stuff
     -   [ ] using [deepl](https://deepl.com)
 
--   [ ] write docs, man
--   [x] being able to determine every property itself <- kinda?
+-   [ ] write docs, man: clap-mangen
+-   [x] being able to determine properties
 -   [ ] everything actually useful knowt or quizlet has
 -   [x] being able to learn verbs with their forms from tables
--   [ ] fuzzy matching words
+-   [ ] fuzzy matching words?
 -   [ ] tests: like in school
 -   [ ] very nice statistics, plots
 
@@ -81,7 +77,7 @@
 
 -   [x] [github repo](https://github.com/JeromeSchmied/crablit), or some github alternative
 -   [x] [crates](https://crates.io)
--   [ ] website: crablit.com or crablit.io or crab.lit or crablit.rs
+-   [ ] website: crablit.com or crablit.io or crab.lit or crablit.rs or anything else
 -   [ ] being able to share decks
 -   [ ] being able to create decks in app
 -   [ ] clean API
