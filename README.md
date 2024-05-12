@@ -137,7 +137,7 @@ cargo install --path .
 -   To see flashcard-like stuff: `:f` or `:flash`.
 -   To check status of current iteration: `:n`, `:num` or `:togo`.
 -   To edit previously typed guess, press arrow-up. Doesn't always work.
--   If `NO_COLOR=1`, coloring is disabled, thanks to [owo-colors](https://crates.io/crates/owo-colors).
+<!-- -   If `NO_COLOR=1`, coloring is disabled, thanks to [yansi](https://crates.io/crates/yansi). -->
 
 ## How it works
 

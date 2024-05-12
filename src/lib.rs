@@ -1,7 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::utils::*;
 use log::*;
-use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
     error::Error,
@@ -11,6 +10,7 @@ use std::{
     path::PathBuf,
     process,
 };
+use yansi::Paint;
 
 /// Module for learning Deck of Cards
 pub mod cards;

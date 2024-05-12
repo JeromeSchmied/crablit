@@ -1,7 +1,6 @@
 //! # Code containing expressions used in `crablit` regularly.
 
-use log::*;
-use owo_colors::OwoColorize;
+use crate::*;
 use std::fmt;
 
 /// space before any output
@@ -39,9 +38,9 @@ pub fn togo_msg(sum: usize, i: usize) -> String {
     format!(
         "{}{} at {:.1}{}, {} more to go",
         SPCR.repeat(2),
-        "!".bold().bright_purple(),
+        "!".bold().on_magenta(),
         (i as f32 / sum as f32 * 100.),
-        "%".bold().bright_purple(),
+        "%".bold().on_magenta(),
         (sum + 1 - i).to_string().italic()
     )
 }
