@@ -146,9 +146,9 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     // find last that's not Lok::Done
                     let typod = v.iter().take(i).rposition(|j| j.lok != Lok::Done);
                     info!("found typod word at {typod:?}");
-                    if let Some(typo) = v.get(typod.unwrap_or(usize::MAX)) {
+                    if let Some(typo) = v.get_mut(typod.unwrap_or(usize::MAX)) {
+                        typo.lok.incr();
                         println!("{}", typo_msg(&typo.ser(" = ")));
-                        v[typod.unwrap()].lok.incr();
                     } else {
                         println!("{}", typo_msg("None"));
                     }

@@ -1,5 +1,6 @@
 //! # Code containing expressions used in `crablit` regularly.
 
+use log::*;
 use owo_colors::OwoColorize;
 use std::fmt;
 
@@ -93,6 +94,7 @@ impl Lok {
     /// assert_eq!(lok, Lok::Something);
     /// ```
     pub fn incr(&mut self) {
+        info!("incrementing {self:?}");
         *self = match *self {
             Self::Nothing => Self::Something,
             Self::Something => Self::Almost,

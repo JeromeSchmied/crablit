@@ -4,7 +4,7 @@ use log::*;
 use std::{fs::OpenOptions, process};
 
 fn main() -> AnyErr<()> {
-    set_up_logger();
+    set_up_logger()?;
     // init stupid (windows) terminal to be able to handle ascii escape sequences
     output_vt100::init();
 
@@ -26,7 +26,7 @@ fn main() -> AnyErr<()> {
     Ok(())
 }
 
-fn set_up_logger() {
+fn set_up_logger() -> AnyErr<()> {
     // set up logger
     fern::Dispatch::new()
         // Perform allocation-free log formatting
@@ -56,4 +56,6 @@ fn set_up_logger() {
     // info!("log level: INFO");
     // warn!("log level: WARN");
     // error!("log level: ERROR");
+
+    Ok(())
 }
