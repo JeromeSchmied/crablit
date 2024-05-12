@@ -33,10 +33,6 @@ pub struct Config {
     /// Don't load previous state
     #[arg(long, default_value_t = false)]
     pub no_state: bool,
-
-    /// Only check file syntax don't actually start learning deck
-    #[arg(long = "check", default_value_t = false)]
-    pub only_check: bool,
 }
 
 impl Config {

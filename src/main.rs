@@ -15,13 +15,11 @@ fn main() -> Res<()> {
     });
     info!("succesfully set up config");
 
-    if !conf.only_check {
-        if let Err(e) = crablit::run(&conf) {
-            eprintln!("App error: {e}");
-            error!("App error: {e}");
-            process::exit(2);
-        };
-    }
+    if let Err(e) = crablit::run(&conf) {
+        eprintln!("App error: {e}");
+        error!("App error: {e}");
+        process::exit(2);
+    };
 
     Ok(())
 }
