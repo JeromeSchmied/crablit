@@ -163,12 +163,11 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     continue;
                 }
 
-                ":revise" => {
-                    info!(":revise => revising");
-                    println!("{}", revise_msg());
-                    break;
-                }
-
+                // ":revise" => {
+                //     info!(":revise => revising");
+                //     println!("{}", revise_msg());
+                //     break;
+                // }
                 ":f" | ":flash" => {
                     info!(":f => showing flashcard");
                     println!("{}\n\n\n", item.flashcard());
@@ -176,7 +175,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     i += 1;
                 }
 
-                // incorrect, not accurate
+                // may be incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
                     info!(":n => showing togo");
                     println!("{}", togo_msg(len, i));
