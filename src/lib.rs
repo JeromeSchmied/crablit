@@ -163,11 +163,6 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     continue;
                 }
 
-                // ":revise" => {
-                //     info!(":revise => revising");
-                //     println!("{}", revise_msg());
-                //     break;
-                // }
                 ":f" | ":flash" => {
                     info!(":f => showing flashcard");
                     println!("{}\n\n\n", item.flashcard());
