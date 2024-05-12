@@ -95,7 +95,7 @@ impl Card {
             "{SPCR}{} {}\n{SPCR}{}",
             "=".bright_cyan().bold(),
             self.def,
-            "─".repeat(self.def.len() + SPCR.len()).on_magenta().bold()
+            "─".repeat(self.def.len() + SPCR.len()).magenta().bold()
         )
     }
 

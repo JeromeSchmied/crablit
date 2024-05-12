@@ -38,9 +38,9 @@ pub fn togo_msg(sum: usize, i: usize) -> String {
     format!(
         "{}{} at {:.1}{}, {} more to go",
         SPCR.repeat(2),
-        "!".bold().on_magenta(),
+        "!".bold().magenta(),
         (i as f32 / sum as f32 * 100.),
-        "%".bold().on_magenta(),
+        "%".bold().magenta(),
         (sum + 1 - i).to_string().italic()
     )
 }
