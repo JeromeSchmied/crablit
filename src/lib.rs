@@ -27,7 +27,7 @@ pub use utils::Lok;
 // pub use verbs::Verb;
 
 /// any `Err` implementing [`std::error::Error`]
-pub type AnyErr<T> = Result<T, Box<dyn Error>>;
+pub type Res<T> = Result<T, Box<dyn Error>>;
 
 /// get log path for `kind`.log
 pub fn log_path(kind: &str) -> Option<PathBuf> {
@@ -56,7 +56,7 @@ pub fn log_path(kind: &str) -> Option<PathBuf> {
 ///
 /// - can't read `path`
 /// - can't deserialize properly
-pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
+pub fn init(path: &PathBuf, delim: char) -> Res<Vec<Card>> {
     info!("initializing");
     // contents of file with vocab data
     let contents = fs::read_to_string(path)?;
@@ -82,7 +82,7 @@ pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
 /// # Errors
 ///
 /// - `rustyline` can't create instance
-pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
+pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
     // let mut printer = String::new();
     let len = v.iter().filter(|item| item.lok != Lok::Done).count();
     println!("\n\nYou have {len} words to learn, let's start!\n\n");
@@ -202,7 +202,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 /// - `question()`
 /// - `state::rm()`
 /// - `verbs::deser_to_card()`
-pub fn run(conf: &config::Config) -> AnyErr<()> {
+pub fn run(conf: &config::Config) -> Res<()> {
     info!("running app");
     match conf.convert {
         false => {

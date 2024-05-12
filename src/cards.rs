@@ -104,7 +104,7 @@ impl Card {
     /// # Errors, Panics
     ///
     /// Errors, Panics if invalid.
-    pub fn deser(line: &str, delim: char) -> AnyErr<Self> {
+    pub fn deser(line: &str, delim: char) -> Res<Self> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 && words.clone().count() != 3 {
             Err(format!(
@@ -130,7 +130,7 @@ impl Card {
 }
 
 /// Deserialize verbs to cards.
-pub fn deser_verbs_to_cards(cards: &[Card], conf: &config::Config) -> AnyErr<String> {
+pub fn deser_verbs_to_cards(cards: &[Card], conf: &config::Config) -> Res<String> {
     Ok(cards.iter().fold(String::new(), |result, card| {
         result
             + &format!(

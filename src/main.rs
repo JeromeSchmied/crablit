@@ -1,9 +1,9 @@
 use chrono::Local;
-use crablit::{config::Config, log_path, AnyErr};
+use crablit::{config::Config, log_path, Res};
 use log::*;
 use std::{fs::OpenOptions, process};
 
-fn main() -> AnyErr<()> {
+fn main() -> Res<()> {
     set_up_logger()?;
     // init stupid (windows) terminal to be able to handle ascii escape sequences
     output_vt100::init();
@@ -26,7 +26,7 @@ fn main() -> AnyErr<()> {
     Ok(())
 }
 
-fn set_up_logger() -> AnyErr<()> {
+fn set_up_logger() -> Res<()> {
     // set up logger
     fern::Dispatch::new()
         // Perform allocation-free log formatting

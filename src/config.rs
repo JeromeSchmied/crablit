@@ -53,7 +53,7 @@ impl Config {
     /// # Panics
     ///
     /// `delim` is empty
-    pub fn fix_from_file() -> AnyErr<Self> {
+    pub fn fix_from_file() -> Res<Self> {
         let conf = Config::parse();
 
         let content = state::get_content(&conf)?;
@@ -103,7 +103,7 @@ impl Config {
 }
 
 /// Get delimiter from content
-fn get_delim(content: &str) -> AnyErr<char> {
+fn get_delim(content: &str) -> Res<char> {
     const DELIMS: [char; 5] = [';', '|', '\t', '=', ':' /*',', '-'*/];
     info!("currently supported delimiters: {DELIMS:?}");
 
@@ -134,7 +134,7 @@ fn get_delim(content: &str) -> AnyErr<char> {
 }
 
 /// Get property from content
-fn get_prop(content: &str, prop: &str) -> AnyErr<String> {
+fn get_prop(content: &str, prop: &str) -> Res<String> {
     if content.contains("[crablit]") {
         trace!("text contains [crablit]!");
         let prop = &format!("{prop} = ");
