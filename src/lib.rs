@@ -132,6 +132,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
                 ":w" | ":write" | ":save" => {
                     info!(":w => saving progress");
                     state::save_prog(v, conf)?;
+                    // println("Saved progress");
                 }
 
                 ":wq" => {
@@ -143,10 +144,13 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
 
                 ":typo" => {
                     info!(":typo => restoring last ");
-                    // find last that's not Lok::Done
+                    // find last that's not `Lok::Done`
                     let typod = v.iter().take(i).rposition(|j| j.lok != Lok::Done);
                     info!("found typod word at {typod:?}");
                     if let Some(typo) = v.get_mut(typod.unwrap_or(usize::MAX)) {
+                        // increment for restoring last `Lok`
+                        typo.lok.incr();
+                        // increment `Lok` for guessing it well
                         typo.lok.incr();
                         println!("{}", typo_msg(&typo.ser(" = ")));
                     } else {
@@ -173,7 +177,11 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
                 // may be incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
                     info!(":n => showing togo");
-                    println!("{}", togo_msg(len, i));
+                    // calculate `len` again, as it may have changed since function start
+                    println!(
+                        "{}",
+                        togo_msg(v.iter().filter(|item| item.lok != Lok::Done).count(), i)
+                    );
                 }
 
                 uc => {
