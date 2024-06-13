@@ -85,7 +85,7 @@ pub fn init(path: &PathBuf, delim: char) -> Res<Vec<Card>> {
 pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
     // let mut printer = String::new();
     println!(
-        "\n\nYou have {} words to learn, let's start!\n\n",
+        "\n\nYou have {} words to learn.\n\n",
         v.iter().filter(|item| item.lok != Lok::Done).count()
     );
     let mut rl = DefaultEditor::new()?;
