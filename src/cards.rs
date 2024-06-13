@@ -6,7 +6,7 @@ use crate::*;
 #[derive(Debug, Clone, PartialEq)]
 pub struct Card {
     /// Term in known language
-    trm: String,
+    pub trm: String,
     /// Definition in language to be learnt
     pub def: String,
     /// level of knowledge: 0,1,2,3

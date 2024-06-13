@@ -106,7 +106,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
             if last_hr.is_some_and(|he| {
                 he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
             }) {
-                "".to_string()
+                String::new()
             } else {
                 format!("{}\n", item.question())
             }
@@ -188,7 +188,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
 
                 uc => {
                     warn!(":{uc} => unknown command");
-                    println!("{} {}\n", "Unknown command:".red(), uc);
+                    println!("{} {uc}\n", "Unknown command:".red());
                 }
             }
         } else if guess == item.def {
@@ -214,53 +214,50 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
 /// - `verbs::deser_to_card()`
 pub fn run(conf: &config::Config) -> Res<()> {
     info!("running app");
-    match conf.convert {
-        false => {
-            let mut v = init(&conf.file_path(), conf.delim())?;
-            if conf.swap {
-                info!("swapping terms and definitions of each card");
-                cards::swap(&mut v);
-            }
-            if conf.ask_both {
-                info!("swapping terms and definitions of some cards");
-                randomly_swap_cards(&mut v);
-            }
-
-            while v.iter().filter(|item| item.lok == Lok::Done).count() < v.len() {
-                if !conf.no_shuffle {
-                    info!("shuffling");
-                    fastrand::shuffle(&mut v);
-                }
-                question(&mut v, conf)?;
-            }
-            println!("Gone through everything you wanted, great job!");
-            info!("done");
-            state::rm_prog(&conf.file_path_orig())?;
-
-            Ok(())
+    if conf.convert {
+        let mut v = init(&conf.file_path(), conf.delim())?;
+        if conf.swap {
+            info!("swapping terms and definitions of each card");
+            cards::swap(&mut v);
         }
-        true => {
-            let v = init(&conf.file_path(), conf.delim())?;
-            let data = cards::deser_verbs_to_cards(&v, conf)?;
-
-            let pb = PathBuf::from(&conf.file_path_orig());
-            let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
-            println!(
-                "\n\nConverting verbs to cards, from file: {:?} to file: {}",
-                conf.file_path_orig(),
-                outf_name.bright_blue()
-            );
-            let mut out_f = File::create(outf_name)?;
-
-            writeln!(out_f, "# [crablit]")?;
-            writeln!(out_f, "# mode = \"cards\"")?;
-            writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
-            writeln!(out_f, "{data}")?;
-
-            println!("Converting from verbs to cards done");
-
-            Ok(())
+        if conf.ask_both {
+            info!("swapping terms and definitions of some cards");
+            randomly_swap_cards(&mut v);
         }
+
+        while v.iter().filter(|item| item.lok == Lok::Done).count() < v.len() {
+            if !conf.no_shuffle {
+                info!("shuffling");
+                fastrand::shuffle(&mut v);
+            }
+            question(&mut v, conf)?;
+        }
+        println!("Gone through everything you wanted, great job!");
+        info!("done");
+        state::rm_prog(&conf.file_path_orig())?;
+
+        Ok(())
+    } else {
+        let v = init(&conf.file_path(), conf.delim())?;
+        let data = cards::deser_verbs_to_cards(&v, conf)?;
+
+        let pb = PathBuf::from(&conf.file_path_orig());
+        let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
+        println!(
+            "\n\nConverting verbs to cards, from file: {:?} to file: {}",
+            conf.file_path_orig(),
+            outf_name.bright_blue()
+        );
+        let mut out_f = File::create(outf_name)?;
+
+        writeln!(out_f, "# [crablit]")?;
+        writeln!(out_f, "# mode = \"cards\"")?;
+        writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
+        writeln!(out_f, "{data}")?;
+
+        println!("Converting from verbs to cards done");
+
+        Ok(())
     }
 }
 

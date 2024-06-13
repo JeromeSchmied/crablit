@@ -35,7 +35,7 @@ fn set_up_logger() -> Res<()> {
                 record.level(),
                 record.target(),
                 message
-            ))
+            ));
         })
         // Add blanket level filter -
         .level(log::LevelFilter::Info)
