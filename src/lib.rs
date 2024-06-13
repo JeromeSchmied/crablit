@@ -134,7 +134,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
                 ":w" | ":write" | ":save" => {
                     info!(":w => saving progress");
                     state::save_prog(v, conf)?;
-                    // println("Saved progress");
+                    println!("{}saved progress", SPCR.repeat(2));
                 }
 
                 ":wq" | ":x" => {
