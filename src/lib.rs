@@ -84,8 +84,10 @@ pub fn init(path: &PathBuf, delim: char) -> Res<Vec<Card>> {
 /// - `rustyline` can't create instance
 pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
     // let mut printer = String::new();
-    let len = v.iter().filter(|item| item.lok != Lok::Done).count();
-    println!("\n\nYou have {len} words to learn, let's start!\n\n");
+    println!(
+        "\n\nYou have {} words to learn, let's start!\n\n",
+        v.iter().filter(|item| item.lok != Lok::Done).count()
+    );
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
