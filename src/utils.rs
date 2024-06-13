@@ -1,6 +1,6 @@
 //! # Code containing expressions used in `crablit` regularly.
 
-use owo_colors::OwoColorize;
+use crate::*;
 use std::fmt;
 
 /// space before any output
@@ -38,9 +38,9 @@ pub fn togo_msg(sum: usize, i: usize) -> String {
     format!(
         "{}{} at {:.1}{}, {} more to go",
         SPCR.repeat(2),
-        "!".bold().bright_purple(),
+        "!".bold().magenta(),
         (i as f32 / sum as f32 * 100.),
-        "%".bold().bright_purple(),
+        "%".bold().magenta(),
         (sum + 1 - i).to_string().italic()
     )
 }
@@ -93,6 +93,7 @@ impl Lok {
     /// assert_eq!(lok, Lok::Something);
     /// ```
     pub fn incr(&mut self) {
+        info!("incrementing {self:?}");
         *self = match *self {
             Self::Nothing => Self::Something,
             Self::Something => Self::Almost,

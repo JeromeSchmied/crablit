@@ -1,7 +1,6 @@
 //! # Library for vocabulary learning, used in `crablit`.
 use crate::utils::*;
 use log::*;
-use owo_colors::OwoColorize;
 use rustyline::DefaultEditor;
 use std::{
     error::Error,
@@ -11,6 +10,7 @@ use std::{
     path::PathBuf,
     process,
 };
+use yansi::Paint;
 
 /// Module for learning Deck of Cards
 pub mod cards;
@@ -27,7 +27,7 @@ pub use utils::Lok;
 // pub use verbs::Verb;
 
 /// any `Err` implementing [`std::error::Error`]
-pub type AnyErr<T> = Result<T, Box<dyn Error>>;
+pub type Res<T> = Result<T, Box<dyn Error>>;
 
 /// get log path for `kind`.log
 pub fn log_path(kind: &str) -> Option<PathBuf> {
@@ -56,7 +56,7 @@ pub fn log_path(kind: &str) -> Option<PathBuf> {
 ///
 /// - can't read `path`
 /// - can't deserialize properly
-pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
+pub fn init(path: &PathBuf, delim: char) -> Res<Vec<Card>> {
     info!("initializing");
     // contents of file with vocab data
     let contents = fs::read_to_string(path)?;
@@ -82,10 +82,12 @@ pub fn init(path: &PathBuf, delim: char) -> AnyErr<Vec<Card>> {
 /// # Errors
 ///
 /// - `rustyline` can't create instance
-pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
+pub fn question(v: &mut [Card], conf: &config::Config) -> Res<()> {
     // let mut printer = String::new();
-    let len = v.iter().filter(|item| item.lok != Lok::Done).count();
-    println!("\n\nYou have {len} words to learn, let's start!\n\n");
+    println!(
+        "\n\nYou have {} words to learn.\n\n",
+        v.iter().filter(|item| item.lok != Lok::Done).count()
+    );
     let mut rl = DefaultEditor::new()?;
 
     let mut i = 0;
@@ -104,7 +106,7 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
             if last_hr.is_some_and(|he| {
                 he.starts_with(":h") || he == ":typo" || he == ":n" || he == ":num" || he == ":togo"
             }) {
-                "".to_string()
+                String::new()
             } else {
                 format!("{}\n", item.question())
             }
@@ -132,9 +134,10 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                 ":w" | ":write" | ":save" => {
                     info!(":w => saving progress");
                     state::save_prog(v, conf)?;
+                    println!("{}saved progress", SPCR.repeat(2));
                 }
 
-                ":wq" => {
+                ":wq" | ":x" => {
                     info!(":wq => saving progress, then quitting");
                     state::save_prog(v, conf)?;
                     println!("{}", exit_msg());
@@ -143,12 +146,15 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 
                 ":typo" => {
                     info!(":typo => restoring last ");
-                    // find last that's not Lok::Done
+                    // find last that's not `Lok::Done`
                     let typod = v.iter().take(i).rposition(|j| j.lok != Lok::Done);
                     info!("found typod word at {typod:?}");
-                    if let Some(typo) = v.get(typod.unwrap_or(usize::MAX)) {
+                    if let Some(typo) = v.get_mut(typod.unwrap_or(usize::MAX)) {
+                        // increment for restoring last `Lok`
+                        typo.lok.incr();
+                        // increment `Lok` for guessing it well
+                        typo.lok.incr();
                         println!("{}", typo_msg(&typo.ser(" = ")));
-                        v[typod.unwrap()].lok.incr();
                     } else {
                         println!("{}", typo_msg("None"));
                     }
@@ -163,12 +169,6 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     continue;
                 }
 
-                ":revise" => {
-                    info!(":revise => revising");
-                    println!("{}", revise_msg());
-                    break;
-                }
-
                 ":f" | ":flash" => {
                     info!(":f => showing flashcard");
                     println!("{}\n\n\n", item.flashcard());
@@ -176,15 +176,19 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
                     i += 1;
                 }
 
-                // incorrect, not accurate
+                // may be incorrect, not accurate
                 ":n" | ":num" | ":togo" => {
                     info!(":n => showing togo");
-                    println!("{}", togo_msg(len, i));
+                    // calculate `len` again, as it may have changed since function start
+                    println!(
+                        "{}",
+                        togo_msg(v.iter().filter(|item| item.lok != Lok::Done).count(), i)
+                    );
                 }
 
                 uc => {
                     warn!(":{uc} => unknown command");
-                    println!("{} {}\n", "Unknown command:".red(), uc);
+                    println!("{} {uc}\n", "Unknown command:".red());
                 }
             }
         } else if guess == item.def {
@@ -208,55 +212,52 @@ pub fn question(v: &mut [Card], conf: &config::Config) -> AnyErr<()> {
 /// - `question()`
 /// - `state::rm()`
 /// - `verbs::deser_to_card()`
-pub fn run(conf: &config::Config) -> AnyErr<()> {
+pub fn run(conf: &config::Config) -> Res<()> {
     info!("running app");
-    match conf.convert {
-        false => {
-            let mut v = init(&conf.file_path(), conf.delim())?;
-            if conf.swap {
-                info!("swapping terms and definitions of each card");
-                cards::swap(&mut v);
-            }
-            if conf.ask_both {
-                info!("swapping terms and definitions of some cards");
-                randomly_swap_cards(&mut v);
-            }
-
-            while v.iter().filter(|item| item.lok == Lok::Done).count() < v.len() {
-                if !conf.no_shuffle {
-                    info!("shuffling");
-                    fastrand::shuffle(&mut v);
-                }
-                question(&mut v, conf)?;
-            }
-            println!("Gone through everything you wanted, great job!");
-            info!("done");
-            state::rm_prog(&conf.file_path_orig())?;
-
-            Ok(())
+    if conf.convert {
+        let mut v = init(&conf.file_path(), conf.delim())?;
+        if conf.swap {
+            info!("swapping terms and definitions of each card");
+            cards::swap(&mut v);
         }
-        true => {
-            let v = init(&conf.file_path(), conf.delim())?;
-            let data = cards::deser_verbs_to_cards(&v, conf)?;
-
-            let pb = PathBuf::from(&conf.file_path_orig());
-            let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
-            println!(
-                "\n\nConverting verbs to cards, from file: {:?} to file: {}",
-                conf.file_path_orig(),
-                outf_name.bright_blue()
-            );
-            let mut out_f = File::create(outf_name)?;
-
-            writeln!(out_f, "# [crablit]")?;
-            writeln!(out_f, "# mode = \"cards\"")?;
-            writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
-            writeln!(out_f, "{data}")?;
-
-            println!("Converting from verbs to cards done");
-
-            Ok(())
+        if conf.ask_both {
+            info!("swapping terms and definitions of some cards");
+            randomly_swap_cards(&mut v);
         }
+
+        while v.iter().filter(|item| item.lok == Lok::Done).count() < v.len() {
+            if !conf.no_shuffle {
+                info!("shuffling");
+                fastrand::shuffle(&mut v);
+            }
+            question(&mut v, conf)?;
+        }
+        println!("Gone through everything you wanted, great job!");
+        info!("done");
+        state::rm_prog(&conf.file_path_orig())?;
+
+        Ok(())
+    } else {
+        let v = init(&conf.file_path(), conf.delim())?;
+        let data = cards::deser_verbs_to_cards(&v, conf)?;
+
+        let pb = PathBuf::from(&conf.file_path_orig());
+        let outf_name = format!("{}_as_cards.csv", pb.file_stem().unwrap().to_str().unwrap());
+        println!(
+            "\n\nConverting verbs to cards, from file: {:?} to file: {}",
+            conf.file_path_orig(),
+            outf_name.bright_blue()
+        );
+        let mut out_f = File::create(outf_name)?;
+
+        writeln!(out_f, "# [crablit]")?;
+        writeln!(out_f, "# mode = \"cards\"")?;
+        writeln!(out_f, "# delim = \'{}\'\n\n", conf.delim())?;
+        writeln!(out_f, "{data}")?;
+
+        println!("Converting from verbs to cards done");
+
+        Ok(())
     }
 }
 

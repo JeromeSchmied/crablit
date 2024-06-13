@@ -18,7 +18,7 @@ fn data_dir() -> PathBuf {
 /// # Panics
 ///
 /// - `pwd()` doesn't contain valid utf8
-pub fn prog_path(path: &Path) -> AnyErr<PathBuf> {
+pub fn prog_path(path: &Path) -> Res<PathBuf> {
     let pwd = std::env::current_dir()?;
     info!("pwd: {pwd:?}");
     let pwd = pwd.to_str().expect("couldn't get working dir");
@@ -54,7 +54,7 @@ pub fn prog_exists(path: &Path) -> bool {
 
 /// Get content of file specified in `conf.file_path`,
 /// if a progress/state file is found, use that
-pub fn get_content(conf: &config::Config) -> AnyErr<String> {
+pub fn get_content(conf: &config::Config) -> Res<String> {
     if !conf.no_state && state::prog_exists(&conf.file_path_orig()) {
         let state_file_path = state::prog_path(&conf.file_path_orig())?;
 
@@ -76,7 +76,7 @@ pub fn get_content(conf: &config::Config) -> AnyErr<String> {
 ///
 /// - `get_prog_path()` errors
 /// - `fs::remove_file()` errors
-pub fn rm_prog(path: &Path) -> AnyErr<()> {
+pub fn rm_prog(path: &Path) -> Res<()> {
     if prog_exists(path) {
         info!("Removing state file from: {:?}", prog_path(path)?);
         fs::remove_file(prog_path(path)?)?;
@@ -119,7 +119,7 @@ pub fn serialize(v: &[Card], delim: char) -> String {
 /// - `fs::create()` errors
 /// - `get_prog_path()` errors
 /// - `writeln!()` errors
-pub fn save_prog(deck: &[Card], conf: &config::Config) -> AnyErr<()> {
+pub fn save_prog(deck: &[Card], conf: &config::Config) -> Res<()> {
     let ofile_path = prog_path(&conf.file_path_orig())?;
     let mut ofile = File::create(&ofile_path)?;
 

@@ -6,7 +6,7 @@ use crate::*;
 #[derive(Debug, Clone, PartialEq)]
 pub struct Card {
     /// Term in known language
-    trm: String,
+    pub trm: String,
     /// Definition in language to be learnt
     pub def: String,
     /// level of knowledge: 0,1,2,3
@@ -95,10 +95,7 @@ impl Card {
             "{SPCR}{} {}\n{SPCR}{}",
             "=".bright_cyan().bold(),
             self.def,
-            "─"
-                .repeat(self.def.len() + SPCR.len())
-                .bright_purple()
-                .bold()
+            "─".repeat(self.def.len() + SPCR.len()).magenta().bold()
         )
     }
 
@@ -107,7 +104,7 @@ impl Card {
     /// # Errors, Panics
     ///
     /// Errors, Panics if invalid.
-    pub fn deser(line: &str, delim: char) -> AnyErr<Self> {
+    pub fn deser(line: &str, delim: char) -> Res<Self> {
         let mut words = line.split(delim);
         if words.clone().count() != 2 && words.clone().count() != 3 {
             Err(format!(
@@ -133,7 +130,7 @@ impl Card {
 }
 
 /// Deserialize verbs to cards.
-pub fn deser_verbs_to_cards(cards: &[Card], conf: &config::Config) -> AnyErr<String> {
+pub fn deser_verbs_to_cards(cards: &[Card], conf: &config::Config) -> Res<String> {
     Ok(cards.iter().fold(String::new(), |result, card| {
         result
             + &format!(
